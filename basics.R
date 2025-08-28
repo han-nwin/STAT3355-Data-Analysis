@@ -41,3 +41,19 @@ fun.1(x = 3, y = 4)
 
 output <- fun.1(x = 3, y = 4)
 output
+
+
+fun.2 <- function(x,y) {
+  print(x)
+  plot(x,y)
+}
+
+
+output2 <- fun.2(x=1:5, y=1:5)
+output2
+
+distance <- function(a, b) {
+  return abs(a-b)
+}
+
+
