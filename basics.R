@@ -1,3 +1,5 @@
+rm(list=ls())sin
+
 digits <- 6
 round(4.123123123, digits = digits)
 digits
@@ -53,7 +55,28 @@ output2 <- fun.2(x=1:5, y=1:5)
 output2
 
 distance <- function(a, b) {
-  return abs(a-b)
+  return(abs(a-b))
 }
+distance(2,8)
+
+# Create a function with 4 inputs
+# add the first 2 inputs and store it
+# add the first 2 inputs, then multiply
+# by the sum of the 3rd and 4th input
+# Return the first sum, second sum, and their product.
+func <- function(a, b, c, d) {
+  sum1 <- a + b
+  sum2 <- c + d
+  product <- sum1 * sum2
+  
+  result <- list(sum1, sum2, product)
+  return(result)
+}
+
+# Example usage
+result <- func(1, 2, 3, 4)
+print(result)
+
+
 
 
