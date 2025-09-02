@@ -1,0 +1,217 @@
+---
+title: "Lec 1a cont."
+output:
+  pdf_document: default
+  word_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+# RMarkdown 
+
+To start an RMarkdown project, File -> New File -> R Markdown. Choose whatever project and author names you want, but be sure to click pdf. Click OK.
+
+Your report can include both plain text and computer code. There are ways to hide the computer code, but you will show the computer code in every assignment, so we will not cover it in class. There are also several cool things that can be done in RMarkdown and I encourage you to explore on your home, but there are 3 things we will cover:
+
+1. Including code block in RMarkdown
+2. Typing regular text in RMarkdown
+3. **Running** code within the regular text sections
+
+You can create code blocks in RMarkdown by enclosing your code within 3 ` marks (underneath the ~ key for most people), initiating R, and labeling your coding section. It is done as follows:
+
+```{r, markdown_exp}
+3 + 3
+5 + 4
+log(3, base = 10)
+var <-  3*2
+```
+
+
+Typing regular text does not require any syntax. All you must do is make sure your text is not being written in a coding environment. You can do things such as **bold**, or *italicize*, and even include mathematical equations such as $\pi \ne \frac{3}{4}$, but we leave that for you to explore.
+
+To run code within text environment, everything is the same as the code block except we remove the {} and the label. For example, we have that 3*2 = ```r var ```. This should not be used for heavy duty coding and should only be used to report values from results. 
+
+# Common Code Style Guide (The official coding guide for the HWs/Project is located on eLearning)
+
+Most of us have entered STEM either because we love STEM or we simply do not like English. For those who do not like English, you will not escape it, even in coding. It is best to include detailed code and to "code as you would write." Some principles to follow:
+
+* Identify all variables used in a functions-- whether self made or apart of R's natural memory
+* Automate repetitive tasks. The same piece of code should not be repeated in the script unless it is a function. 
+* Capitalize functions and lower case variables to distinguish them from each other.
+* Comment what your code is doing if it is not easily seen by looking at it.
+* There **should not** be any spaces before or after [, (
+* There **should** be spaces between all other characters besides ','
+* For ',' use standard Grammar principles 
+
+```{r, good_coding}
+# Bad
+Var <-  3 + 3
+gusto <-  3+ 3
+vec1 <-  c(1,2,3 ,4 , 5)
+remain <-  4%%3
+forth_entry <-  vec1 [4]
+ans <- log(4)
+
+# Good
+var = 3 + 3
+gusto = 3 + 3
+vec1 = c(1, 2, 3, 4, 5)
+remain = 4 %% 3
+forth_entry <-  vec1[4]
+ans <- log(4, base = exp(1))
+```
+
+# Functions
+
+Functions are like pets
+
+* They don't come unless we call them by name (spelled properly)
+* They have a mouth that likes to be fed (the parentheses)
+* They will complain if they are not fed properly
+* They make our lives better
+
+The basic structure of functions is:
+
+* Function name
+* Input arguments
+* Body (the code)
+* Output (final result)
+
+Example:
+
+```{r func_exmp_1}
+this.is.my.first.function <- function(x,y){
+  z <-  x + y 
+  return(z)
+}
+```
+
+* Function name: this.is.my.first.function
+* Input arguments: x, y
+* Body (the code): z <-  x + y 
+* Output (final result): return(z).
+
+Curly braces {} means 'do it together.'
+
+
+There are also rules dictating the names of functions:
+
+* Must start with a letter
+* Cannot contain any mathematical and logical operators 
+* Case matters
+
+Input arguments are matched first by name and then by position if the name is unavailable. However, for readability, **always** include the name of the variable in your function so that it can match by name.
+
+```{r func_exmp_1a}
+# Good 
+this.is.my.first.function(x = 2, y = 3)
+
+# Bad
+this.is.my.first.function(2, 3)
+```
+
+Note that the body can be 1000 lines of code and does not need to only be one line. Identify the body in the following function
+
+```{r func_exmp_2}
+this.is.my.second.function <- function(x,y){
+  z_1 <-  x + y
+  z_2 <- x*y
+  
+  z <- z_1 - z_2
+  
+  return(z)
+}
+```
+
+Our output is also not limited to the return function.We can also generate plots within our function, and include print statements. 
+
+```{r func_exmp_3}
+this.is.my.third.function <- function(n){
+  z_1 <- rnorm(n) #n random numbers sampled from standard normal
+  
+  hist(z_1, 
+       main = "Normal Distribution",
+       xlab = NULL,
+       freq = FALSE)
+  
+  z_mean <- mean(z_1)
+  z_sd <- sd(z_1)
+  
+  print(paste("The standard deviation is ", z_sd), sep = "")
+  return(z_mean)
+}
+
+this.is.my.third.function(1000)
+```
+
+Only objects outputted using the return() function are able to be used in later code, but all can be used at the same time. 
+
+There are at least 2 big reasons to use functions:
+
+* Reusable
+* Recursion (example given)
+
+```{r func_exmp_4}
+this.is.my.fourth.function <- function(x){
+
+  x <- x/2
+  
+  # Uncomment the following line to track the value of x
+  #print(x)
+  
+  if(x > 2){
+    x <- this.is.my.fourth.function(x)
+  }else{
+    return(x)
+  }
+}
+
+can_b_used_later <- this.is.my.fourth.function(19)
+can_b_used_later
+```
+# Logical Operators
+R allows comparisons of objects of at least types 'string', 'numeric', and 'logical.' For numeric values we can use:
+
+* Less than: x $<$ y
+* Less than or equal to: x $\le$ y
+* Greater than: x $>$ y
+* Greater than or equal to: x $\ge$
+* Equal to: x == y (not =)
+* Not equal to: x != y
+
+```{r logicals}
+# Comparison between numeric values
+pi > 3
+1 + 1 == 2
+sin(pi/4) == sqrt(2)/2
+abs(sin(pi/4) - sqrt(2)/2) < 0.000001
+
+```
+Between two logical values x and y we can use:
+
+* Not: !x
+* And: x \& y
+* Or: x | y 
+
+
+```{r logicals1}
+# Comparison between logical objects
+TRUE != FALSE
+(TRUE & FALSE) == FALSE
+(TRUE & FALSE) == TRUE
+TRUE | FALSE == TRUE
+```
+
+When comparing strings I recommend only using ==
+
+```{r logicals2}
+# Comparison between string objects
+
+"hi" == "hi"
+"hi" == "Hi"
+"hi" == "h"
+"hi" > "h" # bad example
+```
