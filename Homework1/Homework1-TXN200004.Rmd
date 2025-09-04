@@ -62,34 +62,38 @@ Answer: $\left( \frac{11 + 12!}{13! + 14} \right)^2$ = ```r f```
 
 # Problem 2
 
-```{r, problem2}
-# If I wrote code that would be used in all following letters, it would go here
-```
-
 ## a)
 
 ```{r, problem_2a}
-# This is where my code for this question goes
+RF <- c(2.60, 3.05, 3.74, 3.48, 5.49, 4.25, 2.57, 2.18, 3.14, 4.82, 3.28, 3.01)
 ```
+
+Answer: RF = ```r RF```
 
 ## b)
 
 ```{r, problem_2b}
-# This is where my code for this question goes
+names(RF) <- month.abb
 ```
+
+Answer: The names of the RF vector are assigned to the abbreviated month names: ```r names(RF)```
 
 ## c)
 
 ```{r, problem_2c}
-# This is where my code for this question goes
+avg_RF <- round(mean(RF), 2)
 ```
+
+Answer: The average RF value is ```r avg_RF```
 
 ## d)
 
 ```{r, problem_2d}
-# This is where my code for this question goes
+min_month <- names(RF)[which.min(RF)]
+max_month <- names(RF)[which.max(RF)]
 ```
 
+Answer: The month with the minimum RF is ```r min_month``` and the month with the maximum RF is ```r max_month```
 # Problem 3
 
 ```{r, problem3}
