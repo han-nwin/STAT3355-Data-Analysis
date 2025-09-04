@@ -19,7 +19,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```{r, problem_1a}
 # This is where my code for this question goes
-a <- 4 + 3
+a <- 8 + 9 - 7 / 3^0.3
 ```
 
 This is me placing the alleged answer to this question in text: a = ```r a```
