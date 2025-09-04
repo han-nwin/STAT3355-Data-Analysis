@@ -11,51 +11,54 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Problem 1
 
-```{r, problem1}
-# If I wrote code that would be used in all following letters, it would go here
-```
-
 ## a)
 
 ```{r, problem_1a}
-# This is where my code for this question goes
-a <- 8 + 9 - 7 / 3^0.3
+a <- round(8 + 9 - 7 / 3^0.3, 2)
 ```
 
-This is me placing the alleged answer to this question in text: a = ```r a```
+Answer: $8 + 9 - \frac{7}{3^{0.3}}$ = ```r a```
 
 ## b)
 
 ```{r, problem_1b}
-# This is where my code for this question goes
+b <- round(log(sqrt((15 + 6) / (14 + 2)), base = 2), 2)
 ```
+
+Answer: $\log_2 \left( \sqrt{\frac{15 + 6}{14 + 2}} \right)$ = ```r b```
+
 
 ## c)
 
 ```{r, problem_1c}
-# This is where my code for this question goes
-mu_1 <- 5.564231
+c <- round(((11 + sin(pi/4)) / (factorial(3) + abs(-10)))^2, 2)
 ```
 
-This is me using a mathematical symbol to state the alleged mean $\mu_1$ = ```r mu_1```
+Answer: $\left( \frac{11 + \sin\left(\frac{\pi}{4}\right)}{3! + |-10|} \right)^2$ = ```r c```
 
 ## d)
 
 ```{r, problem_1d}
-# This is where my code for this question goes
+d <- round(6 + 5 - 4/3^2, 2)
 ```
+
+Answer: $6 + 5 - \frac{4}{3^2}$ = ```r d```
 
 ## e)
 
 ```{r, problem_1e}
-# This is where my code for this question goes
+e <- round(exp( sqrt( (14 + 13) / (12 + 11) ) ), 2)
 ```
+
+Answer: $e^{\sqrt{\frac{14 + 13}{12 + 11}}}$ = ```r e```
 
 ## f)
 
 ```{r, problem_1f}
-# This is where my code for this question goes
+f <- round(((11 + factorial(12)) / (factorial(13) + 14))^2, 2)
 ```
+
+Answer: $\left( \frac{11 + 12!}{13! + 14} \right)^2$ = ```r f```
 
 # Problem 2
 
