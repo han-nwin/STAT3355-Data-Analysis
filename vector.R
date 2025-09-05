@@ -165,5 +165,34 @@ All_Primes <- function(n){
   return(track)
 }
 
+  All_Primes_2 <- function(n) {
+    if (n < 2) {
+      return(integer(0))
+    }
+    if (n == 2) {
+      return(2)
+    }
+    if (n == 3) {
+      return(c(2, 3))
+    }
+    primes <- c(2, 3)
+    for (i in 4:n) {
+      is_prime <- TRUE
+      limit <- floor(sqrt(i))
+      for (j in 2:limit) {
+        if (i %% j == 0) {
+          is_prime <- FALSE
+          break
+        }
+      }
+      if (is_prime) {
+        primes <- c(primes, i)
+      }
+    }
+    return(primes)
+  }
+
 all_prim_n <- All_Primes(20)
 all_prim_n
+all_prim_2_n <- All_Primes_2(20)
+all_prim_2_n
