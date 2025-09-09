@@ -157,6 +157,7 @@ l1
 
 print('----ggplot2-----')
 library(ggplot2)
+data(mpg)
 
 # Example: Create a simple scatter plot using ggplot2
 
@@ -175,4 +176,5 @@ ggplot(df, aes(x = x, y = y, color = group)) +
        y = "Y Axis",
        color = "Group") +
   theme_minimal()
+
 
