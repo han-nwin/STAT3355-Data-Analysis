@@ -4,8 +4,10 @@ mpg <- read.table("/Users/han/Desktop/GitHub/STAT3355-Data-Analysis/Practice 2/a
 colnames(mpg) <- c("mpg", "cylinders", "displacement", "horsepower", "weight", "acceleration", "year", "origin", "car_name")
 
 # Problem 1
-# Find index which corresponds to the year of 1971 (year column stores year as 71 for 1971)
+# Find all indexes which corresponds to the year of 1971 (year column stores year as 71 for 1971)
 index <- which(mpg$year == 71)
+print(index)
+# find average mpg
 mean(mpg$mpg[index])
 
 # Problem 2
