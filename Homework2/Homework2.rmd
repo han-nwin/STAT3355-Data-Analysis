@@ -1,0 +1,127 @@
+---
+title: "Homework 2"
+author: "Han Nguyen - TXN200004"
+date: "09/16/2024"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Problem 1
+
+## a)
+
+```{r, problem_1a}
+mat <- matrix(c(34, 23, 53, 6, 78, 93, 12, 41, 99), nrow = 3)
+df <- as.data.frame(mat)
+names(df) <- c("score_given_to_car_on_driving_test",
+               "score_given_to_van_on_driving_test",
+               "score_given_to_truck_on_driving_test")
+```
+
+## b)
+
+```{r, problem_1b}
+library(ggplot2)
+head(mpg)
+second_version_of_mpg <- mpg[mpg$cyl == 6, ]
+second_version_of_mpg$class <- as.character(second_version_of_mpg$class)
+```
+
+# Problem 2
+
+```{r, problem2}
+# If I wrote code that would be used in all following letters, it would go here
+```
+
+## a)
+
+```{r, problem_2a}
+# This is where my code for this question goes
+```
+
+## b)
+
+```{r, problem_2b}
+# This is where my code for this question goes
+```
+
+## c)
+
+```{r, problem_2c}
+# This is where my code for this question goes
+```
+
+## d)
+
+```{r, problem_2d}
+# This is where my code for this question goes
+```
+
+# Problem 3
+
+```{r, problem3}
+# If I wrote code that would be used in all following letters, it would go here
+```
+
+## a)
+
+```{r, problem_3a}
+# This is where my code for this question goes
+```
+
+## b)
+
+```{r, problem_3b}
+# This is where my code for this question goes
+```
+
+## c)
+
+```{r, problem_3c}
+# This is where my code for this question goes
+```
+
+## d)
+
+```{r, problem_3d}
+# This is where my code for this question goes
+```
+
+# Problem 4
+```{r, problem4}
+# If I wrote code that would be used in all following letters, it would go here
+```
+
+## a)
+
+```{r, problem_4a}
+# This is where my code for this question goes
+```
+
+## b)
+
+```{r, problem_4b}
+# This is where my code for this question goes
+```
+
+## c)
+
+```{r, problem_4c}
+# This is where my code for this question goes
+```
+
+# Problem 5
+
+```{r, problem_5}
+# This is where my code for this question goes
+```
+
+# Problem 6
+
+```{r, problem_6}
+# This is where my code for this question goes
+```
+

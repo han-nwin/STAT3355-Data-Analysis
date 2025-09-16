@@ -88,4 +88,5 @@ data_set2 <- subset(file, agg_score < 2)
 head(data_set1, 20)
 head(data_set2, 20)
 
+
 # 6_a
