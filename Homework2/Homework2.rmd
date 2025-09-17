@@ -33,95 +33,170 @@ second_version_of_mpg$class <- as.character(second_version_of_mpg$class)
 # Problem 2
 
 ```{r, problem2}
-# If I wrote code that would be used in all following letters, it would go here
+# Read the csv
+senate <- read.csv("1976-2020-senate.csv")
+head(senate)
 ```
 
 ## a)
 
 ```{r, problem_2a}
-# This is where my code for this question goes
+# Convert variables to factor
+senate$year <- as.factor(senate$year)
+senate$state <- as.factor(senate$state)
+senate$party_simplified <- as.factor(senate$party_simplified)
 ```
 
 ## b)
 
 ```{r, problem_2b}
-# This is where my code for this question goes
+texas_senates <- subset(senate, 
+                        state == "TEXAS", 
+                        select = c("year", 
+                                   "state", 
+                                   "candidatevotes", 
+                                   "totalvotes", 
+                                   "party_simplified"))
+head(texas_senates)
 ```
 
 ## c)
 
 ```{r, problem_2c}
-# This is where my code for this question goes
-```
+# average votes by party
+parties <- unique(texas_senates$party_simplified)
 
+avg_votes <- numeric(length(parties))
+median_votes <- numeric(length(parties))
+
+# Name for indexing
+names(avg_votes) <- parties
+names(median_votes) <- parties
+
+# Iterate through each party and calculate avg, median
+for (party in parties) {
+  avg_votes[party] <- round(mean(
+    texas_senates$candidatevotes[texas_senates$party_simplified == party], 
+    na.rm = TRUE
+  ))
+  median_votes[party] <- round(median(
+    texas_senates$candidatevotes[texas_senates$party_simplified == party], 
+    na.rm = TRUE
+  ))
+}
+
+for (p in names(avg_votes)) {
+  cat(p,"-", "Average votes:", avg_votes[p], "\n")
+}
+
+for (p in names(median_votes)) {
+  cat(p,"-", "Median votes:", median_votes[p], "\n")
+}
+
+```
 ## d)
 
 ```{r, problem_2d}
-# This is where my code for this question goes
+# Determine years in which DEMOCRAT candidate from TEXAS won
+year_won <- texas_senates$year[
+  texas_senates$party_simplified == "DEMOCRAT" & 
+  texas_senates$candidatevotes == ave(texas_senates$candidatevotes, 
+                                      texas_senates$year,
+                                      FUN = max)
+]
+year_won <- as.character(year_won)
+cat("Years that Democrat won in Texas: ", year_won)
 ```
 
 # Problem 3
 
 ```{r, problem3}
-# If I wrote code that would be used in all following letters, it would go here
+tae <- read.table("tae.data", sep = ",", header = FALSE)
+names(tae) <- c("english_speaker",   # 1 = English speaker, 2 = non-English
+                "instructor",        # categorical (25 categories)
+                "course",            # categorical (26 categories)
+                "regular",          # 1 = Summer, 2 = Regular
+                "class_size",        # numeric
+                "score")   # 1 = Low, 2 = Medium, 3 = High
+# Add TA ID based on row number
+tae$TA_ID <- 1:nrow(tae)
+
+head(tae)
 ```
 
 ## a)
 
 ```{r, problem_3a}
-# This is where my code for this question goes
+# Turn first variable into logical variable
+tae[, 1] <- tae[, 1] == 1
+head(tae)
 ```
 
 ## b)
 
 ```{r, problem_3b}
-# This is where my code for this question goes
+# Turn 4th variable into logical variable
+tae[,4] <- tae[,4] == 2
+head(tae)
 ```
 
 ## c)
 
 ```{r, problem_3c}
-# This is where my code for this question goes
+# Turn the last variable (class attribute or evaluation score) into an ordered factor variable with levels labeled as ‘low’, ‘medium’ and ‘high’
+tae$score <- factor(tae$score,
+                    levels = c(1,2,3),
+                    labels = c("low", "medium", "high"),
+                    ordered = TRUE)
+head(tae)
 ```
 
 ## d)
 
 ```{r, problem_3d}
-# This is where my code for this question goes
+# Average
+avg_regular <- round(mean(tae$class_size[tae$regular == TRUE], na.rm = TRUE), 2)
+avg_summer   <- round(mean(tae$class_size[tae$regular == FALSE], na.rm = TRUE), 2)
+
+# Median
+median_regular <- round(median(tae$class_size[tae$regular == TRUE], na.rm = TRUE), 2)
+median_summer   <- round(median(tae$class_size[tae$regular == FALSE], na.rm = TRUE), 2)
+
+# Print results with labels
+cat("Regular semester - Average:", avg_regular, "Median:", median_regular, "\n")
+cat("Summer semester  - Average:", avg_summer,  "Median:", median_summer, "\n")
 ```
 
-# Problem 4
-```{r, problem4}
-# If I wrote code that would be used in all following letters, it would go here
+## e)
+
+```{r, problem_3e}
+# English speakers
+native_regular <- sum(tae$english_speaker & tae$regular)
+native_summer  <- sum(tae$english_speaker & !tae$regular)
+
+# Not English speakers
+non_native_regular <- sum(!tae$english_speaker & tae$regular)
+non_native_summer  <- sum(!tae$english_speaker & !tae$regular)
+
+cat("Native English TAs - Regular:", native_regular, "Summer:", native_summer, "\n")
+cat("Non-native English TAs - Regular:", non_native_regular, "Summer:", non_native_summer, "\n")
+
 ```
 
-## a)
+## f)
 
-```{r, problem_4a}
-# This is where my code for this question goes
+```{r, problem_3f}
+total_native <- sum(tae$english_speaker)
+high_native <- sum(tae$english_speaker & tae$score == "high")
+prop_native <- round(high_native / total_native, 2)
+
+# Non-native English TAs
+total_non_native <- sum(!tae$english_speaker)
+high_non_native <- sum(!tae$english_speaker & tae$score == "high")
+prop_non_native <- round(high_non_native / total_non_native, 2)
+
+cat("Native English TAs:", total_native, ". High score proportion:", prop_native, "\n")
+cat("Non-native English TAs:", total_non_native, ". High score proportion:", prop_non_native, "\n")
 ```
 
-## b)
-
-```{r, problem_4b}
-# This is where my code for this question goes
-```
-
-## c)
-
-```{r, problem_4c}
-# This is where my code for this question goes
-```
-
-# Problem 5
-
-```{r, problem_5}
-# This is where my code for this question goes
-```
-
-# Problem 6
-
-```{r, problem_6}
-# This is where my code for this question goes
-```
 
