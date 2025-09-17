@@ -14,10 +14,10 @@ knitr::opts_chunk$set(echo = TRUE)
 ## a)
 
 ```{r, problem_1a}
-a <- round(8 + 9 - 7 / 3^0.3, 2)
+a <- round(8 + 9 - 7 / 3 ^ 0.3, 2)
 ```
 
-Answer: $8 + 9 - \frac{7}{3^{0.3}}$ = ```r a```
+**Answer:** $8 + 9 - \frac{7}{3^{0.3}}$ = ```r a```
 
 ## b)
 
@@ -25,16 +25,16 @@ Answer: $8 + 9 - \frac{7}{3^{0.3}}$ = ```r a```
 b <- round(log(sqrt((15 + 6) / (14 + 2)), base = 2), 2)
 ```
 
-Answer: $\log_2 \left( \sqrt{\frac{15 + 6}{14 + 2}} \right)$ = ```r b```
+**Answer:** $\log_2 \left( \sqrt{\frac{15 + 6}{14 + 2}} \right)$ = ```r b```
 
 
 ## c)
 
 ```{r, problem_1c}
-c <- round(((11 + sin(pi/4)) / (factorial(3) + abs(-10)))^2, 2)
+c <- round(((11 + sin(pi/4)) / (factorial(3) + abs(-10))) ^ 2, 2)
 ```
 
-Answer: $\left( \frac{11 + \sin\left(\frac{\pi}{4}\right)}{3! + |-10|} \right)^2$ = ```r c```
+**Answer:** $\left( \frac{11 + \sin\left(\frac{\pi}{4}\right)}{3! + |-10|} \right)^2$ = ```r c```
 
 ## d)
 
@@ -42,7 +42,7 @@ Answer: $\left( \frac{11 + \sin\left(\frac{\pi}{4}\right)}{3! + |-10|} \right)^2
 d <- round(6 + 5 - 4/3^2, 2)
 ```
 
-Answer: $6 + 5 - \frac{4}{3^2}$ = ```r d```
+**Answer:** $6 + 5 - \frac{4}{3^2}$ = ```r d```
 
 ## e)
 
@@ -50,15 +50,15 @@ Answer: $6 + 5 - \frac{4}{3^2}$ = ```r d```
 e <- round(exp( sqrt( (14 + 13) / (12 + 11) ) ), 2)
 ```
 
-Answer: $e^{\sqrt{\frac{14 + 13}{12 + 11}}}$ = ```r e```
+**Answer:** $e^{\sqrt{\frac{14 + 13}{12 + 11}}}$ = ```r e```
 
 ## f)
 
 ```{r, problem_1f}
-f <- round(((11 + factorial(12)) / (factorial(13) + 14))^2, 2)
+f <- round(((11 + factorial(12)) / (factorial(13) + 14)) ^ 2, 2)
 ```
 
-Answer: $\left( \frac{11 + 12!}{13! + 14} \right)^2$ = ```r f```
+**Answer:** $\left( \frac{11 + 12!}{13! + 14} \right)^2$ = ```r f```
 
 # Problem 2
 
@@ -68,7 +68,7 @@ Answer: $\left( \frac{11 + 12!}{13! + 14} \right)^2$ = ```r f```
 RF <- c(2.60, 3.05, 3.74, 3.48, 5.49, 4.25, 2.57, 2.18, 3.14, 4.82, 3.28, 3.01)
 ```
 
-Answer: RF = ```r RF```
+**Answer:** RF = ```r RF```
 
 ## b)
 
@@ -76,7 +76,7 @@ Answer: RF = ```r RF```
 names(RF) <- month.abb
 ```
 
-Answer: The names of the RF vector are assigned to the abbreviated month names: ```r names(RF)```
+**Answer:** The names of the RF vector are assigned to the abbreviated month names: ```r names(RF)```
 
 ## c)
 
@@ -84,78 +84,152 @@ Answer: The names of the RF vector are assigned to the abbreviated month names: 
 avg_RF <- round(mean(RF), 2)
 ```
 
-Answer: The average RF value is ```r avg_RF```
+**Answer:** The average RF value is ```r avg_RF```
 
 ## d)
 
 ```{r, problem_2d}
-min_month <- names(RF)[which.min(RF)]
-max_month <- names(RF)[which.max(RF)]
+min_month <- names(which.min(RF))
+max_month <- names(which.max(RF))
 ```
 
-Answer: The month with the minimum RF is ```r min_month``` and the month with the maximum RF is ```r max_month```
+**Answer:** $\\$
+- Month with the minimum RF is ```r min_month```. $\\$
+- Month with the maximum RF is ```r max_month```.
+
 # Problem 3
-
-```{r, problem3}
-# If I wrote code that would be used in all following letters, it would go here
-```
 
 ## a)
 
 ```{r, problem_3a}
-# This is where my code for this question goes
+H2 <- c(2700, 2600, 3050, 2900, 3000, 2500, 2600, 3000, 2800, 3200, 2800, 3400)
 ```
+**Answer:** H2 = ```r H2```
 
 ## b)
 
 ```{r, problem_3b}
-# This is where my code for this question goes
+names(H2) <- month.abb
 ```
+
+**Answer:** The names of the H2 vector are assigned to the abbreviated month names ```r names(H2)```
 
 ## c)
 
 ```{r, problem_3c}
-# This is where my code for this question goes
+total <- sum(H2)
 ```
+
+**Answer:** Total sales of Hummer H2 in 2002 = ```r format(total, scientific = FALSE, big.mark = ",")```
 
 ## d)
 
 ```{r, problem_3d}
-# This is where my code for this question goes
+diff <- diff(H2)
+
+max_increase <- names(which.max(diff))
+max_decrease <- names(which.min(diff))
 ```
+**Answer:** $\\$
+Month with greatest increase: ```r max_increase```.$\\$
+Month with greatest decrease ```r max_decrease```.
 
 # Problem 4
-```{r, problem4}
-# If I wrote code that would be used in all following letters, it would go here
-```
 
 ## a)
 
 ```{r, problem_4a}
-# This is where my code for this question goes
+x <- c(1, -2, 3, -4, 5, 100)
+y <- x * -1
+y[y > 0]
 ```
 
 ## b)
 
 ```{r, problem_4b}
-# This is where my code for this question goes
+# create a sequence from 1 to 50
+z <- seq(1, 50)
+
+# test whether an observation is even
+even <- z %% 2 == 0
+
+# subset z by the test above
+z <- z[even]
 ```
 
 ## c)
 
 ```{r, problem_4c}
-# This is where my code for this question goes
+mean <- function(x) {
+  sum(x) / length(x)
+}
 ```
 
 # Problem 5
 
 ```{r, problem_5}
-# This is where my code for this question goes
+PrintSquare <- function() {
+  for (i in 1:1000) {
+    square_root <- sqrt(i)
+    if (square_root == as.integer(square_root)) {
+      print(i)
+    }
+  }
+}
+
+#Testing
+PrintSquare()
 ```
 
 # Problem 6
 
 ```{r, problem_6}
-# This is where my code for this question goes
+TwinPrime <- function(n) {
+  # Function to check if a number is prime
+  IsPrime <- function(x) {
+    # Numbers <= 1 are not prime
+    if (x <= 1) {
+      return(FALSE)
+    }
+    
+    # 2 and 3 are prime
+    if (x == 2 || x == 3) {
+      return(TRUE)
+    }
+
+    # Check up to square root of x
+    # Skip 4 because it's not prime
+    i <- 5
+    for (i in 2:floor(sqrt(x))) {
+      if (x %% i == 0) {
+        return(FALSE)
+      }
+    }
+      return(TRUE)
+  }
+  
+  # Constructing a primes vector from 1 -> n
+  primes <- c()
+  for (i in 2:n) {
+    if (IsPrime(i)) {
+      # new vector and add new prime in
+      primes <- c(primes, i)
+    }
+  }
+  
+  # Find and count all twin pairs
+  total_pair <- 0
+  for (i in 1:(length(primes) - 1)) {
+    if (primes[i + 1] - primes[i] == 2) {
+      total_pair <- total_pair + 1
+    }
+  }
+  
+  return(total_pair)
+}
+
+# Testing
+TwinPrime(100)
 ```
+
 
