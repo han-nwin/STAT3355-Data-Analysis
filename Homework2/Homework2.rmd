@@ -26,8 +26,8 @@ names(df) <- c("score_given_to_car_on_driving_test",
 ```{r, problem_1b}
 library(ggplot2)
 head(mpg)
-second_version_of_mpg <- mpg[mpg$cyl == 6, ]
-second_version_of_mpg$class <- as.character(second_version_of_mpg$class)
+mpg2 <- mpg[mpg$cyl == 6, ]
+mpg2$class <- as.character(mpg2$class)
 ```
 
 # Problem 2
