@@ -47,13 +47,14 @@ names(which.max(table(x)))
 round(table(x)["40s"] / sum(table(x)), 3)
 
 p_age <- table(x) / sum(table(x))
+
+# Shannon index: more obvious to see
 - sum(p_age * log(p_age))
 log(sum(length(unique(x))))
 
-p_age <- table(x) / sum(table(x))
-- sum(p_age * log(p_age))
-log(sum(length(unique(x))))
-
+# Simpson index 
+1 - sum(p_age^2)
+1 - 1/5
 
 barplot(table(x))
 
@@ -72,7 +73,9 @@ x <- factor(x,
 table(x)
 
 # Plot the bar chart
-barplot(table(x))
+barplot(table(x), 
+        cex.name = 0.9,
+        las = 2)
 
 
 # Turn x to a factor vector
@@ -86,6 +89,14 @@ barplot(table(x),
         main = "Mother Smoking Status",
         col = "orange",
         ylab = "Frequency",
+        cex.names = 0.8,
+        las = 2)
+
+barplot(table(x)/sum(table(x)),
+        main = "Mother Smoking Status",
+        col = "red",
+        ylab = "Percent",
+        ylim = c(0, 0.6),
         cex.names = 0.8,
         las = 2)
 
@@ -136,6 +147,7 @@ x <- factor(x,
             labels = c("Never", "Now", "Until pregnancy",
                        "Once but quit"))
 
+# Need this to draw pie chart
 perc <- paste("(", 
               round(table(x)/sum(table(x))*100, 1), 
               "%)", 
