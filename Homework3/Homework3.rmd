@@ -9,7 +9,7 @@ output: pdf_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-```r
+
 # Problem 1
 ```{r, problem1}
 # Read the data
@@ -21,7 +21,9 @@ mobile_data <- read.csv("train.csv")
 # Convert price_range to a factor with proper labels
 mobile_data$price_range <- factor(mobile_data$price_range, 
                                    levels = c(0, 1, 2, 3),
-                                   labels = c("low", "medium", "high", "very high"))
+                                   labels = c("low", "medium", "high", "very high"),
+                                   ordered = TRUE)
+head(mobile_data$price_range)
 ```
 
 The variable price_range has been converted to a factor with levels: "low", "medium", "high", and "very high".
@@ -30,13 +32,17 @@ The variable price_range has been converted to a factor with levels: "low", "med
 ```{r, problem_1b}
 # Create scatter plot with colors based on price range
 plot(mobile_data$battery_power, mobile_data$ram,
-     col = as.numeric(mobile_data$price_range),
+     col = ifelse(mobile_data$price_range == "low", "darkgreen",
+                  ifelse(mobile_data$price_range == "medium", "purple",
+                         ifelse(mobile_data$price_range == "high", "red", "orange"))),
      pch = 19,
      xlab = "Battery Power",
      ylab = "RAM (MB)",
      main = "Battery Power vs RAM by Price Range")
-legend("topleft", legend = levels(mobile_data$price_range),
-       col = 1:4, pch = 19, title = "Price Range")
+
+legend("topright", legend = levels(mobile_data$price_range),
+       col = c("darkgreen", "purple", "red", "orange"),
+       pch = 19)
 ```
 
 ## c)
@@ -183,7 +189,7 @@ The violin plots confirm the findings from the density curves and box plots:
 ```
 
 
-```r
+
 # Problem 2
 ```{r, problem2}
 # Install and load the package
