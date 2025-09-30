@@ -1,0 +1,371 @@
+---
+title: "Homework 3"
+author: "Han Nguyen - TXN200004"
+date: "09/30/2025"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```r
+# Problem 1
+```{r, problem1}
+# Read the data
+mobile_data <- read.csv("train.csv")
+```
+
+## a)
+```{r, problem_1a}
+# Convert price_range to a factor with proper labels
+mobile_data$price_range <- factor(mobile_data$price_range, 
+                                   levels = c(0, 1, 2, 3),
+                                   labels = c("low", "medium", "high", "very high"))
+```
+
+The variable price_range has been converted to a factor with levels: "low", "medium", "high", and "very high".
+
+## b)
+```{r, problem_1b}
+# Create scatter plot with colors based on price range
+plot(mobile_data$battery_power, mobile_data$ram,
+     col = as.numeric(mobile_data$price_range),
+     pch = 19,
+     xlab = "Battery Power",
+     ylab = "RAM (MB)",
+     main = "Battery Power vs RAM by Price Range")
+legend("topleft", legend = levels(mobile_data$price_range),
+       col = 1:4, pch = 19, title = "Price Range")
+```
+
+## c)
+```{r, problem_1c}
+# Calculate Pearson correlation between ram and battery_power
+cor_overall <- cor(mobile_data$ram, mobile_data$battery_power)
+```
+
+The Pearson correlation between RAM and battery power is r = `r round(cor_overall, 4)`.
+
+## d)
+```{r, problem_1d}
+# Create four separate datasets by price range
+priceLow <- subset(mobile_data, price_range == "low")
+priceMedium <- subset(mobile_data, price_range == "medium")
+priceHigh <- subset(mobile_data, price_range == "high")
+priceVeryhigh <- subset(mobile_data, price_range == "very high")
+```
+
+Four separate datasets have been created: priceLow, priceMedium, priceHigh, and priceVeryhigh.
+
+## e)
+```{r, problem_1e}
+# Calculate correlations for each price range
+cor_low <- cor(priceLow$ram, priceLow$battery_power)
+cor_medium <- cor(priceMedium$ram, priceMedium$battery_power)
+cor_high <- cor(priceHigh$ram, priceHigh$battery_power)
+cor_veryhigh <- cor(priceVeryhigh$ram, priceVeryhigh$battery_power)
+```
+
+Correlations by price range:
+
+- Low: r = `r round(cor_low, 4)`
+- Medium: r = `r round(cor_medium, 4)`
+- High: r = `r round(cor_high, 4)`
+- Very High: r = `r round(cor_veryhigh, 4)`
+
+Explanation: The correlations within each price range are much weaker (near zero) compared to the overall correlation from part (c). This is an example of Simpson's Paradox. When we look at all data together, we see a positive correlation because higher-priced phones tend to have both more RAM and larger batteries. However, within each price category, there is little to no relationship between RAM and battery power, as manufacturers balance various features independently. The strong overall correlation was actually driven by the confounding variable (price range) rather than a true relationship between RAM and battery power.
+
+## f)
+```{r, problem_1f}
+# Recreate scatter plot with trend lines for each price range
+plot(mobile_data$battery_power, mobile_data$ram,
+     col = as.numeric(mobile_data$price_range),
+     pch = 19,
+     xlab = "Battery Power",
+     ylab = "RAM (MB)",
+     main = "Battery Power vs RAM by Price Range with Trend Lines")
+
+# Add trend lines for each price range
+abline(lm(ram ~ battery_power, data = priceLow), col = 1, lwd = 2)
+abline(lm(ram ~ battery_power, data = priceMedium), col = 2, lwd = 2)
+abline(lm(ram ~ battery_power, data = priceHigh), col = 3, lwd = 2)
+abline(lm(ram ~ battery_power, data = priceVeryhigh), col = 4, lwd = 2)
+
+legend("topleft", legend = levels(mobile_data$price_range),
+       col = 1:4, pch = 19, lwd = 2, title = "Price Range")
+```
+
+## g)
+```{r, problem_1g}
+# Calculate average and median clock speed for phones with 4, 6, and 8 cores
+cores_4 <- subset(mobile_data, n_cores == 4)
+cores_6 <- subset(mobile_data, n_cores == 6)
+cores_8 <- subset(mobile_data, n_cores == 8)
+
+avg_4 <- round(mean(cores_4$clock_speed), 2)
+med_4 <- round(median(cores_4$clock_speed), 2)
+
+avg_6 <- round(mean(cores_6$clock_speed), 2)
+med_6 <- round(median(cores_6$clock_speed), 2)
+
+avg_8 <- round(mean(cores_8$clock_speed), 2)
+med_8 <- round(median(cores_8$clock_speed), 2)
+```
+
+Clock Speed Statistics:
+
+- 4 cores: Average = `r avg_4`, Median = `r med_4`
+- 6 cores: Average = `r avg_6`, Median = `r med_6`
+- 8 cores: Average = `r avg_8`, Median = `r med_8`
+
+Explanation: The average and median clock speeds remain essentially the same across different core counts because clock speed and number of cores appear to be independent features in this dataset. This suggests that the data was likely generated with these variables distributed independently, or that manufacturers don't systematically pair higher core counts with different clock speeds in this sample.
+
+## h)
+```{r, problem_1h}
+# Create density curves for RAM by price range
+plot(density(priceLow$ram), col = 1, lwd = 2,
+     main = "Density Curves of RAM by Price Range",
+     xlab = "RAM (MB)", ylim = c(0, 0.0015))
+lines(density(priceMedium$ram), col = 2, lwd = 2)
+lines(density(priceHigh$ram), col = 3, lwd = 2)
+lines(density(priceVeryhigh$ram), col = 4, lwd = 2)
+legend("topright", legend = levels(mobile_data$price_range),
+       col = 1:4, lwd = 2, title = "Price Range")
+```
+
+Shape descriptions:
+
+- Low: Roughly uniform or slightly right-skewed distribution centered at lower RAM values
+- Medium: More concentrated distribution in the mid-range RAM values
+- High: Distribution shifts toward higher RAM values
+- Very High: Distribution concentrated at the highest RAM values, left-skewed
+
+## i)
+```{r, problem_1i}
+# Create box plots for RAM by price range
+boxplot(ram ~ price_range, data = mobile_data,
+        col = 1:4,
+        xlab = "Price Range",
+        ylab = "RAM (MB)",
+        main = "Box Plots of RAM by Price Range")
+```
+
+Shape descriptions:
+
+- Low: Median around 1000-1500 MB, relatively symmetric with some outliers
+- Medium: Median around 1500-2000 MB, relatively symmetric
+- High: Median around 2500-3000 MB, relatively symmetric
+- Very High: Median around 3000-3500 MB, relatively symmetric
+- All price ranges show approximately symmetric distributions with increasing median RAM as price increases
+
+## j)
+```{r, problem_1j}
+# Create violin plots using base R vioplot package
+library(vioplot)
+vioplot(priceLow$ram, priceMedium$ram, priceHigh$ram, priceVeryhigh$ram,
+        names = levels(mobile_data$price_range),
+        col = 1:4,
+        xlab = "Price Range",
+        ylab = "RAM (MB)",
+        main = "Violin Plots of RAM by Price Range")
+```
+
+Shape descriptions:
+
+The violin plots confirm the findings from the density curves and box plots:
+
+- Low: Distribution is fairly uniform/flat across lower RAM values
+- Medium: More concentrated, roughly uniform distribution in mid-range
+- High: Similar uniform pattern but shifted to higher values
+- Very High: Concentrated at highest RAM values with more density at the upper end
+- Clear separation and upward shift in RAM distributions as price range increases
+```
+
+
+```r
+# Problem 2
+```{r, problem2}
+# Install and load the package
+# install.packages("ggplot2")
+library(ggplot2)
+
+# Load the mpg dataset
+data("mpg")
+```
+
+## a)
+```{r, problem_2a}
+# Turn cyl to an ordered factor variable
+mpg$cyl <- factor(mpg$cyl, levels = c("4", "5", "6", "8"), ordered = TRUE)
+```
+
+The variable cyl has been converted to an ordered factor with levels "4", "5", "6", and "8".
+
+## b)
+```{r, problem_2b}
+# Extract first 4 characters and convert trans to factor with "auto" and "manu"
+mpg$trans <- substr(mpg$trans, 1, 4)
+mpg$trans <- factor(mpg$trans, levels = c("auto", "manu"))
+```
+
+The variable trans has been converted to a factor variable with levels "auto" and "manu".
+
+## c)
+```{r, problem_2c}
+# Turn drv to an ordered factor variable
+mpg$drv <- factor(mpg$drv, levels = c("f", "r", "4"), ordered = TRUE)
+```
+
+The variable drv has been converted to an ordered factor with levels "f", "r", and "4".
+
+## d)
+```{r, problem_2d}
+# Turn fl to a factor variable with "gasoline", "diesel", and "other"
+mpg$fl <- ifelse(mpg$fl == "d", "diesel",
+                 ifelse(mpg$fl %in% c("p", "r"), "gasoline", "other"))
+mpg$fl <- factor(mpg$fl, levels = c("diesel", "gasoline", "other"))
+```
+
+The variable fl has been converted to a factor variable with levels "diesel", "gasoline", and "other".
+
+## e)
+```{r, problem_2e}
+# Turn class to an ordered factor variable
+mpg$class <- factor(mpg$class, 
+                    levels = c("2seater", "subcompact", "compact", "midsize", 
+                               "suv", "minivan", "pickup"), 
+                    ordered = TRUE)
+```
+
+The variable class has been converted to an ordered factor with the specified levels.
+
+## f)
+```{r, problem_2f}
+# Create country variable based on manufacturer
+mpg$country <- ifelse(mpg$manufacturer %in% c("chevrolet", "dodge", "ford", 
+                                               "jeep", "lincoln", "mercury", 
+                                               "pontiac"), "united states",
+                      ifelse(mpg$manufacturer %in% c("honda", "nissan", 
+                                                      "subaru", "toyota"), "japan",
+                             ifelse(mpg$manufacturer %in% c("audi", 
+                                                             "volkswagen"), "germany",
+                                    ifelse(mpg$manufacturer == "hyundai", "south korea",
+                                           ifelse(mpg$manufacturer == "land rover", 
+                                                  "great britain", NA)))))
+
+# Check the structure
+str(mpg)
+```
+
+The country variable has been created to indicate the manufacturer base location.
+
+## g)
+```{r, problem_2g}
+# Create a table of country frequencies
+country_counts <- sort(table(mpg$country), decreasing = TRUE)
+
+# Draw bar plot with countries in decreasing order
+barplot(country_counts,
+        main = "Number of Samples by Country",
+        xlab = "Country",
+        ylab = "Frequency",
+        col = "steelblue",
+        las = 2)
+```
+
+The country with the most samples is `r names(country_counts)[1]` with `r country_counts[1]` samples. The country with the least samples is `r names(country_counts)[length(country_counts)]` with `r country_counts[length(country_counts)]` sample(s).
+
+## h)
+```{r, problem_2h}
+# Subset data for U.S. cars
+us_cars <- subset(mpg, country == "united states")
+
+# Find mode for each variable using table()
+displ_mode <- as.numeric(names(sort(table(us_cars$displ), decreasing = TRUE)[1]))
+cyl_mode <- names(sort(table(us_cars$cyl), decreasing = TRUE)[1])
+trans_mode <- names(sort(table(us_cars$trans), decreasing = TRUE)[1])
+drv_mode <- names(sort(table(us_cars$drv), decreasing = TRUE)[1])
+fl_mode <- names(sort(table(us_cars$fl), decreasing = TRUE)[1])
+class_mode <- names(sort(table(us_cars$class), decreasing = TRUE)[1])
+```
+
+A typical U.S. car has the following characteristics:
+
+- Engine displacement: `r displ_mode` liters
+- Number of cylinders: `r cyl_mode`
+- Transmission type: `r trans_mode`
+- Drive type: `r drv_mode`
+- Fuel type: `r fl_mode`
+- Class: `r class_mode`
+
+## i)
+```{r, problem_2i}
+# Create combined mpg variable
+mpg$combined_mpg <- (mpg$cty + mpg$hwy) / 2
+
+# Subset U.S. and Japan cars
+us_cars <- subset(mpg, country == "united states")
+japan_cars <- subset(mpg, country == "japan")
+
+# Create boxplot
+boxplot(us_cars$combined_mpg, japan_cars$combined_mpg,
+        names = c("United States", "Japan"),
+        main = "Combined MPG: U.S. vs Japan Cars",
+        ylab = "Combined MPG",
+        col = c("lightblue", "lightgreen"))
+
+# Calculate statistics
+us_mean <- round(mean(us_cars$combined_mpg), 2)
+us_median <- round(median(us_cars$combined_mpg), 2)
+us_sd <- round(sd(us_cars$combined_mpg), 2)
+us_iqr <- round(IQR(us_cars$combined_mpg), 2)
+
+japan_mean <- round(mean(japan_cars$combined_mpg), 2)
+japan_median <- round(median(japan_cars$combined_mpg), 2)
+japan_sd <- round(sd(japan_cars$combined_mpg), 2)
+japan_iqr <- round(IQR(japan_cars$combined_mpg), 2)
+```
+
+Summary statistics for combined MPG:
+
+**United States:**
+- Mean: `r us_mean`
+- Median: `r us_median`
+- Standard Deviation: `r us_sd`
+- IQR: `r us_iqr`
+
+**Japan:**
+- Mean: `r japan_mean`
+- Median: `r japan_median`
+- Standard Deviation: `r japan_sd`
+- IQR: `r japan_iqr`
+
+Japanese cars have higher fuel efficiency on average compared to U.S. cars.
+
+## j)
+```{r, problem_2j}
+# Create histograms for engine displacement
+par(mfrow = c(1, 2))
+
+hist(us_cars$displ,
+     main = "Engine Displacement - U.S. Cars",
+     xlab = "Displacement (liters)",
+     col = "lightblue",
+     breaks = 10)
+
+hist(japan_cars$displ,
+     main = "Engine Displacement - Japan Cars",
+     xlab = "Displacement (liters)",
+     col = "lightgreen",
+     breaks = 10)
+
+par(mfrow = c(1, 1))
+```
+
+Shape descriptions:
+
+**U.S. Cars:** The distribution of engine displacement is roughly bimodal or multimodal, with peaks around 3.5-4.0 liters and another concentration around 5.0-6.0 liters. The distribution is somewhat right-skewed, showing that U.S. manufacturers tend to produce cars with larger engines.
+
+**Japan Cars:** The distribution of engine displacement is right-skewed with the majority of values concentrated in the 1.5-2.5 liter range. There is a long tail extending toward larger engine sizes, but most Japanese cars in this dataset have smaller, more fuel-efficient engines.
+```
