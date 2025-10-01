@@ -209,6 +209,7 @@ boxplot(ram ~ price_range, data = mobile_data,
 - IQR: ~3,300-3,900 MB.
 - A few outliers below 2,500 MB.
 - Very high-priced phones mostly have large RAM values, tightly concentrated at the top end, with only a few exceptions.
+
 ## j)
 ```{r, problem_1j}
 # Violin plots using base R vioplot package
@@ -239,7 +240,6 @@ mtext("Price Range", side = 2, line = 4.2)
 
 box()  # redraw box after custom axes
 
-
 ```
 
 The violin plots confirm the findings from the density curves and box plots:
@@ -261,14 +261,44 @@ The violin plots confirm the findings from the density curves and box plots:
 - Concentrated at the top end with a left tail, left-skewed.
 
 Clear separation and upward shift in RAM distributions as price range increases
-```
 
+## k)
+```{r, problem_1k}
+log2ram <- factor(round(log2(mobile_data$ram)))
+head(log2ram)
+```
+**Explain:**
+- RAM Sizes are powers of 2, so taking the log will make comparison simpler and easier to analyze.
+
+## l)
+```{r, problem_1l}
+tab <- table(mobile_data$price_range, log2ram)
+
+# colors for RAM types (one color per 2^k class)
+ram_cols <- rainbow(ncol(tab))
+
+# stacked barplot (counts)
+barplot(t(tab),
+        beside = FALSE,
+        col = ram_cols,
+        xlab = "Price Range",
+        ylab = "Count",
+        ylim = c(0, max(rowSums(tab) * 1.25)),
+        main = "Price Range vs log2(RAM)",
+        legend.text = colnames(tab),
+        args.legend = list(title = "log2(RAM)", 
+                           x = "top", 
+                           inset = -0.1, 
+                           bty = "n", horiz = TRUE))
+
+```
 
 
 # Problem 2
 ```{r, problem2}
 library(ggplot2)
 data("mpg")
+head(mpg)
 ```
 
 ## a)
@@ -277,34 +307,31 @@ data("mpg")
 mpg$cyl <- factor(mpg$cyl, levels = c("4", "5", "6", "8"), ordered = TRUE)
 ```
 
-The variable cyl has been converted to an ordered factor with levels "4", "5", "6", and "8".
-
 ## b)
 ```{r, problem_2b}
 # Extract first 4 characters and convert trans to factor with "auto" and "manu"
 mpg$trans <- substr(mpg$trans, 1, 4)
 mpg$trans <- factor(mpg$trans, levels = c("auto", "manu"))
+head(mpg$trans)
 ```
 
-The variable trans has been converted to a factor variable with levels "auto" and "manu".
 
 ## c)
 ```{r, problem_2c}
 # Turn drv to an ordered factor variable
 mpg$drv <- factor(mpg$drv, levels = c("f", "r", "4"), ordered = TRUE)
+head(mpg$drv)
 ```
-
-The variable drv has been converted to an ordered factor with levels "f", "r", and "4".
-
 ## d)
 ```{r, problem_2d}
 # Turn fl to a factor variable with "gasoline", "diesel", and "other"
 mpg$fl <- ifelse(mpg$fl == "d", "diesel",
                  ifelse(mpg$fl %in% c("p", "r"), "gasoline", "other"))
 mpg$fl <- factor(mpg$fl, levels = c("diesel", "gasoline", "other"))
-```
+head(mpg$fl)
+head(mpg)
 
-The variable fl has been converted to a factor variable with levels "diesel", "gasoline", and "other".
+```
 
 ## e)
 ```{r, problem_2e}
@@ -315,7 +342,6 @@ mpg$class <- factor(mpg$class,
                     ordered = TRUE)
 ```
 
-The variable class has been converted to an ordered factor with the specified levels.
 
 ## f)
 ```{r, problem_2f}
@@ -335,7 +361,6 @@ mpg$country <- ifelse(mpg$manufacturer %in% c("chevrolet", "dodge", "ford",
 str(mpg)
 ```
 
-The country variable has been created to indicate the manufacturer base location.
 
 ## g)
 ```{r, problem_2g}
@@ -345,13 +370,14 @@ country_counts <- sort(table(mpg$country), decreasing = TRUE)
 # Draw bar plot with countries in decreasing order
 barplot(country_counts,
         main = "Number of Samples by Country",
-        xlab = "Country",
-        ylab = "Frequency",
-        col = "steelblue",
-        las = 2)
+        ylab = "Number of Samples",
+        col = "cyan",
+        las = 2,
+        xlim = c(0, length(country_counts) + 1))
 ```
 
-The country with the most samples is `r names(country_counts)[1]` with `r country_counts[1]` samples. The country with the least samples is `r names(country_counts)[length(country_counts)]` with `r country_counts[length(country_counts)]` sample(s).
+The country with the most samples is `r tools::toTitleCase(names(country_counts)[1])` with `r country_counts[1]` samples. $\\$ 
+The country with the least samples is `r tools::toTitleCase(names(country_counts)[length(country_counts)])` with `r country_counts[length(country_counts)]` sample(s).
 
 ## h)
 ```{r, problem_2h}
@@ -367,13 +393,12 @@ fl_mode <- names(sort(table(us_cars$fl), decreasing = TRUE)[1])
 class_mode <- names(sort(table(us_cars$class), decreasing = TRUE)[1])
 ```
 
-A typical U.S. car has the following characteristics:
-
-- Engine displacement: `r displ_mode` liters
-- Number of cylinders: `r cyl_mode`
-- Transmission type: `r trans_mode`
-- Drive type: `r drv_mode`
-- Fuel type: `r fl_mode`
+**A typical U.S. car has:**$\\$
+- Engine displacement: `r displ_mode` liters$\\$
+- Number of cylinders: `r cyl_mode`$\\$
+- Transmission type: `r trans_mode`$\\$
+- Drive type: `r drv_mode`$\\$
+- Fuel type: `r fl_mode`$\\$
 - Class: `r class_mode`
 
 ## i)
@@ -390,7 +415,7 @@ boxplot(us_cars$combined_mpg, japan_cars$combined_mpg,
         names = c("United States", "Japan"),
         main = "Combined MPG: U.S. vs Japan Cars",
         ylab = "Combined MPG",
-        col = c("lightblue", "lightgreen"))
+        col = c("magenta", "yellow"))
 
 # Calculate statistics
 us_mean <- round(mean(us_cars$combined_mpg), 2)
@@ -406,19 +431,19 @@ japan_iqr <- round(IQR(japan_cars$combined_mpg), 2)
 
 Summary statistics for combined MPG:
 
-**United States:**
-- Mean: `r us_mean`
-- Median: `r us_median`
-- Standard Deviation: `r us_sd`
+**United States:** $\\$
+- Mean: `r us_mean`$\\$
+- Median: `r us_median`$\\$
+- Standard Deviation: `r us_sd`$\\$
 - IQR: `r us_iqr`
 
-**Japan:**
-- Mean: `r japan_mean`
-- Median: `r japan_median`
-- Standard Deviation: `r japan_sd`
+**Japan:** $\\$
+- Mean: `r japan_mean`$\\$
+- Median: `r japan_median`$\\$
+- Standard Deviation: `r japan_sd`$\\$
 - IQR: `r japan_iqr`
 
-Japanese cars have higher fuel efficiency on average compared to U.S. cars.
+Japanese cars have higher fuel efficiency on average compared to United States cars.
 
 ## j)
 ```{r, problem_2j}
@@ -428,13 +453,13 @@ par(mfrow = c(1, 2))
 hist(us_cars$displ,
      main = "Engine Displacement - U.S. Cars",
      xlab = "Displacement (liters)",
-     col = "lightblue",
+     col = "magenta",
      breaks = 10)
 
 hist(japan_cars$displ,
      main = "Engine Displacement - Japan Cars",
      xlab = "Displacement (liters)",
-     col = "lightgreen",
+     col = "yellow",
      breaks = 10)
 
 par(mfrow = c(1, 1))
@@ -442,7 +467,6 @@ par(mfrow = c(1, 1))
 
 Shape descriptions:
 
-**U.S. Cars:** The distribution of engine displacement is roughly bimodal or multimodal, with peaks around 3.5-4.0 liters and another concentration around 5.0-6.0 liters. The distribution is somewhat right-skewed, showing that U.S. manufacturers tend to produce cars with larger engines.
+**U.S. Cars:** The distribution of engine displacement is roughly bimodal or multimodal, with peaks and concentration around 5.0-6.0 liters and another high around 3.5-4.0 liters. The distribution shows that U.S. manufacturers tend to produce cars with mid and large engines.
 
-**Japan Cars:** The distribution of engine displacement is right-skewed with the majority of values concentrated in the 1.5-2.5 liter range. There is a long tail extending toward larger engine sizes, but most Japanese cars in this dataset have smaller, more fuel-efficient engines.
-```
+**Japan Cars:** The distribution of engine displacement is right-skewed with the majority of values concentrated in the 1.5-2.5 liter range. There is a long tail extending toward larger engine sizes, this shows Japanese manufacturers tend to produce cars with smaller engines.
