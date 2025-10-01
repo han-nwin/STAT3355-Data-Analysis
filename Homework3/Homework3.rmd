@@ -30,7 +30,6 @@ The variable price_range has been converted to a factor with levels: "low", "med
 
 ## b)
 ```{r, problem_1b}
-# Create scatter plot with colors based on price range
 plot(mobile_data$battery_power, mobile_data$ram,
      col = ifelse(mobile_data$price_range == "low", "darkgreen",
                   ifelse(mobile_data$price_range == "medium", "purple",
@@ -40,37 +39,41 @@ plot(mobile_data$battery_power, mobile_data$ram,
      ylab = "RAM (MB)",
      main = "Battery Power vs RAM by Price Range")
 
-legend("topright", legend = levels(mobile_data$price_range),
+# price_range legends
+legend("top", inset = c(0, -0.12),
+       legend = paste("price:", levels(mobile_data$price_range)),
        col = c("darkgreen", "purple", "red", "orange"),
-       pch = 19)
+       pch = 19,
+       horiz = TRUE,
+       bty = "n",
+       xpd = NA)
+
 ```
 
 ## c)
 ```{r, problem_1c}
-# Calculate Pearson correlation between ram and battery_power
 cor_overall <- cor(mobile_data$ram, mobile_data$battery_power)
 ```
 
-The Pearson correlation between RAM and battery power is r = `r round(cor_overall, 4)`.
+The Pearson correlation between RAM and battery power is r = `r cor_overall`.
 
 ## d)
 ```{r, problem_1d}
 # Create four separate datasets by price range
-priceLow <- subset(mobile_data, price_range == "low")
-priceMedium <- subset(mobile_data, price_range == "medium")
-priceHigh <- subset(mobile_data, price_range == "high")
-priceVeryhigh <- subset(mobile_data, price_range == "very high")
+low_set <- subset(mobile_data, price_range == "low")
+med_set <- subset(mobile_data, price_range == "medium")
+high_set <- subset(mobile_data, price_range == "high")
+very_high_set <- subset(mobile_data, price_range == "very high")
 ```
 
-Four separate datasets have been created: priceLow, priceMedium, priceHigh, and priceVeryhigh.
 
 ## e)
 ```{r, problem_1e}
-# Calculate correlations for each price range
-cor_low <- cor(priceLow$ram, priceLow$battery_power)
-cor_medium <- cor(priceMedium$ram, priceMedium$battery_power)
-cor_high <- cor(priceHigh$ram, priceHigh$battery_power)
-cor_veryhigh <- cor(priceVeryhigh$ram, priceVeryhigh$battery_power)
+# Correlations for each price range
+cor_low <- cor(low_set$ram, low_set$battery_power)
+cor_medium <- cor(med_set$ram, med_set$battery_power)
+cor_high <- cor(high_set$ram, high_set$battery_power)
+cor_very_high <- cor(very_high_set$ram, very_high_set$battery_power)
 ```
 
 Correlations by price range:
@@ -78,33 +81,41 @@ Correlations by price range:
 - Low: r = `r round(cor_low, 4)`
 - Medium: r = `r round(cor_medium, 4)`
 - High: r = `r round(cor_high, 4)`
-- Very High: r = `r round(cor_veryhigh, 4)`
+- Very High: r = `r round(cor_very_high, 4)`
 
-Explanation: The correlations within each price range are much weaker (near zero) compared to the overall correlation from part (c). This is an example of Simpson's Paradox. When we look at all data together, we see a positive correlation because higher-priced phones tend to have both more RAM and larger batteries. However, within each price category, there is little to no relationship between RAM and battery power, as manufacturers balance various features independently. The strong overall correlation was actually driven by the confounding variable (price range) rather than a true relationship between RAM and battery power.
+The correlations within each price range are negative and moderate in size, roughly between –0.6 and –0.2. By contrast, the overall correlation from part (c) is essentially zero (–0.00006). This means that when all phones are considered together, there is no clear linear relationship between RAM and battery power. However, within each price group there is a moderate negative correlation, indicating that phones with higher RAM often come with lower battery power, or vice versa. This shows the importance of looking at subgroups separately, since the overall result can hide meaningful patterns that appear within categories.
 
 ## f)
 ```{r, problem_1f}
 # Recreate scatter plot with trend lines for each price range
 plot(mobile_data$battery_power, mobile_data$ram,
-     col = as.numeric(mobile_data$price_range),
+     col = ifelse(mobile_data$price_range == "low", "darkgreen",
+                  ifelse(mobile_data$price_range == "medium", "purple",
+                         ifelse(mobile_data$price_range == "high", "red", "orange"))),
      pch = 19,
      xlab = "Battery Power",
      ylab = "RAM (MB)",
-     main = "Battery Power vs RAM by Price Range with Trend Lines")
+     main = "Battery Power vs RAM by Price Range")
 
-# Add trend lines for each price range
-abline(lm(ram ~ battery_power, data = priceLow), col = 1, lwd = 2)
-abline(lm(ram ~ battery_power, data = priceMedium), col = 2, lwd = 2)
-abline(lm(ram ~ battery_power, data = priceHigh), col = 3, lwd = 2)
-abline(lm(ram ~ battery_power, data = priceVeryhigh), col = 4, lwd = 2)
+# price_range legends
+legend("top", inset = c(0, -0.12),
+       legend = paste("price:", levels(mobile_data$price_range)),
+       col = c("darkgreen", "purple", "red", "orange"),
+       pch = 19,
+       horiz = TRUE,
+       bty = "n",
+       xpd = NA)
 
-legend("topleft", legend = levels(mobile_data$price_range),
-       col = 1:4, pch = 19, lwd = 2, title = "Price Range")
+# Trend lines for each price range
+abline(lm(ram ~ battery_power, data = low_set), col = "black", lwd = 2)
+abline(lm(ram ~ battery_power, data = med_set), col = "black", lwd = 2)
+abline(lm(ram ~ battery_power, data = high_set), col = "black", lwd = 2)
+abline(lm(ram ~ battery_power, data = very_high_set), col = "black", lwd = 2)
 ```
 
 ## g)
 ```{r, problem_1g}
-# Calculate average and median clock speed for phones with 4, 6, and 8 cores
+# average and median clock speed for phones with 4, 6, and 8 cores
 cores_4 <- subset(mobile_data, n_cores == 4)
 cores_6 <- subset(mobile_data, n_cores == 6)
 cores_8 <- subset(mobile_data, n_cores == 8)
@@ -125,78 +136,138 @@ Clock Speed Statistics:
 - 6 cores: Average = `r avg_6`, Median = `r med_6`
 - 8 cores: Average = `r avg_8`, Median = `r med_8`
 
-Explanation: The average and median clock speeds remain essentially the same across different core counts because clock speed and number of cores appear to be independent features in this dataset. This suggests that the data was likely generated with these variables distributed independently, or that manufacturers don't systematically pair higher core counts with different clock speeds in this sample.
+The average and median clock speeds don't change across different CPU cores because clock speed and number of cores appear to be independent features in this dataset. This shows that in this dataset, clock speed and number of cores were treated as independent features, rather than being linked, or that manufacturers don't pair higher core counts with different clock speeds in this sample. In other words, having more cores does not imply higher or lower clock speeds here.
 
 ## h)
 ```{r, problem_1h}
-# Create density curves for RAM by price range
-plot(density(priceLow$ram), col = 1, lwd = 2,
+# Density curves for RAM by price range
+plot(density(low_set$ram), col = "darkgreen", lwd = 2,
      main = "Density Curves of RAM by Price Range",
-     xlab = "RAM (MB)", ylim = c(0, 0.0015))
-lines(density(priceMedium$ram), col = 2, lwd = 2)
-lines(density(priceHigh$ram), col = 3, lwd = 2)
-lines(density(priceVeryhigh$ram), col = 4, lwd = 2)
-legend("topright", legend = levels(mobile_data$price_range),
-       col = 1:4, lwd = 2, title = "Price Range")
+     xlab = "RAM (MB)", 
+     ylim = c(0, 0.0015), 
+     xlim = c(min(mobile_data$ram), max(mobile_data$ram)))
+lines(density(med_set$ram), col = "purple", lwd = 2)
+lines(density(high_set$ram), col = "red", lwd = 2)
+lines(density(very_high_set$ram), col = "orange", lwd = 2)
+legend("top", legend = levels(mobile_data$price_range),
+       col = c("darkgreen", "purple", "red", "orange"),
+       lwd = 2, 
+       title = "Price Range")
 ```
 
-Shape descriptions:
+**Low (green curve):**  
+The distribution is unimodal with a strong peak around 500 MB of RAM, then it gradually declines as RAM increases. This suggests that low-priced phones are concentrated around smaller RAM sizes, with very few exceeding ~1500 MB.
 
-- Low: Roughly uniform or slightly right-skewed distribution centered at lower RAM values
-- Medium: More concentrated distribution in the mid-range RAM values
-- High: Distribution shifts toward higher RAM values
-- Very High: Distribution concentrated at the highest RAM values, left-skewed
+**Medium (purple curve):**  
+This curve rises more gradually and has two small bumps (a bimodal shape) around 1200 MB and 1500 MB. It shows that medium-priced phones are spread across a wider range of RAM, but cluster around mid-range values.
+
+**High (red curve):**  
+The density starts later (very few below ~1200 MB) and increases steadily, peaking near 2500 MB. This indicates that high-priced phones mostly occupy the upper RAM values, pretty symmetric shape.
+
+**Very High (orange curve):**  
+The distribution is flat near zero until about 2000 MB, then rises sharply with a narrow concentration at the very high end. This suggests that very high-priced phones almost exclusively have very large RAM values (close to or above 2000 MB).
 
 ## i)
 ```{r, problem_1i}
-# Create box plots for RAM by price range
+# Box plots for RAM by price range
+cols <- c("low" = "darkgreen", 
+          "medium" = "purple", 
+          "high" = "red", 
+          "very high" = "orange")
+
 boxplot(ram ~ price_range, data = mobile_data,
-        col = 1:4,
+        col = cols[levels(mobile_data$price_range)],
         xlab = "Price Range",
         ylab = "RAM (MB)",
         main = "Box Plots of RAM by Price Range")
 ```
 
-Shape descriptions:
+**Low (green box)**
 
-- Low: Median around 1000-1500 MB, relatively symmetric with some outliers
-- Medium: Median around 1500-2000 MB, relatively symmetric
-- High: Median around 2500-3000 MB, relatively symmetric
-- Very High: Median around 3000-3500 MB, relatively symmetric
-- All price ranges show approximately symmetric distributions with increasing median RAM as price increases
+- Median: around 500-600 MB.
+- IQR (middle 50%): mostly below 1,000 MB.
+- Several outliers above 1,500 MB.
+- Indicates that most low-priced phones have relatively small RAM, with a few exceptions that have much larger RAM.
 
+**Medium (purple box)**
+
+- Median: about 1,600 MB.
+- IQR: roughly 1,300-2,000 MB.
+- A few outliers below 1,000 MB and above 2,500 MB.
+- Suggests medium-priced phones typically sit in the mid-range RAM values, with a moderate spread.
+
+**High (red box)**
+
+- Median: around 2,500 MB.
+- IQR: approximately 2,200-2,900 MB.
+- Outliers appear below 1,500 MB and above 3,500 MB.
+- High-priced phones generally cluster around higher RAM values, with some unusual low- or very high-RAM devices.
+
+**Very High (orange box)**
+
+- Median: around 3,600 MB.
+- IQR: ~3,300-3,900 MB.
+- A few outliers below 2,500 MB.
+- Very high-priced phones mostly have large RAM values, tightly concentrated at the top end, with only a few exceptions.
 ## j)
 ```{r, problem_1j}
-# Create violin plots using base R vioplot package
+# Violin plots using base R vioplot package
 library(vioplot)
-vioplot(priceLow$ram, priceMedium$ram, priceHigh$ram, priceVeryhigh$ram,
-        names = levels(mobile_data$price_range),
-        col = 1:4,
-        xlab = "Price Range",
-        ylab = "RAM (MB)",
-        main = "Violin Plots of RAM by Price Range")
-```
 
-Shape descriptions:
+# widen left margin; tweak label/tick spacing
+op <- par(mar = c(4.5, 6.5, 4, 2) + 0.1, mgp = c(2.2, 0.6, 0))
+on.exit(par(op), add = TRUE)
+
+ram_all <- c(low_set$ram, med_set$ram, high_set$ram, very_high_set$ram)
+ticks   <- pretty(range(ram_all, na.rm = TRUE))
+
+vioplot(low_set$ram, med_set$ram, high_set$ram, very_high_set$ram,
+        names = NULL,                 # no default labels
+        horizontal = TRUE,
+        col = c("darkgreen", "purple", "red", "orange"),
+        xaxt = "n", yaxt = "n",       # we'll draw axes ourselves
+        xlab = "",                    # avoid overlapping default xlab
+        main = "Violin Plots of RAM by Price Range")
+
+# X axis (RAM) numbers + label
+axis(1, at = ticks, labels = ticks)
+mtext("RAM (MB)", side = 1, line = 2.2)
+
+# Y axis (price ranges) + label
+axis(2, at = 1:4, labels = levels(mobile_data$price_range), las = 1)
+mtext("Price Range", side = 2, line = 4.2)
+
+box()  # redraw box after custom axes
+
+
+```
 
 The violin plots confirm the findings from the density curves and box plots:
 
-- Low: Distribution is fairly uniform/flat across lower RAM values
-- Medium: More concentrated, roughly uniform distribution in mid-range
-- High: Similar uniform pattern but shifted to higher values
-- Very High: Concentrated at highest RAM values with more density at the upper end
-- Clear separation and upward shift in RAM distributions as price range increases
+**Low (green)**
+
+- Low RAM values dominate; thin right tail, right-skewed.
+
+**Medium (purple)**
+
+- Centered in the mid-range with moderate spread.
+
+**High (red box)**
+
+- Uniform pattern with mild tapering at the edges; not skewed.
+
+**Very High (orange box)**
+
+- Concentrated at the top end with a left tail, left-skewed.
+
+Clear separation and upward shift in RAM distributions as price range increases
 ```
 
 
 
 # Problem 2
 ```{r, problem2}
-# Install and load the package
-# install.packages("ggplot2")
 library(ggplot2)
-
-# Load the mpg dataset
 data("mpg")
 ```
 
