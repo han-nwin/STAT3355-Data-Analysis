@@ -1,0 +1,304 @@
+---
+title: "Homework 4"
+author: "Han Nguyen - TXN200004"
+date: "10/07/2025"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Problem 1
+
+```{r, problem1}
+# Load ggplot2
+library(ggplot2)
+
+# Read the data
+mobile_data <- read.csv("train.csv")
+
+# Convert price_range to factor with labels
+mobile_data$price_range <- factor(mobile_data$price_range,
+                                   levels = c(0, 1, 2, 3),
+                                   labels = c("Low", "Medium", "High", "Very High"))
+```
+
+## (a) Scatter plot: Battery Power vs RAM with colors by Price Range
+
+```{r, problem_1a}
+ggplot(mobile_data, aes(x = battery_power, y = ram, color = price_range)) +
+  geom_point(alpha = 0.6) +
+  labs(title = "Battery Power vs RAM by Price Range",
+       x = "Battery Power",
+       y = "RAM (MB)",
+       color = "Price Range") +
+  theme_bw() +
+  scale_color_brewer(palette = "Dark2")
+```
+
+## (b) Scatter plot with trend lines for each price range
+
+```{r, problem_1b}
+ggplot(mobile_data, aes(x = battery_power, y = ram, color = price_range)) +
+  geom_point(alpha = 0.6) +
+  geom_smooth(method = "lm", se = FALSE) +
+  labs(title = "Battery Power vs RAM by Price Range with Trend Lines",
+       x = "Battery Power",
+       y = "RAM (MB)",
+       color = "Price Range") +
+  theme_bw() +
+  scale_color_brewer(palette = "Dark2")
+```
+
+## (c) Density curves of RAM for 4 price ranges
+
+```{r, problem_1c}
+ggplot(mobile_data, aes(x = ram, fill = price_range, color = price_range)) +
+  geom_density(alpha = 0.3) +
+  labs(title = "Density Curves of RAM by Price Range",
+       x = "RAM (MB)",
+       y = "Density",
+       fill = "Price Range",
+       color = "Price Range") +
+  theme_bw() +
+  ylim(0, 0.0015) +
+  scale_color_brewer(palette = "Dark2")
+```
+
+## (d) Box plots of RAM for 4 price ranges
+
+```{r, problem_1d}
+ggplot(mobile_data, aes(x = price_range, y = ram, fill = price_range)) +
+  geom_boxplot() +
+  labs(title = "Box Plots of RAM by Price Range",
+       x = "Price Range",
+       y = "RAM (MB)") +
+  theme_bw() +
+  theme(legend.position = "none") +
+  ylim(0, 5000) +
+  scale_color_brewer(palette = "Dark2")
+```
+
+## (e) Violin plot of RAM for 4 price ranges
+
+```{r, problem_1e}
+ggplot(mobile_data, aes(x = price_range, y = ram, fill = price_range)) +
+  geom_violin() +
+  labs(title = "Violin Plots of RAM by Price Range",
+       x = "Price Range",
+       y = "RAM (MB)") +
+  theme_bw() +
+  theme(legend.position = "none") +
+  scale_color_brewer(palette = "Dark2")
+```
+
+## (f) Stacked bar plot: Price Range vs log2(RAM)
+
+```{r, problem_1f}
+# Create log2(ram) variable
+mobile_data$log2_ram <- factor(round(log2(mobile_data$ram)))
+
+ggplot(mobile_data, aes(x = price_range, fill = log2_ram)) +
+  geom_bar(position = "stack") +
+  labs(title = "Stacked Bar Plot: Price Range vs log2(RAM)",
+       x = "Price Range",
+       y = "Number of mobile phones",
+       fill = "log2(RAM)") +
+  theme_bw()
+```
+
+\newpage
+
+# Problem 2
+
+```{r, problem2}
+# Load necessary packages
+library(ggplot2)
+library(UsingR)
+
+# Load the UScereal dataset
+data("UScereal")
+```
+
+## (a) Replace manufacturer abbreviations with full names
+
+```{r, problem_2a}
+levels(UScereal$mfr) <- c("General Mills", "Kelloggs", "Nabisco", 
+                           "Post", "Quaker Oats", "Ralston Purina")
+```
+
+## (b) Convert shelf to factor with proper labels
+
+```{r, problem_2b}
+UScereal$shelf <- factor(UScereal$shelf,
+                         levels = c(1, 2, 3),
+                         labels = c("Lower", "Middle", "Upper"))
+```
+
+## (c) Create Product variable from row names
+
+```{r, problem_2c}
+UScereal$product <- rownames(UScereal)
+```
+
+Check the structure:
+
+```{r}
+str(UScereal)
+```
+
+## (d) Pearson correlation between calories and nutrition facts
+
+```{r, problem_2d}
+# Calculate correlations
+nutrition_vars <- c("protein", "fat", "sodium", "fibre", "carbo", 
+                    "sugars", "potassium")
+correlations <- sapply(nutrition_vars, function(var) {
+  cor(UScereal$calories, UScereal[[var]])
+})
+
+# Display correlations
+print(round(correlations, 4))
+```
+
+## (e) Bar plot of correlations in decreasing order
+
+```{r, problem_2e}
+# Create data frame for plotting
+cor_df <- data.frame(
+  nutrition = names(correlations),
+  correlation = correlations
+)
+cor_df <- cor_df[order(-cor_df$correlation), ]
+cor_df$nutrition <- factor(cor_df$nutrition, levels = cor_df$nutrition)
+
+ggplot(cor_df, aes(x = nutrition, y = correlation)) +
+  geom_bar(stat = "identity", fill = "steelblue") +
+  labs(title = "Correlation between Calories and Nutrition Facts",
+       x = "Nutrition Fact",
+       y = "Pearson Correlation Coefficient") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+The nutrition fact with the highest correlation to calories is **`r cor_df$nutrition[1]`** with a correlation of `r round(cor_df$correlation[1], 4)`.
+
+## (f) Scatter plot with trend line for highest correlation
+
+```{r, problem_2f}
+# Find the nutrition fact with highest correlation
+highest_cor_var <- names(which.max(correlations))
+
+ggplot(UScereal, aes_string(x = highest_cor_var, y = "calories")) +
+  geom_point(color = "steelblue", alpha = 0.6) +
+  geom_smooth(method = "lm", se = TRUE, color = "red") +
+  labs(title = paste("Calories vs", tools::toTitleCase(highest_cor_var)),
+       x = tools::toTitleCase(highest_cor_var),
+       y = "Calories") +
+  theme_minimal()
+
+# Get the linear model for interpretation
+lm_model <- lm(calories ~ fat, data = UScereal)
+intercept <- round(coef(lm_model)[1], 2)
+slope <- round(coef(lm_model)[2], 2)
+```
+
+**Interpretation:**
+
+- **Intercept** (`r intercept`): When fat content is 0 grams, the predicted calorie content is approximately `r intercept` calories.
+- **Slope** (`r slope`): For each additional gram of fat, the calorie content increases by approximately `r slope` calories on average. This makes sense because fat contains about 9 calories per gram.
+
+## (g) Density curves comparing General Mills and Kelloggs
+
+```{r, problem_2g}
+# Subset data for General Mills and Kelloggs
+gm_kelloggs <- subset(UScereal, mfr %in% c("General Mills", "Kelloggs"))
+
+ggplot(gm_kelloggs, aes(x = calories, fill = mfr, color = mfr)) +
+  geom_density(alpha = 0.4) +
+  labs(title = "Density Curves of Calories: General Mills vs Kelloggs",
+       x = "Calories",
+       y = "Density",
+       fill = "Manufacturer",
+       color = "Manufacturer") +
+  theme_minimal()
+```
+
+**Shape descriptions:**
+
+- **General Mills:** The distribution is roughly unimodal with a peak around 110-120 calories. It shows a slight right skew with some cereals extending toward higher calorie values.
+- **Kelloggs:** The distribution is also unimodal but appears more spread out with a peak around 100-110 calories. It has a flatter shape compared to General Mills, indicating more variability in calorie content.
+
+## (h) Box plot comparing calories between manufacturers
+
+```{r, problem_2h}
+ggplot(gm_kelloggs, aes(x = mfr, y = calories, fill = mfr)) +
+  geom_boxplot() +
+  labs(title = "Calories Comparison: General Mills vs Kelloggs",
+       x = "Manufacturer",
+       y = "Calories") +
+  theme_minimal() +
+  theme(legend.position = "none")
+```
+
+The box plots show that General Mills and Kelloggs have similar median calorie values (around 110 calories). However, General Mills has a slightly more compact distribution with fewer outliers, while Kelloggs shows more variability. The overlap in the interquartile ranges suggests that calories are not significantly different between these two manufacturers.
+
+## (i) Side-by-side box plots for seven nutrition facts
+
+```{r, problem_2i, fig.height=10, fig.width=8}
+# Reshape data manually without reshape2
+nutrition_long <- data.frame(
+  mfr = rep(UScereal$mfr, times = length(nutrition_vars)),
+  Nutrition = rep(nutrition_vars, each = nrow(UScereal)),
+  Value = c(UScereal$protein, UScereal$fat, UScereal$sodium, 
+            UScereal$fibre, UScereal$carbo, UScereal$sugars, 
+            UScereal$potassium)
+)
+
+ggplot(nutrition_long, aes(x = mfr, y = Value, fill = mfr)) +
+  geom_boxplot() +
+  facet_wrap(~ Nutrition, scales = "free_y", ncol = 2) +
+  labs(title = "Nutrition Facts Comparison Across Manufacturers",
+       x = "Manufacturer",
+       y = "Value") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),
+        legend.position = "none")
+```
+
+**Discussion:**
+
+Based on the box plots, **Nabisco** and **Quaker Oats** appear to aim for healthier diets. They show:
+
+- Higher fiber content (important for digestive health)
+- Lower sodium levels (better for heart health)
+- Moderate protein levels
+- Lower sugar content compared to some other manufacturers
+
+Kelloggs and Post tend to have higher sugar content, while Ralston Purina shows more variability across different nutrition metrics.
+
+## (j) Stacked bar plot: Manufacturer vs Shelf placement
+
+```{r, problem_2j}
+# Create stacked bar plot with custom colors inspired by brand logos
+# General Mills (blue), Kelloggs (red), Nabisco (blue/yellow), 
+# Post (yellow), Quaker Oats (blue/red), Ralston Purina (red/blue)
+brand_colors <- c("General Mills" = "#0066CC",
+                  "Kelloggs" = "#E31837",
+                  "Nabisco" = "#FFD700",
+                  "Post" = "#FDB913",
+                  "Quaker Oats" = "#00539B",
+                  "Ralston Purina" = "#DC143C")
+
+ggplot(UScereal, aes(x = shelf, fill = mfr)) +
+  geom_bar(position = "stack") +
+  scale_fill_manual(values = brand_colors) +
+  labs(title = "Stacked Bar Plot: Manufacturer vs Shelf Placement",
+       x = "Shelf Placement",
+       y = "Count",
+       fill = "Manufacturer") +
+  theme_minimal()
+```
+
+The stacked bar plot shows the relationship between manufacturers and shelf placement. The middle shelf has the most products, followed by upper and lower shelves. General Mills and Kelloggs, being the dominant manufacturers, have products across all shelf levels, with strong presence on the middle and upper shelves where products are most visible to shoppers.
