@@ -6,7 +6,7 @@ data("mpg")
 F_tab <- table(mpg$drv,  mpg$class)
 barplot(F_tab, col = c("red","green", "blue"),
          ylab = "Frequency", las = 1, 
-        ylm = c(0, 100),
+        ylim = c(0, 100),
         legend.text = c ("4-wheel", 
                          "Front-wheel",
                          "Rear-wheel"),
