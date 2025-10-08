@@ -178,7 +178,7 @@ ggplot(cor_df, aes(x = nutrition, y = correlation)) +
   labs(title = "Correlation between Calories and Nutrition Facts",
        x = "Nutrition Fact",
        y = "Pearson Correlation Coefficient") +
-  theme_minimal() +
+  theme_bw() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
 
@@ -190,13 +190,13 @@ The nutrition fact with the highest correlation to calories is **`r cor_df$nutri
 # Find the nutrition fact with highest correlation
 highest_cor_var <- names(which.max(correlations))
 
-ggplot(UScereal, aes_string(x = highest_cor_var, y = "calories")) +
+ggplot(UScereal, aes(.data[[highest_cor_var]], calories)) +
   geom_point(color = "steelblue", alpha = 0.6) +
   geom_smooth(method = "lm", se = TRUE, color = "red") +
   labs(title = paste("Calories vs", tools::toTitleCase(highest_cor_var)),
        x = tools::toTitleCase(highest_cor_var),
        y = "Calories") +
-  theme_minimal()
+  theme_bw()
 
 # Get the linear model for interpretation
 lm_model <- lm(calories ~ fat, data = UScereal)
@@ -206,8 +206,9 @@ slope <- round(coef(lm_model)[2], 2)
 
 **Interpretation:**
 
-- **Intercept** (`r intercept`): When fat content is 0 grams, the predicted calorie content is approximately `r intercept` calories.
-- **Slope** (`r slope`): For each additional gram of fat, the calorie content increases by approximately `r slope` calories on average. This makes sense because fat contains about 9 calories per gram.
+- **Intercept** (`r intercept`): When `r highest_cor_var` content is 0 grams, the predicted calorie content is approximately `r intercept` calories.
+- **Slope** (`r slope`): For each additional gram of `r highest_cor_var`, the calorie content increases by approximately `r slope` calories on average.
+
 
 ## (g) Density curves comparing General Mills and Kelloggs
 
@@ -222,13 +223,13 @@ ggplot(gm_kelloggs, aes(x = calories, fill = mfr, color = mfr)) +
        y = "Density",
        fill = "Manufacturer",
        color = "Manufacturer") +
-  theme_minimal()
+  theme_bw()
 ```
 
 **Shape descriptions:**
 
-- **General Mills:** The distribution is roughly unimodal with a peak around 110-120 calories. It shows a slight right skew with some cereals extending toward higher calorie values.
-- **Kelloggs:** The distribution is also unimodal but appears more spread out with a peak around 100-110 calories. It has a flatter shape compared to General Mills, indicating more variability in calorie content.
+- **General Mills:** The distribution appears bimodal with two distinct peaks - one around 100-110 calories and another around 140-150 calories. This suggests General Mills produces two distinct groups of cereals with different calorie contents.
+- **Kelloggs:** The distribution is also bimodal or multimodal with peak at around 100-110 calories and another high around 180-200 calories. It shows a wider spread and more variability across the calorie range compared to General Mills, with products ranging from low to high calorie content.
 
 ## (h) Box plot comparing calories between manufacturers
 
@@ -238,11 +239,11 @@ ggplot(gm_kelloggs, aes(x = mfr, y = calories, fill = mfr)) +
   labs(title = "Calories Comparison: General Mills vs Kelloggs",
        x = "Manufacturer",
        y = "Calories") +
-  theme_minimal() +
+  theme_bw() +
   theme(legend.position = "none")
 ```
 
-The box plots show that General Mills and Kelloggs have similar median calorie values (around 110 calories). However, General Mills has a slightly more compact distribution with fewer outliers, while Kelloggs shows more variability. The overlap in the interquartile ranges suggests that calories are not significantly different between these two manufacturers.
+The box plots show that Kelloggs has a higher median calorie value (around 145-150 calories) compared to General Mills (around 135-140 calories). Kelloggs also shows greater variability with a wider interquartile range and a longer upper whisker extending to around 235 calories, plus one high outlier above 250 calories. General Mills has a more compact distribution with outliers around 220 and 260 calories. While there is some overlap in the interquartile ranges, Kelloggs cereals tend to have higher calorie content on average compared to General Mills.
 
 ## (i) Side-by-side box plots for seven nutrition facts
 
@@ -262,34 +263,46 @@ ggplot(nutrition_long, aes(x = mfr, y = Value, fill = mfr)) +
   labs(title = "Nutrition Facts Comparison Across Manufacturers",
        x = "Manufacturer",
        y = "Value") +
-  theme_minimal() +
+  theme_bw() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1),
         legend.position = "none")
 ```
 
-**Discussion:**
+**Discussion:**$\\$
 
-Based on the box plots, **Nabisco** and **Quaker Oats** appear to aim for healthier diets. They show:
+**Quaker Oats** appears to aim for the healthiest diet overall. Their cereals show:
+- **High fiber content**: Significantly higher median fiber (~3-4g) compared to most other manufacturers $\\$
+- **Low sodium**: Among the lowest sodium levels across all manufacturers $\\$
+- **Moderate to low sugars**: Lower sugar content compared to General Mills and Kelloggs $\\$
+- **Moderate fat**: Relatively low fat content $\\$
+- **Good potassium**: Decent potassium levels $\\$
 
-- Higher fiber content (important for digestive health)
-- Lower sodium levels (better for heart health)
-- Moderate protein levels
-- Lower sugar content compared to some other manufacturers
+**Nabisco** also stands out as health-focused: $\\$
+- **Highest fiber**: The highest median and range of fiber content (~7-18g), far exceeding other brands $\\$
+- **Very low sodium**: Extremely low sodium levels (close to 0-200mg) $\\$
+- **Low to zero sugars**: Very low sugar content $\\$
+- **Low fat**: Among the lowest fat content $\\$
 
-Kelloggs and Post tend to have higher sugar content, while Ralston Purina shows more variability across different nutrition metrics.
+**In contrast:**
+
+- **General Mills and Kelloggs** tend to have higher sugar content (10-15g median) and moderate to high sodium levels, making them less health-oriented 
+- **Post** shows high sodium levels and moderate sugars, suggesting less focus on health 
+- **Ralston Purina** has very low sugar (the lowest among all brands) but also very low fiber and moderate sodium
+
+**Conclusion:** **Nabisco** and **Quaker Oats** are the manufacturers that most clearly aim for healthier diets, with Nabisco leading in fiber content and Quaker Oats providing a good balance of high fiber, low sodium, and moderate sugar levels.
 
 ## (j) Stacked bar plot: Manufacturer vs Shelf placement
 
 ```{r, problem_2j}
 # Create stacked bar plot with custom colors inspired by brand logos
-# General Mills (blue), Kelloggs (red), Nabisco (blue/yellow), 
-# Post (yellow), Quaker Oats (blue/red), Ralston Purina (red/blue)
-brand_colors <- c("General Mills" = "#0066CC",
-                  "Kelloggs" = "#E31837",
-                  "Nabisco" = "#FFD700",
-                  "Post" = "#FDB913",
-                  "Quaker Oats" = "#00539B",
-                  "Ralston Purina" = "#DC143C")
+brand_colors <- c(
+  "General Mills"  = "#0072B2",
+  "Kelloggs"       = "#E41E26",
+  "Nabisco"        = "#009E73",
+  "Post"           = "#E69F00",
+  "Quaker Oats"    = "#CC79A7",
+  "Ralston Purina" = "#000000"
+)
 
 ggplot(UScereal, aes(x = shelf, fill = mfr)) +
   geom_bar(position = "stack") +
@@ -298,7 +311,5 @@ ggplot(UScereal, aes(x = shelf, fill = mfr)) +
        x = "Shelf Placement",
        y = "Count",
        fill = "Manufacturer") +
-  theme_minimal()
+  theme_bw()
 ```
-
-The stacked bar plot shows the relationship between manufacturers and shelf placement. The middle shelf has the most products, followed by upper and lower shelves. General Mills and Kelloggs, being the dominant manufacturers, have products across all shelf levels, with strong presence on the middle and upper shelves where products are most visible to shoppers.
