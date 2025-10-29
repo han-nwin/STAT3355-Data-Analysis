@@ -1,0 +1,487 @@
+---
+title: "Data Cleaning Report"
+subtitle: "Olympics Gymnastics Home Advantage Analysis - Team 5"
+author: "Han Nguyen, Matthew Bazzell, Carlos Flores"
+date: "November 4, 2025"
+output:
+  pdf_document:
+    toc: false
+    number_sections: false
+---
+
+```{r setup, include=FALSE}
+# Set chunk options - hide code, show only output
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE, fig.width = 7, fig.height = 4)
+
+# Set working directory to project root
+knitr::opts_knit$set(root.dir = "/home/han/Github/STAT3355-Data-Analysis/Team-Project")
+
+# Load required libraries
+library(knitr)
+library(ggplot2)
+```
+
+\newpage
+
+# Variable 1: Country Name Standardization and Size Categorization
+
+## 1. Before Cleaning
+
+### Problem Description
+
+Our analysis requires merging data from five different sources: athlete records, Olympic host information, country sizes, GDP data, and population demographics. Each dataset uses different naming conventions for countries, making it impossible to merge them accurately.
+
+**Key Issues Identified:**
+
+1. **Inconsistent country names across datasets**: The same country appears with different names (e.g., "United States" vs "United States of America" vs "USA")
+2. **No standardized identifier**: Without a common key, we cannot merge datasets
+3. **Missing size categories**: For Question 3 of our research (analyzing whether country size affects home advantage), we need categorical size groupings
+4. **Special cases**: Historical country changes (USSR → Russia) and co-hosting situations (1956 Olympics)
+
+### Raw Data Sample
+
+Below is a sample of the raw `country_sizes.csv` dataset showing country names without standardization:
+
+```{r before-country-sizes}
+# Load raw country sizes data
+country_sizes_raw <- read.csv("raw_data/country_sizes.csv", stringsAsFactors = FALSE)
+
+# Show sample - inconsistent names, no NOC codes
+sample_raw <- country_sizes_raw[1:15, c("Rank", "Country", "Total_Area_km2", "Land_Area_km2")]
+
+kable(sample_raw,
+      caption = "Raw Country Sizes Data (Before Cleaning)",
+      col.names = c("Rank", "Country Name", "Total Area (km²)", "Land Area (km²)"),
+      format.args = list(big.mark = ","))
+```
+
+### Problems Illustrated
+
+```{r before-issues}
+# Show country name variations across datasets
+athletes_raw <- read.csv("raw_data/Athletes_summer_games.csv", stringsAsFactors = FALSE)
+hosts_raw <- read.csv("raw_data/olympic_hosts.csv", stringsAsFactors = FALSE)
+
+# Get unique country names for a few key countries
+usa_names <- data.frame(
+  Dataset = c("Athletes", "Hosts", "Country Sizes"),
+  Country_Name = c(
+    unique(athletes_raw$Team[athletes_raw$NOC == "USA"])[1],
+    unique(hosts_raw$Country[grepl("United States", hosts_raw$Country)])[1],
+    "United States"
+  ),
+  stringsAsFactors = FALSE
+)
+
+kable(usa_names,
+      caption = "Example: United States appears with different names",
+      col.names = c("Dataset", "Country Name Used"))
+```
+
+**Summary of Issues:**
+
+- **5 datasets** with inconsistent country naming
+- **No common identifier** for merging
+- **No size categories** for analysis (only raw area values)
+- Approximately **230+ countries** need standardization
+
+
+## 2. Cleaning Process
+
+### What We Cleaned
+
+We performed three main cleaning operations:
+
+1. **Created NOC (National Olympic Committee) codes mapping**
+   - NOC codes are standardized 3-letter identifiers used by the International Olympic Committee
+   - Examples: USA (United States), CHN (China), GBR (Great Britain), FRA (France)
+   - Mapped all country name variations to their official NOC codes
+
+2. **Standardized country names** across all datasets
+   - Athletes data already had NOC codes → used as reference
+   - Manually mapped host countries, GDP countries, population countries
+   - Handled special cases (USSR → RUS, co-hosts like 1956 Australia/Sweden)
+
+3. **Created size categories** for analysis
+   - **Small**: < 500,000 km²
+   - **Medium**: 500,000 - 5,000,000 km²
+   - **Large**: > 5,000,000 km²
+
+### Why We Cleaned It
+
+**Research Necessity:**
+- **Question 3** asks: "Do smaller countries experience larger home advantage than larger nations?"
+- Need to merge country sizes with athlete performance data
+- Without NOC codes, merging is impossible
+
+**Data Integration:**
+- Must combine 5 datasets with different country name formats
+- NOC codes provide the universal key for merging
+- Size categories enable categorical statistical analysis
+
+### Expected Outcome
+
+After cleaning, we expect:
+- Every country has a standardized NOC code
+- All datasets can be merged using NOC as the key
+- Countries are categorized into Small/Medium/Large groups
+- Ready for Question 3 analysis (country size effects on home advantage)
+
+\newpage
+
+## 3. After Cleaning
+
+```{r run-cleaning, include=FALSE}
+# Run the cleaning script to generate country_info.csv
+source("scripts/05_clean_country_info_v2.R", local = knitr::knit_global())
+```
+
+### Cleaned Data Sample
+
+```{r after-country-info}
+# Load cleaned country info
+country_info <- read.csv("cleaned_data/country_info.csv", stringsAsFactors = FALSE)
+
+# Show sample with NOC codes and size categories
+sample_clean <- head(country_info[order(-country_info$total_area_km2), ], 15)
+
+kable(sample_clean[, c("noc", "country_name", "total_area_km2", "country_size_category")],
+      caption = "Cleaned Country Info Data (After Cleaning)",
+      col.names = c("NOC", "Country Name", "Total Area (km²)", "Size Category"),
+      format.args = list(big.mark = ","),
+      row.names = FALSE)
+```
+
+### Size Category Distribution
+
+```{r size-distribution-table}
+# Create frequency table
+size_dist <- as.data.frame(table(country_info$country_size_category))
+colnames(size_dist) <- c("Size Category", "Number of Countries")
+
+kable(size_dist,
+      caption = "Distribution of Countries by Size Category")
+```
+
+```{r size-distribution-plot, fig.cap="Distribution of Country Size Categories", fig.height=4, fig.width=6}
+# Create ggplot2 bar chart
+size_plot_data <- as.data.frame(table(country_info$country_size_category))
+colnames(size_plot_data) <- c("Category", "Count")
+
+ggplot(size_plot_data, aes(x = Category, y = Count, fill = Category)) +
+  geom_bar(stat = "identity", width = 0.7) +
+  geom_text(aes(label = Count), vjust = -0.5, size = 4, fontface = "bold") +
+  scale_fill_manual(values = c("Small" = "lightblue",
+                                "Medium" = "lightgreen",
+                                "Large" = "coral")) +
+  scale_y_continuous(limits = c(0, max(size_plot_data$Count) * 1.15)) +
+  labs(title = "Countries by Size Category",
+       x = "Size Category",
+       y = "Number of Countries") +
+  theme_minimal() +
+  theme(legend.position = "none",
+        plot.title = element_text(hjust = 0.5, face = "bold"),
+        axis.text = element_text(size = 11),
+        axis.title = element_text(size = 12, face = "bold"))
+```
+
+### Olympic Host Countries Coverage
+
+```{r host-coverage}
+# Check which host countries have size data
+host_nocs <- c("GRE", "FRA", "USA", "GBR", "SWE", "BEL", "NED", "GER",
+               "FIN", "AUS", "ITA", "JPN", "MEX", "CAN", "ESP", "BRA", "CHN", "KOR")
+
+host_data <- country_info[country_info$noc %in% host_nocs,
+                          c("noc", "country_name", "total_area_km2", "country_size_category")]
+host_data <- host_data[order(host_data$country_name), ]
+
+kable(host_data,
+      caption = "Olympic Host Countries with Size Data",
+      col.names = c("NOC", "Country Name", "Total Area (km²)", "Size Category"),
+      format.args = list(big.mark = ","),
+      row.names = FALSE)
+```
+
+### Summary Statistics
+
+**Final Dataset Characteristics:**
+
+- **Total countries**: `r nrow(country_info)` countries with size data
+- **Olympic host countries covered**: `r sum(host_nocs %in% country_info$noc)` out of 18 major hosts
+- **Small countries**: `r sum(country_info$country_size_category == "Small")`
+- **Medium countries**: `r sum(country_info$country_size_category == "Medium")`
+- **Large countries**: `r sum(country_info$country_size_category == "Large")`
+
+**Key Improvements:**
+
+1. All countries now have standardized NOC codes
+2. Size categories created for Question 3 analysis
+3. Ready to merge with other datasets (athletes, hosts, GDP, population)
+4. Covers all major Olympic host nations
+
+**Files Created:**
+
+- `cleaned_data/noc_mapping.csv` - Master NOC lookup table (230+ countries)
+- `cleaned_data/country_info.csv` - Country sizes with NOC codes and categories
+
+\newpage
+
+# Variable 2: Medal Outcome Variables
+
+## 1. Before Cleaning
+
+### Problem Description
+
+Our research questions focus on whether hosting the Olympics provides a competitive advantage **in gymnastics**. To analyze this, we need clear, quantifiable outcome variables for athletic performance. However, the raw athlete dataset presents several challenges:
+
+**Key Issues Identified:**
+
+1. **Medal data is text-based**: The `Medal` column contains text values ("Gold", "Silver", "Bronze") or blank strings for no medal
+2. **No numeric indicators**: Cannot easily calculate statistics or run regressions with text data
+3. **No binary success indicators**: Need simple yes/no variables for "won a medal" or "won gold"
+4. **Mixed with all sports**: The raw data contains 200+ sports; we only need gymnastics
+5. **No gymnastics categorization**: Multiple gymnastics types (Artistic, Rhythmic, Trampoline) need to be identified and grouped
+
+### Raw Data Sample
+
+Below is a sample of the raw athlete dataset showing the Medal column and sport diversity:
+
+```{r before-athletes}
+# Load raw athletes data
+athletes_raw_sample <- read.csv("raw_data/Athletes_summer_games.csv", stringsAsFactors = FALSE)
+
+# Show sample focusing on Medal column issues
+sample_athletes <- athletes_raw_sample[1:15, c("Name", "Sex", "NOC", "Year", "Sport", "Event", "Medal")]
+
+kable(sample_athletes,
+      caption = "Raw Athletes Data - Mixed Sports, Text-Based Medal Column",
+      row.names = FALSE)
+```
+
+### Medal Distribution (Raw - All Sports)
+
+```{r medal-before-stats}
+# Show medal value frequencies for ALL sports (before filtering)
+medal_freq <- data.frame(
+  Medal_Value = c("Gold", "Silver", "Bronze", "No Medal (blank)"),
+  Count = c(
+    sum(athletes_raw_sample$Medal == "Gold", na.rm=TRUE),
+    sum(athletes_raw_sample$Medal == "Silver", na.rm=TRUE),
+    sum(athletes_raw_sample$Medal == "Bronze", na.rm=TRUE),
+    sum(athletes_raw_sample$Medal == "" | is.na(athletes_raw_sample$Medal))
+  )
+)
+medal_freq$Percentage <- round(100 * medal_freq$Count / nrow(athletes_raw_sample), 2)
+
+kable(medal_freq,
+      caption = "Medal Distribution in Raw Data (All Sports)",
+      col.names = c("Medal Value", "Count", "Percentage (%)"),
+      format.args = list(big.mark = ","))
+```
+
+**Summary of Issues:**
+
+- Total athlete records across all summer Olympic sports
+- Medal column is **text-based** ("Gold", "Silver", "Bronze", or blank)
+- **No binary indicators** for statistical analysis
+- **No point system** for weighting medal types
+- **All sports mixed together** - cannot isolate gymnastics
+
+\newpage
+
+## 2. Cleaning Process
+
+### What We Cleaned
+
+We performed four main cleaning operations:
+
+1. **Filtered to gymnastics only**
+   - Identified all gymnastics-related sports: "Gymnastics", "Artistic Gymnastics", "Rhythmic Gymnastics", "Trampoline Gymnastics"
+   - Kept only gymnastics records (removes 200+ other sports)
+   - Created `sport_category = "Gymnastics"` for all records
+
+2. **Created binary medal indicators**
+   - `medal_won`: 1 if athlete won any medal (Gold/Silver/Bronze), 0 if no medal
+   - `gold_medal`: 1 if athlete won gold specifically, 0 otherwise
+   - These enable binary logistic regression and success rate calculations
+
+3. **Created numeric medal points**
+   - `medal_points`: Gold = 3, Silver = 2, Bronze = 1, No medal = 0
+   - Enables weighted analysis and linear regression
+   - Accounts for medal "quality" differences
+
+4. **Preserved original Medal column**
+   - Kept original text values for reference and verification
+   - Allows comparison between raw and derived variables
+
+### Why We Cleaned It
+
+**Research Necessity:**
+- **Questions 1 & 2** ask: "Do host nations win significantly more gymnastics medals?"
+- Need quantifiable outcome variables to measure "winning more"
+- Binary indicators enable hypothesis testing (proportions, chi-square tests)
+- Numeric points enable regression analysis (dose-response relationships)
+
+**Statistical Requirements:**
+- Cannot run regression with text data
+- Need binary (0/1) variables for logistic regression
+- Need numeric variables for linear regression
+- Medal points allow for weighted analysis (gold worth more than bronze)
+
+**Focus on Gymnastics:**
+- Our research is **specifically about gymnastics**, not all sports
+- Gymnastics is subjectively judged, making it ideal for studying potential bias
+- Filtering to gymnastics reduces dataset significantly
+
+### Expected Outcome
+
+After cleaning, we expect:
+- Only gymnastics records retained (Artistic, Rhythmic, Trampoline)
+- Three new quantifiable outcome variables (medal_won, gold_medal, medal_points)
+- Original Medal column preserved for reference
+- Approximately 10-15% medal rate (most athletes don't medal)
+- Ready for statistical analysis of home advantage
+
+\newpage
+
+## 3. After Cleaning
+
+```{r load-athletes-cleaned, include=FALSE}
+# Load cleaned athletes data
+athletes_cleaned <- read.csv("cleaned_data/athletes_cleaned.csv", stringsAsFactors = FALSE)
+```
+
+### Cleaned Data Sample
+
+```{r after-athletes}
+# Show sample with new medal variables
+sample_clean <- head(athletes_cleaned[, c("Name", "Sex", "NOC", "Year", "gymnastics_type",
+                                          "Medal", "medal_won", "gold_medal", "medal_points")], 15)
+
+kable(sample_clean,
+      caption = "Cleaned Athletes Data - Gymnastics Only with Medal Variables",
+      col.names = c("Name", "Sex", "NOC", "Year", "Gymnastics Type",
+                   "Medal (Original)", "Medal Won", "Gold Medal", "Medal Points"),
+      row.names = FALSE)
+```
+
+### Medal Distribution (Cleaned - Gymnastics Only)
+
+```{r medal-after-stats}
+# Medal distribution for gymnastics
+medal_freq_clean <- data.frame(
+  Medal_Value = c("Gold", "Silver", "Bronze", "No Medal"),
+  Count = c(
+    sum(athletes_cleaned$gold_medal == 1),
+    sum(athletes_cleaned$Medal == "Silver"),
+    sum(athletes_cleaned$Medal == "Bronze"),
+    sum(athletes_cleaned$medal_won == 0)
+  )
+)
+medal_freq_clean$Percentage <- round(100 * medal_freq_clean$Count / nrow(athletes_cleaned), 2)
+
+kable(medal_freq_clean,
+      caption = "Medal Distribution After Cleaning (Gymnastics Only)",
+      col.names = c("Medal Value", "Count", "Percentage (%)"),
+      format.args = list(big.mark = ","))
+```
+
+### Gymnastics Type Distribution
+
+```{r gymnastics-types}
+# Show distribution by gymnastics type
+gymn_type_dist <- as.data.frame(table(athletes_cleaned$gymnastics_type))
+colnames(gymn_type_dist) <- c("Gymnastics Type", "Number of Records")
+
+kable(gymn_type_dist,
+      caption = "Distribution by Gymnastics Type",
+      format.args = list(big.mark = ","))
+```
+
+```{r gymn-type-plot, fig.cap="Distribution of Gymnastics Types", fig.height=4.5, fig.width=7}
+# Create ggplot2 bar chart
+gymn_plot_data <- as.data.frame(table(athletes_cleaned$gymnastics_type))
+colnames(gymn_plot_data) <- c("Type", "Count")
+
+ggplot(gymn_plot_data, aes(x = reorder(Type, -Count), y = Count, fill = Type)) +
+  geom_bar(stat = "identity", width = 0.7) +
+  geom_text(aes(label = format(Count, big.mark = ",")),
+            vjust = -0.5, size = 4, fontface = "bold") +
+  scale_fill_manual(values = c("Artistic Gymnastics" = "lightblue",
+                                "Rhythmic Gymnastics" = "coral",
+                                "Trampoline Gymnastics" = "lightgreen")) +
+  scale_y_continuous(limits = c(0, max(gymn_plot_data$Count) * 1.15),
+                     labels = function(x) format(x, big.mark = ",")) +
+  labs(title = "Gymnastics Records by Type",
+       x = "Gymnastics Type",
+       y = "Number of Records") +
+  theme_minimal() +
+  theme(legend.position = "none",
+        plot.title = element_text(hjust = 0.5, face = "bold", size = 14),
+        axis.text.x = element_text(angle = 20, hjust = 1, size = 10),
+        axis.text.y = element_text(size = 11),
+        axis.title = element_text(size = 12, face = "bold"))
+```
+
+### New Variables Summary
+
+```{r variable-summary}
+# Summary of new medal variables
+var_summary <- data.frame(
+  Variable = c("medal_won", "gold_medal", "medal_points"),
+  Type = c("Binary (0/1)", "Binary (0/1)", "Numeric (0-3)"),
+  Meaning = c(
+    "1 = won any medal, 0 = no medal",
+    "1 = won gold, 0 = did not win gold",
+    "Gold=3, Silver=2, Bronze=1, None=0"
+  ),
+  Summary = c(
+    paste0(sum(athletes_cleaned$medal_won == 1), " medals"),
+    paste0(sum(athletes_cleaned$gold_medal == 1), " golds"),
+    paste0("Mean = ", round(mean(athletes_cleaned$medal_points), 3))
+  )
+)
+
+kable(var_summary,
+      caption = "New Medal Outcome Variables",
+      col.names = c("Variable Name", "Type", "Meaning", "Summary"),
+      row.names = FALSE)
+```
+
+### Summary Statistics
+
+**Final Gymnastics Dataset Characteristics:**
+
+- **Total records**: `r format(nrow(athletes_cleaned), big.mark=",")` gymnastics performances
+- **Unique athletes**: `r format(length(unique(athletes_cleaned$Name)), big.mark=",")` individual gymnasts
+- **Countries**: `r length(unique(athletes_cleaned$NOC))` different NOCs
+- **Years covered**: `r min(athletes_cleaned$Year)` - `r max(athletes_cleaned$Year)` (`r length(unique(athletes_cleaned$Year))` Olympics)
+- **Medal rate**: `r round(100 * sum(athletes_cleaned$medal_won) / nrow(athletes_cleaned), 2)`% of performances resulted in a medal
+
+**Gender Distribution:**
+
+```{r gender-dist}
+gender_table <- as.data.frame(table(athletes_cleaned$Sex))
+gender_table$Percentage <- round(100 * gender_table$Freq / nrow(athletes_cleaned), 1)
+colnames(gender_table) <- c("Sex", "Count", "Percentage (%)")
+
+kable(gender_table,
+      format.args = list(big.mark = ","))
+```
+
+**Key Improvements:**
+
+1. Filtered from all-sport records to gymnastics-only dataset
+2. Created three quantifiable outcome variables for statistical analysis
+3. Preserved original Medal column for verification
+4. Standardized gymnastics types into categories
+5. Ready for Questions 1 & 2 analysis (home advantage in gymnastics)
+
+**Files Created:**
+
+- `cleaned_data/athletes_cleaned.csv` - Gymnastics athletes with medal outcome variables
+
+This cleaned variable enables us to answer **Questions 1 & 2**: *"Does hosting the Olympics provide a measurable competitive advantage in gymnastics?"* and *"Does the home advantage differ by gender?"*
+
+\newpage

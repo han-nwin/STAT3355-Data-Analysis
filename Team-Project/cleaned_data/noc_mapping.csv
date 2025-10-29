@@ -1,0 +1,467 @@
+noc,name_athletes,name_hosts,name_gdp,name_population,notes
+AFG,Afghanistan,NA,Afghanistan,Afghanistan,Auto-mapped from data
+AHO,Netherlands Antilles,NA,NA,NA,Auto-mapped from data
+ALB,Albania,NA,Albania,Albania,Auto-mapped from data
+ALG,Algeria,NA,NA,NA,Auto-mapped from data
+AND,Andorra,NA,Andorra,Andorra,Auto-mapped from data
+ANG,Angola,NA,NA,NA,Auto-mapped from data
+ANT,Antigua and Barbuda,NA,NA,NA,Auto-mapped from data
+ANZ,Australasia,NA,NA,NA,Auto-mapped from data
+ANZ,Sydney Rowing Club,NA,NA,NA,Auto-mapped from data
+ARG,Argentina,NA,Argentina,Argentina,Auto-mapped from data
+ARG,Matrero II,NA,Argentina,Argentina,Auto-mapped from data
+ARG,Blue Red,NA,Argentina,Argentina,Auto-mapped from data
+ARG,Argentina-2,NA,Argentina,Argentina,Auto-mapped from data
+ARG,Pampero,NA,Argentina,Argentina,Auto-mapped from data
+ARG,Wiking,NA,Argentina,Argentina,Auto-mapped from data
+ARG,Cupidon III,NA,Argentina,Argentina,Auto-mapped from data
+ARG,Arcturus,NA,Argentina,Argentina,Auto-mapped from data
+ARG,Covunco III,NA,Argentina,Argentina,Auto-mapped from data
+ARG,Tango,NA,Argentina,Argentina,Auto-mapped from data
+ARG,Argentina-1,NA,Argentina,Argentina,Auto-mapped from data
+ARG,Acturus,NA,Argentina,Argentina,Auto-mapped from data
+ARG,Antares,NA,Argentina,Argentina,Auto-mapped from data
+ARG,Mizar,NA,Argentina,Argentina,Auto-mapped from data
+ARG,Gullvinge,NA,Argentina,Argentina,Auto-mapped from data
+ARG,Djinn,NA,Argentina,Argentina,Auto-mapped from data
+ARG,Rampage,NA,Argentina,Argentina,Auto-mapped from data
+ARG,Ardilla,NA,Argentina,Argentina,Auto-mapped from data
+ARM,Armenia,NA,Armenia,Armenia,Auto-mapped from data
+ARU,Aruba,NA,NA,NA,Auto-mapped from data
+ASA,American Samoa,NA,NA,NA,Auto-mapped from data
+AUS,Australia,Australia,Australia,Australia,Co-host 1956
+AUT,Austria,NA,Austria,Austria,Auto-mapped from data
+AUT,Breslau,NA,Austria,Austria,Auto-mapped from data
+AUT,Evita VI,NA,Austria,Austria,Auto-mapped from data
+AUT,Austria-1,NA,Austria,Austria,Auto-mapped from data
+AUT,"R.-V. Germania, Leitmeritz",NA,Austria,Austria,Auto-mapped from data
+AUT,Austria-2,NA,Austria,Austria,Auto-mapped from data
+AUT,May-Be 1960,NA,Austria,Austria,Auto-mapped from data
+AUT,30. Februar,NA,Austria,Austria,Auto-mapped from data
+AUT,Brigantia,NA,Austria,Austria,Auto-mapped from data
+AUT,Surprise,NA,Austria,Austria,Auto-mapped from data
+AUT,"Philadelphia Turngemeinde, Philadelphia",NA,Austria,Austria,Auto-mapped from data
+AUT,Donar III,NA,Austria,Austria,Auto-mapped from data
+AZE,Azerbaijan,NA,Azerbaijan,Azerbaijan,Auto-mapped from data
+BAH,Bahamas,NA,NA,NA,Auto-mapped from data
+BAH,Gem,NA,NA,NA,Auto-mapped from data
+BAH,Guanahani,NA,NA,NA,Auto-mapped from data
+BAH,Gem III,NA,NA,NA,Auto-mapped from data
+BAH,Gem IV,NA,NA,NA,Auto-mapped from data
+BAH,Gem VII,NA,NA,NA,Auto-mapped from data
+BAH,Yeoman,NA,NA,NA,Auto-mapped from data
+BAH,John B,NA,NA,NA,Auto-mapped from data
+BAH,Bim,NA,NA,NA,Auto-mapped from data
+BAH,Combine,NA,NA,NA,Auto-mapped from data
+BAN,Bangladesh,NA,NA,NA,Auto-mapped from data
+BAR,Barbados,NA,NA,NA,Auto-mapped from data
+BDI,Burundi,NA,Burundi,Burundi,Auto-mapped from data
+BEL,Belgium,Belgium,Belgium,Belgium,Hosted 1920
+BEN,Benin,NA,Benin,Benin,Auto-mapped from data
+BER,Bermuda,NA,NA,NA,Auto-mapped from data
+BER,Oleander XII,NA,NA,NA,Auto-mapped from data
+BER,Bermudes,NA,NA,NA,Auto-mapped from data
+BER,Bermudian,NA,NA,NA,Auto-mapped from data
+BER,Pam,NA,NA,NA,Auto-mapped from data
+BER,Oleander II,NA,NA,NA,Auto-mapped from data
+BHU,Bhutan,NA,NA,NA,Auto-mapped from data
+BIH,Bosnia and Herzegovina,NA,Bosnia and Herzegovina,Bosnia and Herzegovina,Auto-mapped from data
+BIZ,Belize,NA,NA,NA,Auto-mapped from data
+BLR,Belarus,NA,Belarus,Belarus,Auto-mapped from data
+BLR,Belarus-1,NA,Belarus,Belarus,Auto-mapped from data
+BLR,Belarus-2,NA,Belarus,Belarus,Auto-mapped from data
+BOH,Bohemia,NA,NA,NA,Auto-mapped from data
+BOH,Bohemia-1,NA,NA,NA,Auto-mapped from data
+BOH,Bohemia-3,NA,NA,NA,Auto-mapped from data
+BOH,Bohemia-2,NA,NA,NA,Auto-mapped from data
+BOH,Bohemia/Great Britain,NA,NA,NA,Auto-mapped from data
+BOL,Bolivia,NA,Bolivia,Bolivia,Auto-mapped from data
+BOT,Botswana,NA,NA,NA,Auto-mapped from data
+BRA,Brazil,Brazil,Brazil,Brazil,Hosted 2016
+BRN,Bahrain,NA,Brunei Darussalam,Brunei,Auto-mapped from data
+BRU,Brunei,NA,NA,NA,Auto-mapped from data
+BUL,Bulgaria,NA,NA,NA,Auto-mapped from data
+BUL,Bulgaria-2,NA,NA,NA,Auto-mapped from data
+BUL,Bulgaria-1,NA,NA,NA,Auto-mapped from data
+BUR,Burkina Faso,NA,NA,NA,Auto-mapped from data
+CAF,Central African Republic,NA,Central African Republic,Central African Republic,Auto-mapped from data
+CAM,GyoshuII,NA,NA,NA,Auto-mapped from data
+CAM,Cambodia,NA,NA,NA,Auto-mapped from data
+CAN,Canada,Canada,Canada,Canada,Multiple hosting
+CAY,Cayman Islands,NA,NA,NA,Auto-mapped from data
+CGO,Congo (Brazzaville),NA,NA,NA,Auto-mapped from data
+CGO,Republic of the Congo,NA,NA,NA,Auto-mapped from data
+CHA,Chad,NA,NA,NA,Auto-mapped from data
+CHI,Chile,NA,Channel Islands,NA,Auto-mapped from data
+CHI,Mainz,NA,Channel Islands,NA,Auto-mapped from data
+CHN,China,People's Republic of China,China,China,Standard
+CIV,Cote d'Ivoire,NA,Cote d'Ivoire,Cote d'Ivoire,Auto-mapped from data
+CIV,Ivory Coast,NA,Cote d'Ivoire,Cote d'Ivoire,Auto-mapped from data
+CMR,Cameroon,NA,Cameroon,Cameroon,Auto-mapped from data
+COD,Congo (Kinshasa),NA,"Congo, Dem. Rep.",Democratic Republic of Congo,Auto-mapped from data
+COD,Democratic Republic of the Congo,NA,"Congo, Dem. Rep.",Democratic Republic of Congo,Auto-mapped from data
+COK,Cook Islands,NA,NA,Cook Islands,Auto-mapped from data
+COL,Colombia,NA,Colombia,Colombia,Auto-mapped from data
+COL,Racing Club de France,NA,Colombia,Colombia,Auto-mapped from data
+COM,Comoros,NA,Comoros,Comoros,Auto-mapped from data
+CPV,Cape Verde,NA,Cabo Verde,Cape Verde,Auto-mapped from data
+CRC,Costa Rica,NA,NA,NA,Auto-mapped from data
+CRO,Croatia,NA,NA,NA,Auto-mapped from data
+CRT,Crete,NA,NA,NA,Auto-mapped from data
+CUB,Cuba,NA,Cuba,Cuba,Auto-mapped from data
+CUB,Hatuey,NA,Cuba,Cuba,Auto-mapped from data
+CUB,Cuba-1,NA,Cuba,Cuba,Auto-mapped from data
+CUB,Kurush IV,NA,Cuba,Cuba,Auto-mapped from data
+CUB,Vesania,NA,Cuba,Cuba,Auto-mapped from data
+CUB,Kurush II,NA,Cuba,Cuba,Auto-mapped from data
+CUB,Cuba-2,NA,Cuba,Cuba,Auto-mapped from data
+CYP,Cyprus,NA,Cyprus,Cyprus,Auto-mapped from data
+CZE,Czech Republic,NA,Czechia,Czechia,Auto-mapped from data
+CZE,Czech Republic-2,NA,Czechia,Czechia,Auto-mapped from data
+CZE,Czech Republic-1,NA,Czechia,Czechia,Auto-mapped from data
+DEN,Denmark,NA,Denmark,Denmark,Denmark/Sweden athletes exist
+DJI,Djibouti,NA,Djibouti,Djibouti,Auto-mapped from data
+DMA,Dominica,NA,Dominica,Dominica,Auto-mapped from data
+DOM,Dominican Republic,NA,Dominican Republic,Dominican Republic,Auto-mapped from data
+ECU,Ecuador,NA,Ecuador,Ecuador,Auto-mapped from data
+EGY,Egypt,NA,"Egypt, Arab Rep.",Egypt,Auto-mapped from data
+EOR,Refugee Olympic Team,NA,NA,NA,Auto-mapped from data
+ERI,Eritrea,NA,Eritrea,Eritrea,Auto-mapped from data
+ESA,El Salvador,NA,NA,NA,Auto-mapped from data
+ESP,Spain,Spain,Spain,Spain,Hosted 1992
+EST,Estonia,NA,Estonia,Estonia,Auto-mapped from data
+EST,Tutti V,NA,Estonia,Estonia,Auto-mapped from data
+EST,Brandenburg,NA,Estonia,Estonia,Auto-mapped from data
+ETH,Ethiopia,NA,Ethiopia,Ethiopia,Auto-mapped from data
+EUN,Unified Team,NA,NA,NA,Auto-mapped from data
+EUN,Unified Team-1,NA,NA,NA,Auto-mapped from data
+EUN,Unified Team-2,NA,NA,NA,Auto-mapped from data
+FIJ,Fiji,NA,NA,NA,Auto-mapped from data
+FIN,Finland,Finland,Finland,Finland,Hosted 1952
+FRA,France,France,France,France,Multiple hosting
+FRG,West Germany,NA,NA,NA,West Germany (until 1990)
+FSM,Federated States of Micronesia,NA,"Micronesia, Fed. Sts.",Micronesia (country),Auto-mapped from data
+GAB,Gabon,NA,Gabon,Gabon,Auto-mapped from data
+GAM,Gambia,NA,NA,NA,Auto-mapped from data
+GAM,The Gambia,NA,NA,NA,Auto-mapped from data
+GBR,Great Britain,Great Britain,United Kingdom,United Kingdom,UK/GB difference
+GBS,Guinea Bissau,NA,NA,NA,Auto-mapped from data
+GBS,Guinea-Bissau,NA,NA,NA,Auto-mapped from data
+GDR,East Germany,NA,NA,NA,East Germany (until 1990)
+GEO,Georgia,NA,Georgia,Georgia,Auto-mapped from data
+GEQ,Equatorial Guinea,NA,NA,NA,Auto-mapped from data
+GER,Germany,Germany,Germany,Germany,Unified after 1990
+GHA,Ghana,NA,Ghana,Ghana,Auto-mapped from data
+GRE,Greece,Greece,Greece,Greece,First modern Olympics 1896
+GRN,Grenada,NA,NA,NA,Auto-mapped from data
+GUA,Guatemala,NA,NA,NA,Auto-mapped from data
+GUI,Guinea,NA,NA,NA,Auto-mapped from data
+GUM,Guam,NA,Guam,Guam,Auto-mapped from data
+GUY,Guyana,NA,Guyana,Guyana,Auto-mapped from data
+HAI,Haiti,NA,NA,NA,Auto-mapped from data
+HAI,Union des Socits Franais de Sports Athletiques,NA,NA,NA,Auto-mapped from data
+HKG,Hong Kong,NA,"Hong Kong SAR, China",Hong Kong,Auto-mapped from data
+HKG,Hong Kong-1,NA,"Hong Kong SAR, China",Hong Kong,Auto-mapped from data
+HKG,Phoenix,NA,"Hong Kong SAR, China",Hong Kong,Auto-mapped from data
+HKG,Hong Kong-2,NA,"Hong Kong SAR, China",Hong Kong,Auto-mapped from data
+HKG,"Hong Kong, China",NA,"Hong Kong SAR, China",Hong Kong,Auto-mapped from data
+HON,Honduras,NA,NA,NA,Auto-mapped from data
+HUN,Hungary,NA,Hungary,Hungary,Auto-mapped from data
+HUN,Hungaria Evezos Egylet,NA,Hungary,Hungary,Auto-mapped from data
+HUN,Hungaria,NA,Hungary,Hungary,Auto-mapped from data
+HUN,Hungary-1,NA,Hungary,Hungary,Auto-mapped from data
+HUN,Pannonia RC/National RC,NA,Hungary,Hungary,Auto-mapped from data
+HUN,Hungary-2,NA,Hungary,Hungary,Auto-mapped from data
+HUN,Knigsberg,NA,Hungary,Hungary,Auto-mapped from data
+HUN,Balaton,NA,Hungary,Hungary,Auto-mapped from data
+HUN,Olimpia,NA,Hungary,Hungary,Auto-mapped from data
+HUN,Hungary-3,NA,Hungary,Hungary,Auto-mapped from data
+INA,Indonesia,NA,NA,NA,Auto-mapped from data
+INA,Indonesia-1,NA,NA,NA,Auto-mapped from data
+INA,Indonesia-2,NA,NA,NA,Auto-mapped from data
+INA,Partenope,NA,NA,NA,Auto-mapped from data
+INA,Tengiri,NA,NA,NA,Auto-mapped from data
+IND,India,NA,India,India,Auto-mapped from data
+IND,India-1,NA,India,India,Auto-mapped from data
+IND,India-2,NA,India,India,Auto-mapped from data
+IOA,Individual Olympic Athletes,NA,NA,NA,Auto-mapped from data
+IRI,Iran,NA,NA,NA,Auto-mapped from data
+IRL,Ireland,NA,Ireland,Ireland,Auto-mapped from data
+IRL,The Cloud,NA,Ireland,Ireland,Auto-mapped from data
+IRL,Aletta,NA,Ireland,Ireland,Auto-mapped from data
+IRL,Ireland-2,NA,Ireland,Ireland,Auto-mapped from data
+IRL,Akatonbo,NA,Ireland,Ireland,Auto-mapped from data
+IRL,Three Leaves,NA,Ireland,Ireland,Auto-mapped from data
+IRL,Ireland-1,NA,Ireland,Ireland,Auto-mapped from data
+IRQ,Iraq,NA,Iraq,Iraq,Auto-mapped from data
+ISL,Iceland,NA,Iceland,Iceland,Auto-mapped from data
+ISR,Israel,NA,Israel,Israel,Auto-mapped from data
+ISV,United States Virgin Islands,NA,NA,NA,Auto-mapped from data
+ISV,Virgin Islands,NA,NA,NA,Auto-mapped from data
+ITA,Italy,Italy,Italy,Italy,Multiple hosting
+IVB,British Virgin Islands,NA,NA,NA,Auto-mapped from data
+JAM,Jamaica,NA,Jamaica,Jamaica,Auto-mapped from data
+JAM,Miss Nippon IV,NA,Jamaica,Jamaica,Auto-mapped from data
+JOR,Jordan,NA,Jordan,Jordan,Auto-mapped from data
+JPN,Japan,Japan,Japan,Japan,Multiple hosting
+KAZ,Kazakhstan,NA,Kazakhstan,Kazakhstan,Auto-mapped from data
+KEN,Kenya,NA,Kenya,Kenya,Auto-mapped from data
+KGZ,Kyrgyzstan,NA,Kyrgyz Republic,Kyrgyzstan,Auto-mapped from data
+KIR,Kiribati,NA,Kiribati,Kiribati,Auto-mapped from data
+KOR,South Korea,Republic of Korea,"Korea, Rep.",South Korea,South Korea
+KOS,Kosovo,NA,NA,NA,Auto-mapped from data
+KSA,Saudi Arabia,NA,NA,NA,Auto-mapped from data
+KUW,Kuwait,NA,NA,NA,Auto-mapped from data
+LAO,Laos,NA,Lao PDR,Laos,Auto-mapped from data
+LAT,Latvia,NA,NA,NA,Auto-mapped from data
+LAT,Latvia-1,NA,NA,NA,Auto-mapped from data
+LAT,Latvia-2,NA,NA,NA,Auto-mapped from data
+LBA,Libya,NA,NA,NA,Auto-mapped from data
+LBN,Lebanon,NA,Lebanon,Lebanon,Auto-mapped from data
+LBR,Liberia,NA,Liberia,Liberia,Auto-mapped from data
+LCA,Saint Lucia,NA,St. Lucia,Saint Lucia,Auto-mapped from data
+LES,Lesotho,NA,NA,NA,Auto-mapped from data
+LIB,Lebanon,NA,NA,NA,Auto-mapped from data
+LIB,Maid of Lebanon,NA,NA,NA,Auto-mapped from data
+LIE,Liechtenstein,NA,Liechtenstein,Liechtenstein,Auto-mapped from data
+LTU,Lithuania,NA,Lithuania,Lithuania,Auto-mapped from data
+LUX,Luxembourg,NA,Luxembourg,Luxembourg,Auto-mapped from data
+MAD,Madagascar,NA,NA,NA,Auto-mapped from data
+MAL,Malaya,NA,NA,NA,Auto-mapped from data
+MAR,Morocco,NA,Morocco,Morocco,Auto-mapped from data
+MAS,Malaysia,NA,NA,NA,Auto-mapped from data
+MAS,Malaysia-1,NA,NA,NA,Auto-mapped from data
+MAS,Malaysia-2,NA,NA,NA,Auto-mapped from data
+MAW,Malawi,NA,NA,NA,Auto-mapped from data
+MDA,Moldova,NA,Moldova,Moldova,Auto-mapped from data
+MDV,Maldives,NA,Maldives,Maldives,Auto-mapped from data
+MEX,Mexico,Mexico,Mexico,Mexico,Hosted 1968
+MGL,Mongolia,NA,NA,NA,Auto-mapped from data
+MHL,Marshall Islands,NA,Marshall Islands,Marshall Islands,Auto-mapped from data
+MKD,Macedonia,NA,North Macedonia,North Macedonia,Auto-mapped from data
+MKD,North Macedonia,NA,North Macedonia,North Macedonia,Auto-mapped from data
+MLI,Mali,NA,Mali,Mali,Auto-mapped from data
+MLT,Malta,NA,Malta,Malta,Auto-mapped from data
+MLT,Merope,NA,Malta,Malta,Auto-mapped from data
+MNE,Montenegro,NA,Montenegro,Montenegro,Auto-mapped from data
+MON,Monaco,NA,NA,NA,Auto-mapped from data
+MON,Hirondelle,NA,NA,NA,Auto-mapped from data
+MON,Damoiselle IV,NA,NA,NA,Auto-mapped from data
+MOZ,Mozambique,NA,Mozambique,Mozambique,Auto-mapped from data
+MRI,Mauritius,NA,NA,NA,Auto-mapped from data
+MRI,Mauritius-2,NA,NA,NA,Auto-mapped from data
+MRI,Mauritius-1,NA,NA,NA,Auto-mapped from data
+MTN,Mauritania,NA,NA,NA,Auto-mapped from data
+MYA,Myanmar,NA,NA,NA,Auto-mapped from data
+MYA,Kingfisher,NA,NA,NA,Auto-mapped from data
+MYA,Yangon,NA,NA,NA,Auto-mapped from data
+NAM,Namibia,NA,Namibia,Namibia,Auto-mapped from data
+NBO,North Borneo,NA,NA,NA,Auto-mapped from data
+NCA,Nicaragua,NA,NA,NA,Auto-mapped from data
+NED,Netherlands,Netherlands,Netherlands,Netherlands,Hosted 1928
+NEP,Nepal,NA,NA,NA,Auto-mapped from data
+NFL,Newfoundland,NA,NA,NA,Auto-mapped from data
+NGR,Nigeria,NA,NA,NA,Auto-mapped from data
+NGR,Nigeria-2,NA,NA,NA,Auto-mapped from data
+NGR,Nigeria-1,NA,NA,NA,Auto-mapped from data
+NIG,Niger,NA,NA,NA,Auto-mapped from data
+NOR,Norway,NA,Norway,Norway,Auto-mapped from data
+NOR,Taifun,NA,Norway,Norway,Auto-mapped from data
+NOR,Fornebo,NA,Norway,Norway,Auto-mapped from data
+NOR,Stella-2,NA,Norway,Norway,Auto-mapped from data
+NOR,Heira II,NA,Norway,Norway,Auto-mapped from data
+NOR,Lett,NA,Norway,Norway,Auto-mapped from data
+NOR,Norway-1,NA,Norway,Norway,Auto-mapped from data
+NOR,Norna,NA,Norway,Norway,Auto-mapped from data
+NOR,Fram,NA,Norway,Norway,Auto-mapped from data
+NOR,Magda IX,NA,Norway,Norway,Auto-mapped from data
+NOR,Mosk II,NA,Norway,Norway,Auto-mapped from data
+NOR,Elisabeth X,NA,Norway,Norway,Auto-mapped from data
+NOR,Pan,NA,Norway,Norway,Auto-mapped from data
+NOR,Nora,NA,Norway,Norway,Auto-mapped from data
+NOR,Monica,NA,Norway,Norway,Auto-mapped from data
+NOR,Sirene,NA,Norway,Norway,Auto-mapped from data
+NOR,Atlanta,NA,Norway,Norway,Auto-mapped from data
+NOR,Norway-2,NA,Norway,Norway,Auto-mapped from data
+NOR,Norway-3,NA,Norway,Norway,Auto-mapped from data
+NOR,Kristiania Roklub-1,NA,Norway,Norway,Auto-mapped from data
+NOR,Kristiania Roklub,NA,Norway,Norway,Auto-mapped from data
+NOR,Ormsund Roklub-2,NA,Norway,Norway,Auto-mapped from data
+NOR,Bera,NA,Norway,Norway,Auto-mapped from data
+NOR,Jo,NA,Norway,Norway,Auto-mapped from data
+NOR,Norwegian Rowing Association,NA,Norway,Norway,Auto-mapped from data
+NOR,Sonja II,NA,Norway,Norway,Auto-mapped from data
+NOR,KNS,NA,Norway,Norway,Auto-mapped from data
+NOR,Elisabeth V,NA,Norway,Norway,Auto-mapped from data
+NOR,Studenternes Roklub-2,NA,Norway,Norway,Auto-mapped from data
+NOR,Viking,NA,Norway,Norway,Auto-mapped from data
+NOR,Silja,NA,Norway,Norway,Auto-mapped from data
+NOR,Marmi II-1,NA,Norway,Norway,Auto-mapped from data
+NOR,Apache,NA,Norway,Norway,Auto-mapped from data
+NOR,Encore,NA,Norway,Norway,Auto-mapped from data
+NOR,Struten,NA,Norway,Norway,Auto-mapped from data
+NOR,Fram III,NA,Norway,Norway,Auto-mapped from data
+NOR,Pan II,NA,Norway,Norway,Auto-mapped from data
+NOR,Eleda,NA,Norway,Norway,Auto-mapped from data
+NOR,Irene,NA,Norway,Norway,Auto-mapped from data
+NOR,Lucky,NA,Norway,Norway,Auto-mapped from data
+NOR,Lully II,NA,Norway,Norway,Auto-mapped from data
+NOR,Sildra-1,NA,Norway,Norway,Auto-mapped from data
+NOR,Noreg,NA,Norway,Norway,Auto-mapped from data
+NOR,"Norwegier Turnverein, Brooklyn",NA,Norway,Norway,Auto-mapped from data
+NOR,Lyn-2,NA,Norway,Norway,Auto-mapped from data
+NOR,Hamburg,NA,Norway,Norway,Auto-mapped from data
+NRU,Nauru,NA,Nauru,Nauru,Auto-mapped from data
+NZL,New Zealand,NA,New Zealand,New Zealand,Auto-mapped from data
+NZL,Jest,NA,New Zealand,New Zealand,Auto-mapped from data
+NZL,Red Dragon,NA,New Zealand,New Zealand,Auto-mapped from data
+NZL,"Osborne Swimming Club, Manchester",NA,New Zealand,New Zealand,Auto-mapped from data
+NZL,Pandora,NA,New Zealand,New Zealand,Auto-mapped from data
+NZL,Harmony,NA,New Zealand,New Zealand,Auto-mapped from data
+OMA,Oman,NA,NA,NA,Auto-mapped from data
+PAK,Pakistan,NA,Pakistan,Pakistan,Auto-mapped from data
+PAN,Panama,NA,Panama,Panama,Auto-mapped from data
+PAR,Paraguay,NA,NA,NA,Auto-mapped from data
+PER,Peru,NA,Peru,Peru,Auto-mapped from data
+PHI,Philippines,NA,NA,NA,Auto-mapped from data
+PHI,Patricia,NA,NA,NA,Auto-mapped from data
+PHI,Kalayaan,NA,NA,NA,Auto-mapped from data
+PLE,Palestine,NA,NA,NA,Auto-mapped from data
+PLW,Palau,NA,Palau,Palau,Auto-mapped from data
+PNG,Papua New Guinea,NA,Papua New Guinea,Papua New Guinea,Auto-mapped from data
+POL,Poland,NA,Poland,Poland,Auto-mapped from data
+POL,Poland-1,NA,Poland,Poland,Auto-mapped from data
+POL,Poland-2,NA,Poland,Poland,Auto-mapped from data
+POL,Poland-3,NA,Poland,Poland,Auto-mapped from data
+POL,Danuta,NA,Poland,Poland,Auto-mapped from data
+POR,Portugal,NA,NA,NA,Auto-mapped from data
+POR,Grifo III,NA,NA,NA,Auto-mapped from data
+POR,Grifo IV,NA,NA,NA,Auto-mapped from data
+POR,Symphony,NA,NA,NA,Auto-mapped from data
+POR,Sjhxa,NA,NA,NA,Auto-mapped from data
+POR,Faneca,NA,NA,NA,Auto-mapped from data
+POR,Ciocca III,NA,NA,NA,Auto-mapped from data
+POR,Camelia,NA,NA,NA,Auto-mapped from data
+POR,Calcinhas,NA,NA,NA,Auto-mapped from data
+POR,Argus,NA,NA,NA,Auto-mapped from data
+POR,Espadarte,NA,NA,NA,Auto-mapped from data
+POR,Canopus,NA,NA,NA,Auto-mapped from data
+POR,Vicking,NA,NA,NA,Auto-mapped from data
+POR,Oxalis,NA,NA,NA,Auto-mapped from data
+POR,Espardate,NA,NA,NA,Auto-mapped from data
+POR,Alcaid,NA,NA,NA,Auto-mapped from data
+POR,Hannover,NA,NA,NA,Auto-mapped from data
+POR,Notavel,NA,NA,NA,Auto-mapped from data
+POR,Galopin De La Font,NA,NA,NA,Auto-mapped from data
+POR,Ma'Lindo,NA,NA,NA,Auto-mapped from data
+PRK,North Korea,NA,"Korea, Dem. People's Rep.",North Korea,Auto-mapped from data
+PRK,North Korea-1,NA,"Korea, Dem. People's Rep.",North Korea,Auto-mapped from data
+PRK,North Korea-2,NA,"Korea, Dem. People's Rep.",North Korea,Auto-mapped from data
+PUR,Puerto Rico,NA,NA,NA,Auto-mapped from data
+QAT,Qatar,NA,Qatar,Qatar,Auto-mapped from data
+RHO,Rhodesia,NA,NA,NA,Auto-mapped from data
+RHO,Peri,NA,NA,NA,Auto-mapped from data
+ROC,Russia,NA,NA,NA,Auto-mapped from data
+ROT,Refugee Olympic Athletes,NA,NA,NA,Auto-mapped from data
+ROU,Romania,NA,Romania,Romania,Auto-mapped from data
+ROU,Romania-2,NA,Romania,Romania,Auto-mapped from data
+ROU,Romania-1,NA,Romania,Romania,Auto-mapped from data
+RSA,South Africa,NA,NA,NA,Auto-mapped from data
+RSA,Shoveller,NA,NA,NA,Auto-mapped from data
+RSA,South Africa-2,NA,NA,NA,Auto-mapped from data
+RSA,Impala,NA,NA,NA,Auto-mapped from data
+RSA,Springbok,NA,NA,NA,Auto-mapped from data
+RSA,Yeoman V,NA,NA,NA,Auto-mapped from data
+RSA,Boer Team,NA,NA,NA,Auto-mapped from data
+RSA,South Africa-1,NA,NA,NA,Auto-mapped from data
+RSA,Hakahana,NA,NA,NA,Auto-mapped from data
+RUS,Russia,Russian Federation,Russian Federation,Russian Federation,USSR before 1991
+RWA,Rwanda,NA,Rwanda,Rwanda,Auto-mapped from data
+SAA,Saar,NA,NA,NA,Auto-mapped from data
+SAM,Samoa,NA,NA,NA,Auto-mapped from data
+SCG,Serbia and Montenegro,NA,NA,NA,Auto-mapped from data
+SEN,Senegal,NA,Senegal,Senegal,Auto-mapped from data
+SEY,Seychelles,NA,NA,NA,Auto-mapped from data
+SGP,Singapore,NA,Singapore,Singapore,Auto-mapped from data
+SGP,June Climene,NA,Singapore,Singapore,Auto-mapped from data
+SGP,Rika II,NA,Singapore,Singapore,Auto-mapped from data
+SGP,Singapore-2,NA,Singapore,Singapore,Auto-mapped from data
+SGP,Singapore-1,NA,Singapore,Singapore,Auto-mapped from data
+SKN,Saint Kitts and Nevis,NA,NA,NA,Auto-mapped from data
+SLE,Sierra Leone,NA,Sierra Leone,Sierra Leone,Auto-mapped from data
+SLO,Slovenia,NA,NA,NA,Auto-mapped from data
+SLO,Slovenia-1,NA,NA,NA,Auto-mapped from data
+SLO,Slovenia-2,NA,NA,NA,Auto-mapped from data
+SMR,San Marino,NA,San Marino,San Marino,Auto-mapped from data
+SOL,Solomon Islands,NA,NA,NA,Auto-mapped from data
+SOM,Somalia,NA,"Somalia, Fed. Rep.",Somalia,Auto-mapped from data
+SRB,Serbia,NA,Serbia,Serbia,Auto-mapped from data
+SRB,Serbia-2,NA,Serbia,Serbia,Auto-mapped from data
+SRB,Serbia-1,NA,Serbia,Serbia,Auto-mapped from data
+SRI,Sri Lanka,NA,NA,NA,Auto-mapped from data
+SSD,South Sudan,NA,South Sudan,South Sudan,Auto-mapped from data
+STP,Sao Tome and Principe,NA,Sao Tome and Principe,Sao Tome and Principe,Auto-mapped from data
+STP,São Tomé and Príncipe,NA,Sao Tome and Principe,Sao Tome and Principe,Auto-mapped from data
+SUD,Sudan,NA,NA,NA,Auto-mapped from data
+SUI,Switzerland,Switzerland,Switzerland,Switzerland,SUI not CHE code
+SUR,Suriname,NA,Suriname,Suriname,Auto-mapped from data
+SVK,Slovakia,NA,Slovak Republic,Slovakia,Auto-mapped from data
+SVK,Slovakia-2,NA,Slovak Republic,Slovakia,Auto-mapped from data
+SVK,Slovakia-1,NA,Slovak Republic,Slovakia,Auto-mapped from data
+SWE,Sweden,Sweden,Sweden,Sweden,Co-host 1956
+SWZ,Swaziland,NA,Eswatini,Eswatini,Auto-mapped from data
+SWZ,Eswatini,NA,Eswatini,Eswatini,Auto-mapped from data
+SYR,Syria,NA,Syrian Arab Republic,Syria,Auto-mapped from data
+TAN,Tanzania,NA,NA,NA,Auto-mapped from data
+TCH,Czechoslovakia,NA,NA,NA,Czechoslovakia (until 1993)
+TGA,Tonga,NA,NA,NA,Auto-mapped from data
+THA,Thailand,NA,Thailand,Thailand,Auto-mapped from data
+THA,Linglom,NA,Thailand,Thailand,Auto-mapped from data
+THA,Tichiboo,NA,Thailand,Thailand,Auto-mapped from data
+THA,Siames-Cat,NA,Thailand,Thailand,Auto-mapped from data
+THA,Thailand-1,NA,Thailand,Thailand,Auto-mapped from data
+THA,Thailand-2,NA,Thailand,Thailand,Auto-mapped from data
+TJK,Tajikistan,NA,Tajikistan,Tajikistan,Auto-mapped from data
+TKM,Turkmenistan,NA,Turkmenistan,Turkmenistan,Auto-mapped from data
+TLS,Timor Leste,NA,Timor-Leste,East Timor,Auto-mapped from data
+TLS,East Timor,NA,Timor-Leste,East Timor,Auto-mapped from data
+TOG,Togo,NA,NA,NA,Auto-mapped from data
+TPE,Chinese Taipei-1,NA,NA,NA,Auto-mapped from data
+TPE,Chinese Taipei,NA,NA,NA,Auto-mapped from data
+TPE,Chinese Taipei-2,NA,NA,NA,Auto-mapped from data
+TTO,Trinidad and Tobago,NA,Trinidad and Tobago,Trinidad and Tobago,Auto-mapped from data
+TTO,Firebird II,NA,Trinidad and Tobago,Trinidad and Tobago,Auto-mapped from data
+TUN,Tunisia,NA,Tunisia,Tunisia,Auto-mapped from data
+TUR,Turkey,NA,Turkiye,Turkey,Auto-mapped from data
+TUR,Marmara,NA,Turkiye,Turkey,Auto-mapped from data
+TUR,Cuxhaven,NA,Turkiye,Turkey,Auto-mapped from data
+TUV,Tuvalu,NA,Tuvalu,Tuvalu,Auto-mapped from data
+UAE,United Arab Emirates,NA,NA,NA,Auto-mapped from data
+UAR,United Arab Republic,NA,NA,NA,Auto-mapped from data
+UGA,Uganda,NA,Uganda,Uganda,Auto-mapped from data
+UKR,Ukraine,NA,Ukraine,Ukraine,Auto-mapped from data
+UKR,Ukraine-2,NA,Ukraine,Ukraine,Auto-mapped from data
+UKR,Ukraine-1,NA,Ukraine,Ukraine,Auto-mapped from data
+UNK,Unknown,NA,NA,NA,Auto-mapped from data
+URS,Soviet Union,USSR,NA,NA,Soviet Union (dissolved 1991)
+URU,Uruguay,NA,NA,NA,Auto-mapped from data
+URU,Nortazo,NA,NA,NA,Auto-mapped from data
+URU,Bajazzo,NA,NA,NA,Auto-mapped from data
+URU,Heidelberg,NA,NA,NA,Auto-mapped from data
+USA,United States,United States of America,United States,United States,Standard
+UZB,Uzbekistan,NA,Uzbekistan,Uzbekistan,Auto-mapped from data
+VAN,Vanuatu,NA,NA,NA,Auto-mapped from data
+VEN,Venezuela,NA,"Venezuela, RB",Venezuela,Auto-mapped from data
+VEN,Espuma del Mar,NA,"Venezuela, RB",Venezuela,Auto-mapped from data
+VIE,Vietnam,NA,NA,NA,Auto-mapped from data
+VIN,Saint Vincent and the Grenadines,NA,NA,NA,Auto-mapped from data
+VNM,South Vietnam,NA,Viet Nam,Vietnam,Auto-mapped from data
+WIF,Circus,NA,NA,NA,Auto-mapped from data
+WIF,West Indies Federation,NA,NA,NA,Auto-mapped from data
+YAR,North Yemen,NA,NA,NA,Auto-mapped from data
+YEM,Yemen,NA,"Yemen, Rep.",Yemen,Auto-mapped from data
+YMD,South Yemen,NA,NA,NA,Auto-mapped from data
+YUG,Yugoslavia,NA,NA,NA,Yugoslavia (dissolved)
+ZAM,Zambia,NA,NA,NA,Auto-mapped from data
+ZIM,Zimbabwe,NA,NA,NA,Auto-mapped from data
+ZIM,Peri II,NA,NA,NA,Auto-mapped from data

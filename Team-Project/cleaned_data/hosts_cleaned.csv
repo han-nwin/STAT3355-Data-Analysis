@@ -1,0 +1,33 @@
+"Year","City","Country","NOC","first_time_host","hosting_count_prior","hosting_count_total","Athletes","Countries","Events"
+1896,"Athens ","Greece","GRE",1,0,1,241,14,43
+1900,"Paris ","France","FRA",1,0,1,997,24,95
+1904,"St Louis ","United States of America","USA",1,0,1,651,12,95
+1908,"London ","Great Britain","GBR",1,0,1,2008,22,110
+1912,"Stockholm ","Sweden","SWE",1,0,1,2407,28,102
+1920,"Antwerp ","Belgium","BEL",1,0,1,2622,29,156
+1924,"Paris ","France","FRA",0,1,2,3088,44,126
+1928,"Amsterdam ","Netherlands","NED",1,0,1,2883,46,109
+1932,"Los Angeles ","United States of America","USA",0,1,2,1334,37,117
+1936,"Berlin ","Germany","GER",1,0,1,3963,49,129
+1948,"London ","Great Britain","GBR",0,1,2,4104,59,136
+1952,"Helsinki ","Finland","FIN",1,0,1,4955,69,149
+1956,"Melbourne","Australia","AUS",1,0,1,3314,72,151
+1956,"Stockholm","Sweden","SWE",0,1,2,3314,72,151
+1960,"Rome ","Italy","ITA",1,0,1,5338,83,150
+1964,"Tokyo ","Japan","JPN",1,0,1,5151,93,163
+1968,"Mexico ","Mexico","MEX",1,0,1,5516,112,172
+1972,"Munich ","Germany","GER",0,1,2,7134,121,195
+1976,"Montreal ","Canada","CAN",1,0,1,6084,92,198
+1980,"Moscow ","USSR","URS",1,0,1,5179,80,203
+1984,"Los Angeles ","United States of America","USA",0,2,3,6829,140,221
+1988,"Seoul ","Republic of Korea","KOR",1,0,1,8397,159,237
+1992,"Barcelona ","Spain","ESP",1,0,1,9356,169,257
+1996,"Atlanta ","United States of America","USA",0,3,4,10318,197,271
+2000,"Sydney ","Australia","AUS",0,1,2,10651,199,300
+2004,"Athens ","Greece","GRE",0,1,2,10625,201,301
+2008,"Beijing ","People's Republic of China","CHN",1,0,1,10942,204,302
+2012,"London ","Great Britain","GBR",0,2,3,10568,204,302
+2016,"Rio ","Brazil","BRA",1,0,1,11238,207,306
+2020,"Tokyo ","Japan","JPN",0,1,2,NA,NA,NA
+2024,"Paris ","France","FRA",0,2,3,NA,NA,NA
+2028,"LA ","United States of America","USA",0,4,5,NA,NA,NA

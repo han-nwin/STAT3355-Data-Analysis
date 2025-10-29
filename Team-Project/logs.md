@@ -64,6 +64,9 @@ To actually **answer your research questions**, you'll need to clean MORE than 3
 ---
 
 ## Complete Variable Summary Table
+  - Small: < 500,000 km^2
+  - Medium: 500,000 - 5,000,000 km^2
+  - Large: > 5,000,000 km^2
 
 | Variable | For Nov 4 Assignment? | For Full Project? | Complexity |
 |----------|----------------------|-------------------|------------|
