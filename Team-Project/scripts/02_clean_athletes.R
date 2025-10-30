@@ -52,6 +52,7 @@ gymnastics_sports <- unique(athletes_summer$Sport[grepl("Gymn", athletes_summer$
 print(gymnastics_sports)
 cat("\n")
 
+
 # Filter to gymnastics (all variations)
 athletes_gymnastics <- athletes_summer[athletes_summer$Sport %in% gymnastics_sports, ]
 
