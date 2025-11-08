@@ -1,0 +1,519 @@
+---
+title: "Homework 6"
+author: "Han Nguyen - TXN200004"
+date: "11/08/2025"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Question 1
+
+A cola beverage company claims that their cans are filled with 16.00 ounces of cola. The company also states that the fill of the cola cans follows a Gamma distribution with a shape parameter of 256000 and a rate parameter of 16000. Mark doesn't want to pay for 16.01 ounces of soda unless he is getting at least that much soda. Thus, he samples 34 cola cans from this beverage company to test their claim.
+
+**What is the probability that the average fill of the sampled soda cans is greater than 16.01 ounces?**
+
+```{r, question1}
+# Given parameters
+shape_param <- 256000
+rate_param <- 16000
+n <- 34  # sample size
+target_value <- 16.01
+
+# Calculate population parameters from Gamma distribution
+# For Gamma distribution: mean = shape/rate, variance = shape/rate^2
+pop_mean <- shape_param / rate_param
+pop_variance <- shape_param / (rate_param^2)
+pop_sd <- sqrt(pop_variance)
+
+cat("Population mean:", pop_mean, "ounces\n")
+cat("Population variance:", pop_variance, "\n")
+cat("Population standard deviation:", pop_sd, "ounces\n\n")
+
+# Using Central Limit Theorem with Normal approximation
+# The sample mean follows approximately Normal(mean = pop_mean, sd = pop_sd/sqrt(n))
+sampling_mean <- pop_mean
+sampling_sd <- pop_sd / sqrt(n)
+
+cat("Sampling distribution of the mean:\n")
+cat("Mean of sample mean:", sampling_mean, "ounces\n")
+cat("Standard deviation of sample mean:", sampling_sd, "ounces\n\n")
+
+# Find P(sample mean > 16.01)
+prob <- 1 - pnorm(target_value, mean = sampling_mean, sd = sampling_sd)
+cat("P(sample mean > 16.01) =", prob, "\n")
+```
+
+**Answer:** The probability that the average fill of the sampled soda cans is greater than 16.01 ounces is **`r round(prob, 6)`**.
+
+**Conclusion:** Since the probability is approximately `r round(prob, 6)` (or about `r round(prob * 100, 2)`%), this is a very small probability. This means it would be extremely unlikely to observe a sample mean greater than 16.01 ounces if the cans are truly filled according to the company's claimed distribution with a mean of 16.00 ounces.
+
+# Question 2
+
+The number of minutes for app engagement by a tablet user follows a normal distribution with $\mu$ = 8.2 minutes, and $\sigma$ = 1 minute. Suppose, we take a sample of 60 tablet users.
+
+```{r, question2}
+# Given parameters
+mu <- 8.2  # population mean
+sigma <- 1  # population standard deviation
+n <- 60  # sample size
+```
+
+## a)
+
+**What are the mean and standard deviation of the sampling distribution of the sample mean?**
+
+```{r, question_2a}
+# Sampling distribution of the sample mean
+# Mean of sample mean = mu
+# Standard deviation of sample mean = sigma / sqrt(n)
+mean_xbar <- mu
+sd_xbar <- sigma / sqrt(n)
+
+cat("Mean of sampling distribution:", mean_xbar, "minutes\n")
+cat("Standard deviation of sampling distribution:", sd_xbar, "minutes\n")
+```
+
+**Answer:** The mean of the sampling distribution is **`r round(mean_xbar, 4)`** minutes and the standard deviation of the sampling distribution is **`r round(sd_xbar, 4)`** minutes.
+
+## b)
+
+**Find the 90th percentile for the sample mean time for app engagement for a tablet user. Interpret this value in a complete sentence.**
+
+```{r, question_2b}
+# 90th percentile
+percentile_90 <- qnorm(0.90, mean = mean_xbar, sd = sd_xbar)
+cat("90th percentile:", percentile_90, "minutes\n")
+```
+
+**Answer:** The 90th percentile for the sample mean time is **`r round(percentile_90, 4)`** minutes. This means that 90% of samples of 60 tablet users will have an average app engagement time less than `r round(percentile_90, 4)` minutes, and only 10% of samples will have an average greater than this value.
+
+## c)
+
+**Find the probabilities that the sample mean is between $\pm 1$ standard deviation, $\pm 2$ standard deviations, and $\pm 3$ standard deviations.**
+
+```{r, question_2c}
+# Within 1 standard deviation: P(mu - 1*sd < X_bar < mu + 1*sd)
+lower_1sd <- mean_xbar - 1 * sd_xbar
+upper_1sd <- mean_xbar + 1 * sd_xbar
+prob_1sd <- pnorm(upper_1sd, mean = mean_xbar, sd = sd_xbar) -
+            pnorm(lower_1sd, mean = mean_xbar, sd = sd_xbar)
+
+# Within 2 standard deviations
+lower_2sd <- mean_xbar - 2 * sd_xbar
+upper_2sd <- mean_xbar + 2 * sd_xbar
+prob_2sd <- pnorm(upper_2sd, mean = mean_xbar, sd = sd_xbar) -
+            pnorm(lower_2sd, mean = mean_xbar, sd = sd_xbar)
+
+# Within 3 standard deviations
+lower_3sd <- mean_xbar - 3 * sd_xbar
+upper_3sd <- mean_xbar + 3 * sd_xbar
+prob_3sd <- pnorm(upper_3sd, mean = mean_xbar, sd = sd_xbar) -
+            pnorm(lower_3sd, mean = mean_xbar, sd = sd_xbar)
+
+cat("P(within 1 SD) =", prob_1sd, "\n")
+cat("P(within 2 SD) =", prob_2sd, "\n")
+cat("P(within 3 SD) =", prob_3sd, "\n")
+```
+
+**Answer:**
+
+- Within $\pm 1$ standard deviation: **`r round(prob_1sd, 6)`** or about `r round(prob_1sd * 100, 2)`%
+- Within $\pm 2$ standard deviations: **`r round(prob_2sd, 6)`** or about `r round(prob_2sd * 100, 2)`%
+- Within $\pm 3$ standard deviations: **`r round(prob_3sd, 6)`** or about `r round(prob_3sd * 100, 2)`%
+
+## d)
+
+**Is there a different way to do part (c) that involves not using R, and not using any form of calculations?**
+
+**Answer:** Yes, there is a different way using the **Empirical Rule** (68-95-99.7 Rule) for normal distributions. This rule states that for any normal distribution:
+
+- Approximately 68% of values fall within $\pm 1$ standard deviation of the mean
+- Approximately 95% of values fall within $\pm 2$ standard deviations of the mean
+- Approximately 99.7% of values fall within $\pm 3$ standard deviations of the mean
+
+Since the sampling distribution of the sample mean is normally distributed, we can directly apply this rule without any calculations. The values we calculated in part (c) should be very close to 68%, 95%, and 99.7% respectively.
+
+# Question 3
+
+A study involving stress is done on a college campus among the students. The stress scores, ranging from 0 to 5, follow a binomial distribution with N = 5 and p = 0.5. Using a sample of 75 students, find:
+
+```{r, question3}
+# Given parameters
+N <- 5  # number of trials for binomial
+p <- 0.5  # probability of success
+n <- 75  # sample size (number of students)
+
+# Population parameters for Binomial(N, p)
+pop_mean <- N * p
+pop_variance <- N * p * (1 - p)
+pop_sd <- sqrt(pop_variance)
+
+cat("Population parameters (for individual student):\n")
+cat("Mean:", pop_mean, "\n")
+cat("Variance:", pop_variance, "\n")
+cat("Standard deviation:", pop_sd, "\n\n")
+```
+
+## a)
+
+**The probability that the average stress score for the 75 students is less than 2.25.**
+
+```{r, question_3a}
+# By Central Limit Theorem, sample mean is approximately Normal
+# Mean of sample mean = pop_mean
+# SD of sample mean = pop_sd / sqrt(n)
+mean_xbar <- pop_mean
+sd_xbar <- pop_sd / sqrt(n)
+
+cat("Sampling distribution of sample mean:\n")
+cat("Mean:", mean_xbar, "\n")
+cat("Standard deviation:", sd_xbar, "\n\n")
+
+# Find P(sample mean < 2.25)
+prob_a <- pnorm(2.25, mean = mean_xbar, sd = sd_xbar)
+cat("P(sample mean < 2.25) =", prob_a, "\n")
+```
+
+**Answer:** The probability that the average stress score for the 75 students is less than 2.25 is **`r round(prob_a, 6)`** or about `r round(prob_a * 100, 2)`%.
+
+## b)
+
+**The 90th percentile for the average stress score for the 75 students.**
+
+```{r, question_3b}
+# Find the 90th percentile
+percentile_90_mean <- qnorm(0.90, mean = mean_xbar, sd = sd_xbar)
+cat("90th percentile for sample mean:", percentile_90_mean, "\n")
+```
+
+**Answer:** The 90th percentile for the average stress score for the 75 students is **`r round(percentile_90_mean, 4)`**. This means 90% of samples of 75 students will have an average stress score below this value.
+
+## c)
+
+**The probability that the total of the 75 stress scores is less than 200.**
+
+```{r, question_3c}
+# Total (sum) of 75 scores
+# By CLT, sum is approximately Normal with:
+# Mean of sum = n * pop_mean
+# SD of sum = sqrt(n) * pop_sd
+mean_sum <- n * pop_mean
+sd_sum <- sqrt(n) * pop_sd
+
+cat("Sampling distribution of total (sum):\n")
+cat("Mean:", mean_sum, "\n")
+cat("Standard deviation:", sd_sum, "\n\n")
+
+# Find P(sum < 200)
+prob_c <- pnorm(200, mean = mean_sum, sd = sd_sum)
+cat("P(total < 200) =", prob_c, "\n")
+```
+
+**Answer:** The probability that the total of the 75 stress scores is less than 200 is **`r round(prob_c, 6)`** or about `r round(prob_c * 100, 2)`%.
+
+## d)
+
+**The 90th percentile for the total stress score for the 75 students.**
+
+```{r, question_3d}
+# Find the 90th percentile for the sum
+percentile_90_sum <- qnorm(0.90, mean = mean_sum, sd = sd_sum)
+cat("90th percentile for total:", percentile_90_sum, "\n")
+```
+
+**Answer:** The 90th percentile for the total stress score for the 75 students is **`r round(percentile_90_sum, 4)`**. This means 90% of samples will have a total stress score below this value.
+
+# Question 4
+
+Suppose that a market research analyst for a cell phone company conducts a study of their customers who exceed the data allowance included on their basic cell phone contract; the analyst finds that for those people who exceed the data included in their basic contract, the excess data used follows an exponential distribution with a mean of 2 Gigabytes (Gb). Consider a random sample of 80 customers who exceed the data allowance included in their basic cell phone contract.
+
+```{r, question4}
+# Given parameters
+pop_mean <- 2  # mean of exponential distribution in Gb
+n <- 80  # sample size
+target <- 2.5  # target value in Gb
+
+# For exponential distribution with mean = 2
+# rate parameter = 1/mean
+rate <- 1 / pop_mean
+
+# Population variance for exponential = mean^2
+pop_variance <- pop_mean^2
+pop_sd <- pop_mean  # for exponential, sd = mean
+
+cat("Population parameters (Exponential distribution):\n")
+cat("Mean:", pop_mean, "Gb\n")
+cat("Rate:", rate, "\n")
+cat("Variance:", pop_variance, "\n")
+cat("Standard deviation:", pop_sd, "Gb\n\n")
+```
+
+## a)
+
+**Suppose that one customer who exceeds the data limit for his cell phone contract is randomly selected. Find the probability that this individual customer's excess data use is larger than 2.5 Gb.**
+
+```{r, question_4a}
+# For a single customer, use exponential distribution
+# P(X > 2.5) = 1 - P(X <= 2.5)
+prob_single <- 1 - pexp(target, rate = rate)
+cat("P(single customer > 2.5 Gb) =", prob_single, "\n")
+```
+
+**Answer:** The probability that a single randomly selected customer's excess data use is larger than 2.5 Gb is **`r round(prob_single, 6)`** or about `r round(prob_single * 100, 2)`%.
+
+## b)
+
+**Find the probability that the average excess data used by the 80 customers in the sample is larger than 2.5 Gb.**
+
+```{r, question_4b}
+# By Central Limit Theorem, sample mean is approximately Normal
+# Mean of sample mean = pop_mean
+# SD of sample mean = pop_sd / sqrt(n)
+mean_xbar <- pop_mean
+sd_xbar <- pop_sd / sqrt(n)
+
+cat("Sampling distribution of sample mean:\n")
+cat("Mean:", mean_xbar, "Gb\n")
+cat("Standard deviation:", sd_xbar, "Gb\n\n")
+
+# P(sample mean > 2.5)
+prob_sample_mean <- 1 - pnorm(target, mean = mean_xbar, sd = sd_xbar)
+cat("P(sample mean > 2.5 Gb) =", prob_sample_mean, "\n")
+```
+
+**Answer:** The probability that the average excess data used by the 80 customers in the sample is larger than 2.5 Gb is **`r round(prob_sample_mean, 6)`** or about `r round(prob_sample_mean * 100, 2)`%.
+
+## c)
+
+**Explain why the probabilities in (a) and (b) are different.**
+
+**Answer:** The probabilities are different because:
+
+1. **Part (a)** examines a **single individual customer** whose data usage follows an exponential distribution with mean 2 Gb and high variability (standard deviation = 2 Gb). There is substantial probability (`r round(prob_single * 100, 2)`%) that one individual could exceed 2.5 Gb.
+
+2. **Part (b)** examines the **average of 80 customers**. By the Central Limit Theorem, the sample mean has the same mean (2 Gb) but much lower variability (standard deviation = `r round(sd_xbar, 4)` Gb). The averaging process reduces variability, making it much less likely (`r round(prob_sample_mean * 100, 2)`%) for the average to deviate far from the population mean of 2 Gb.
+
+In summary, individual observations have high variability, but averages of many observations have low variability due to the law of large numbers. This makes extreme values much less likely for sample means compared to individual observations.
+
+# Question 5
+
+There were 70 enrolled students in STAT 3355 during the year 2020. The population of adults, 18 years or older, in the United States was 258.3 million in 2020. A student surveyed 30 of her classmates in 2020 and found that 22 students liked to play video games.
+
+**If this student computed a 95% confidence interval, would it have contained the value of 65%, which was known to be the proportion of adults that liked to play video games in the United States in 2020?**
+
+```{r, question_5}
+# Given data
+n <- 30  # sample size
+x <- 22  # number who like video games
+p_hat <- x / n  # sample proportion
+p_us <- 0.65  # US population proportion
+confidence_level <- 0.95
+alpha <- 1 - confidence_level
+z_critical <- qnorm(1 - alpha/2)
+
+cat("Sample proportion:", p_hat, "\n")
+cat("US population proportion:", p_us, "\n\n")
+
+# Calculate standard error
+se <- sqrt(p_hat * (1 - p_hat) / n)
+cat("Standard error:", se, "\n")
+
+# Calculate 95% confidence interval
+margin_error <- z_critical * se
+lower_bound <- p_hat - margin_error
+upper_bound <- p_hat + margin_error
+
+cat("\n95% Confidence Interval:\n")
+cat("Lower bound:", lower_bound, "\n")
+cat("Upper bound:", upper_bound, "\n")
+cat("Interval: [", lower_bound, ",", upper_bound, "]\n\n")
+
+# Check if 0.65 is in the interval
+contains_065 <- (p_us >= lower_bound) & (p_us <= upper_bound)
+cat("Does the interval contain 0.65?", contains_065, "\n")
+```
+
+**Answer:** The sample proportion is $\hat{p}$ = `r round(p_hat, 4)` (or `r round(p_hat * 100, 2)`%). The 95% confidence interval is [`r round(lower_bound, 4)`, `r round(upper_bound, 4)`] or [`r round(lower_bound * 100, 2)`%, `r round(upper_bound * 100, 2)`%].
+
+**Conclusion:** The confidence interval **`r if(contains_065) "DOES" else "DOES NOT"`** contain the value of 65%. This `r if(contains_065) "suggests that" else "is not surprising because"` the sample comes from a class of 70 students, which is a very different and much smaller population than the entire U.S. adult population of 258.3 million. The class sample is not representative of the U.S. population, so we would not necessarily expect the class proportion to match the national proportion.
+
+# Question 6
+
+An elevator can safely hold 3,500 lbs. A sign in the elevator limits the passenger count to 15. If the adult population has a mean weight of 180 lbs with a 25 lbs standard deviation, how unusual would it be, if the central limit theorem applied, that an elevator holding 15 people would be carrying more than 3,500 pounds?
+
+```{r, question_6}
+# Given parameters
+mu_weight <- 180  # mean weight in lbs
+sigma_weight <- 25  # standard deviation in lbs
+n_people <- 15  # number of people
+max_weight <- 3500  # maximum safe weight
+
+# By CLT, total weight of 15 people is approximately Normal
+# Mean of total = n * mu
+# SD of total = sqrt(n) * sigma
+mean_total <- n_people * mu_weight
+sd_total <- sqrt(n_people) * sigma_weight
+
+cat("Distribution of total weight for 15 people:\n")
+cat("Mean:", mean_total, "lbs\n")
+cat("Standard deviation:", sd_total, "lbs\n\n")
+
+# Find P(total weight > 3500)
+prob_exceed <- 1 - pnorm(max_weight, mean = mean_total, sd = sd_total)
+cat("P(total weight > 3500 lbs) =", prob_exceed, "\n")
+
+# Calculate z-score to show how unusual this is
+z_score <- (max_weight - mean_total) / sd_total
+cat("Z-score:", z_score, "\n")
+```
+
+**Answer:** The probability that an elevator holding 15 people would be carrying more than 3,500 pounds is **`r round(prob_exceed, 6)`** or about `r round(prob_exceed * 100, 4)`%.
+
+**Conclusion:** This is `r if(prob_exceed < 0.01) "extremely unusual" else if(prob_exceed < 0.05) "quite unusual" else "somewhat unusual"`. The z-score is `r round(z_score, 2)`, which means 3,500 lbs is `r round(z_score, 2)` standard deviations above the mean. The expected total weight is only `r mean_total` lbs, which is well below the 3,500 lb limit, making it very unlikely that 15 randomly selected adults would exceed the weight limit.
+
+# Question 7
+
+A restaurant sells an average of 25 bottles of wine per night, with a variance of 25. Assuming the central limit theorem applies, what is the probability that the restaurant will sell more than 600 bottles in the next 30 days?
+
+```{r, question_7}
+# Given parameters (Poisson distribution)
+lambda <- 25  # average per night
+variance_per_night <- 25
+n_days <- 30
+target_total <- 600
+
+# For Poisson distribution: mean = variance = lambda
+# Total sales over 30 days follows Poisson(30 * lambda)
+# Mean of total = n * lambda
+# Variance of total = n * variance (for Poisson, this equals n * lambda)
+# SD of total = sqrt(n * variance)
+
+mean_total <- n_days * lambda
+variance_total <- n_days * variance_per_night
+sd_total <- sqrt(variance_total)
+
+cat("Distribution of total sales over 30 days:\n")
+cat("Mean:", mean_total, "bottles\n")
+cat("Variance:", variance_total, "\n")
+cat("Standard deviation:", sd_total, "bottles\n\n")
+
+# By CLT, use normal approximation
+# P(total > 600)
+prob_exceed <- 1 - pnorm(target_total, mean = mean_total, sd = sd_total)
+cat("P(total sales > 600 bottles) =", prob_exceed, "\n")
+```
+
+**Answer:** The probability that the restaurant will sell more than 600 bottles in the next 30 days is **`r round(prob_exceed, 6)`** or about `r round(prob_exceed * 100, 2)`%.
+
+**Conclusion:** Since the expected total sales over 30 days is `r mean_total` bottles, selling more than 600 bottles would be `r if(prob_exceed > 0.5) "somewhat likely" else "unlikely"`. The value of 600 is `r if(target_total > mean_total) "above" else "below"` the expected value of `r mean_total` bottles.
+
+# Question 8
+
+Currently, there are 54 enrolled students in STAT 3355. It is known that 13.1% of the population in U.S. are left-handed. A student wishes to find the proportion of left-handed people in this class. She surveys 30 students and finds that only 2 are left-handed.
+
+**If she computes a 95% confidence interval, would it contain the value of 13.1%?**
+
+```{r, question_8}
+# Given data
+n <- 30  # sample size
+x <- 2  # number of left-handed students
+p_hat <- x / n  # sample proportion
+p_us <- 0.131  # US population proportion
+confidence_level <- 0.95
+alpha <- 1 - confidence_level
+z_critical <- qnorm(1 - alpha/2)
+
+cat("Sample proportion:", p_hat, "\n")
+cat("US population proportion:", p_us, "\n\n")
+
+# Calculate standard error
+se <- sqrt(p_hat * (1 - p_hat) / n)
+cat("Standard error:", se, "\n")
+
+# Calculate 95% confidence interval
+margin_error <- z_critical * se
+lower_bound <- p_hat - margin_error
+upper_bound <- p_hat + margin_error
+
+cat("\n95% Confidence Interval:\n")
+cat("Lower bound:", lower_bound, "\n")
+cat("Upper bound:", upper_bound, "\n")
+cat("Interval: [", lower_bound, ",", upper_bound, "]\n\n")
+
+# Check if 0.131 is in the interval
+contains_0131 <- (p_us >= lower_bound) & (p_us <= upper_bound)
+cat("Does the interval contain 0.131?", contains_0131, "\n")
+```
+
+**Answer:** The sample proportion is $\hat{p}$ = `r round(p_hat, 4)` (or `r round(p_hat * 100, 2)`%). The 95% confidence interval is [`r round(lower_bound, 4)`, `r round(upper_bound, 4)`] or [`r round(lower_bound * 100, 2)`%, `r round(upper_bound * 100, 2)`%].
+
+**Conclusion:** The confidence interval **`r if(contains_0131) "DOES" else "DOES NOT"`** contain the value of 13.1%. `r if(contains_0131) "This suggests that the class proportion is consistent with the national proportion." else "This suggests that this particular class has a lower proportion of left-handed students than the national average, though this could also be due to random sampling variation from a small class."`
+
+# Question 9
+
+For the `babies` dataset in the package `UsingR`, the variable `age` contains the mother's age and the variable `dage` contains the father's age.
+
+**Find a 95% confidence interval for the difference in mean age. Does it contain 0? What do you assume about the data?**
+
+```{r, question_9}
+# Load the required package and dataset
+library(UsingR)
+data(babies)
+
+# Extract ages (remove NAs)
+mother_age <- babies$age[!is.na(babies$age) & !is.na(babies$dage)]
+father_age <- babies$dage[!is.na(babies$age) & !is.na(babies$dage)]
+
+# Calculate differences (paired data)
+age_diff <- father_age - mother_age
+
+# Summary statistics
+n <- length(age_diff)
+mean_diff <- mean(age_diff)
+sd_diff <- sd(age_diff)
+se_diff <- sd_diff / sqrt(n)
+
+cat("Sample size:", n, "\n")
+cat("Mean difference (father - mother):", mean_diff, "years\n")
+cat("Standard deviation of differences:", sd_diff, "years\n")
+cat("Standard error:", se_diff, "years\n\n")
+
+# 95% confidence interval using t-distribution
+alpha <- 0.05
+t_critical <- qt(1 - alpha/2, df = n - 1)
+
+margin_error <- t_critical * se_diff
+lower_bound <- mean_diff - margin_error
+upper_bound <- mean_diff + margin_error
+
+cat("95% Confidence Interval for difference:\n")
+cat("Lower bound:", lower_bound, "years\n")
+cat("Upper bound:", upper_bound, "years\n")
+cat("Interval: [", lower_bound, ",", upper_bound, "]\n\n")
+
+# Check if 0 is in the interval
+contains_zero <- (0 >= lower_bound) & (0 <= upper_bound)
+cat("Does the interval contain 0?", contains_zero, "\n")
+
+# Summary statistics for context
+cat("\nSummary statistics:\n")
+cat("Mean mother age:", mean(mother_age), "years\n")
+cat("Mean father age:", mean(father_age), "years\n")
+```
+
+**Answer:** The 95% confidence interval for the difference in mean age (father age - mother age) is [`r round(lower_bound, 4)`, `r round(upper_bound, 4)`] years.
+
+**Does it contain 0?** `r if(contains_zero) "Yes" else "No"`, the interval **`r if(contains_zero) "DOES" else "DOES NOT"`** contain 0.
+
+`r if(!contains_zero) paste0("Since the interval does not contain 0 and is entirely ", if(mean_diff > 0) "positive" else "negative", ", we can conclude with 95% confidence that there is a significant difference in mean ages - fathers are on average ", round(abs(mean_diff), 2), " years ", if(mean_diff > 0) "older" else "younger", " than mothers in this dataset.") else "Since the interval contains 0, we cannot conclude that there is a significant difference in mean ages between mothers and fathers at the 95% confidence level."`
+
+**Assumptions:** We assume that:
+
+1. The data represents **paired observations** (each baby has both a mother and a father), so we use paired t-test methodology by analyzing the differences.
+2. The differences in ages are **approximately normally distributed** (or the sample size is large enough for the Central Limit Theorem to apply).
+3. The sample is **representative** of the population we want to make inferences about.
+4. Observations are **independent** of each other.
+
