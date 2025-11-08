@@ -370,7 +370,7 @@ z_score <- (max_weight - mean_total) / sd_total
 cat("Z-score:", z_score, "\n")
 ```
 
-**Answer:** The probability that an elevator holding 15 people would be carrying more than 3,500 pounds is **`r round(prob_exceed, 6)`** or about `r round(prob_exceed * 100, 4)`%.
+**Answer:** The probability that an elevator holding 15 people would be carrying more than 3,500 pounds is **`r prob_exceed`** or basically `r round(prob_exceed * 100, 4)`%.
 
 **Conclusion:** This is `r if(prob_exceed < 0.01) "extremely unusual" else if(prob_exceed < 0.05) "quite unusual" else "somewhat unusual"`. The z-score is `r round(z_score, 2)`, which means 3,500 lbs is `r round(z_score, 2)` standard deviations above the mean. The expected total weight is only `r mean_total` lbs, which is well below the 3,500 lb limit, making it very unlikely that 15 randomly selected adults would exceed the weight limit.
 
@@ -408,7 +408,7 @@ cat("P(total sales > 600 bottles) =", prob_exceed, "\n")
 
 **Answer:** The probability that the restaurant will sell more than 600 bottles in the next 30 days is **`r round(prob_exceed, 6)`** or about `r round(prob_exceed * 100, 2)`%.
 
-**Conclusion:** Since the expected total sales over 30 days is `r mean_total` bottles, selling more than 600 bottles would be `r if(prob_exceed > 0.5) "somewhat likely" else "unlikely"`. The value of 600 is `r if(target_total > mean_total) "above" else "below"` the expected value of `r mean_total` bottles.
+**Conclusion:** Since the expected total sales over 30 days is `r mean_total` bottles, selling more than 600 bottles would be `r if(prob_exceed > 0.5) "very likely" else "unlikely"`. The value of 600 is `r if(target_total > mean_total) "above" else "below"` the expected value of `r mean_total` bottles.
 
 # Question 8
 
