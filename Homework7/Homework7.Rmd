@@ -1,0 +1,154 @@
+---
+title: "Homework 1"
+author: "Han Nguyen - TXN200004"
+date: "09/02/2024"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Problem 1
+
+```{r, problem1}
+# If I wrote code that would be used in all following letters, it would go here
+```
+
+## a)
+
+```{r, problem_1a}
+# This is where my code for this question goes
+a <- 4 + 3
+```
+
+This is me placing the alleged answer to this question in text: a = ```r a```
+
+## b)
+
+```{r, problem_1b}
+# This is where my code for this question goes
+```
+
+## c)
+
+```{r, problem_1c}
+# This is where my code for this question goes
+mu_1 <- 5.564231
+```
+
+This is me using a mathematical symbol to state the alleged mean $\mu_1$ = ```r mu_1```
+
+## d)
+
+```{r, problem_1d}
+# This is where my code for this question goes
+```
+
+## e)
+
+```{r, problem_1e}
+# This is where my code for this question goes
+```
+
+## f)
+
+```{r, problem_1f}
+# This is where my code for this question goes
+```
+
+# Problem 2
+
+```{r, problem2}
+# If I wrote code that would be used in all following letters, it would go here
+```
+
+## a)
+
+```{r, problem_2a}
+# This is where my code for this question goes
+```
+
+## b)
+
+```{r, problem_2b}
+# This is where my code for this question goes
+```
+
+## c)
+
+```{r, problem_2c}
+# This is where my code for this question goes
+```
+
+## d)
+
+```{r, problem_2d}
+# This is where my code for this question goes
+```
+
+# Problem 3
+
+```{r, problem3}
+# If I wrote code that would be used in all following letters, it would go here
+```
+
+## a)
+
+```{r, problem_3a}
+# This is where my code for this question goes
+```
+
+## b)
+
+```{r, problem_3b}
+# This is where my code for this question goes
+```
+
+## c)
+
+```{r, problem_3c}
+# This is where my code for this question goes
+```
+
+## d)
+
+```{r, problem_3d}
+# This is where my code for this question goes
+```
+
+# Problem 4
+```{r, problem4}
+# If I wrote code that would be used in all following letters, it would go here
+```
+
+## a)
+
+```{r, problem_4a}
+# This is where my code for this question goes
+```
+
+## b)
+
+```{r, problem_4b}
+# This is where my code for this question goes
+```
+
+## c)
+
+```{r, problem_4c}
+# This is where my code for this question goes
+```
+
+# Problem 5
+
+```{r, problem_5}
+# This is where my code for this question goes
+```
+
+# Problem 6
+
+```{r, problem_6}
+# This is where my code for this question goes
+```
+
