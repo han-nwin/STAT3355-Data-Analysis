@@ -1,0 +1,170 @@
+4 Question 2: Gender Differences in Home Advantage
+4.1 Overview
+We examine whether male and female gymnasts benefit differently from hosting.
+Medal Rates by Gender:
+Male Gymnasts: - Host: 17.17 % - Non-host: 7.95 % - Difference: 9.22 pp
+Female Gymnasts: - Host: 13.3 % - Non-host: 8.16 % - Difference: 5.14 pp8.2%
+13.3%
+8%
+17.2%
+0
+5
+10
+15
+20
+Female Male
+Medal Rate (%)
+Status Host Non-Host
+Medal Rates by Gender and Hosting Status
+Figure 3: Medal Rates by Gender and Hosting Status
+4.2 Statistical Tests
+T-Test Results:
+Males: - T-statistic: -9.529 - P-value: <2e-16 - Result: Significant
+Females: - T-statistic: -3.785 - P-value: 0.000167 - Result: Significant
+4.3 Temporal Trends: Has the Gender Gap Changed Over Time?
+We examine whether the home advantage effect for males vs females has changed across different Olympic
+eras.
+Home Advantage by Gender Across Eras:
+Early (1896-1948) - Female: 34.07 pp - Male: 1.18 pp
+Mid (1952-1988) - Female: 3.86 pp - Male: 11.3 pp
+Modern (1992-2020) - Female: 2.76 pp - Male: 8.88 pp
+8
+34.1pp
+1.2pp
+3.9pp
+11.3pp
+2.8pp
+8.9pp
+0
+10
+20
+30
+Early (1896-1948) Mid (1952-1988) Modern (1992-2020)
+Era
+Home Advantage (percentage points)
+Gender Female Male
+Home Advantage by Gender Across Olympic ErasFigure 4: Gender Home Advantage Trends Over Time
+9
+4.4 Question 2 Summary
+Key Findings:
+1. Overall home advantage by gender:
+ Male home advantage: 9.22 percentage points
+ Female home advantage: 5.14 percentage points
+ Males show a larger overall home advantage effect
+2. Temporal trends - Era-by-era analysis:
+Early (1896-1948):
+ Male advantage: 1.18 pp
+ Female advantage: 34.07 pp
+ Females show 32.89 pp larger advantage in this era
+Mid (1952-1988):
+ Male advantage: 11.3 pp
+ Female advantage: 3.86 pp
+ Males show 7.44 pp larger advantage in this era
+Modern (1992-2020):
+ Male advantage: 8.88 pp
+ Female advantage: 2.76 pp
+ Males show 6.13 pp larger advantage in this era
+3. Interpretation: Home advantage effects vary significantly across time periods, with different patterns
+emerging in early vs modern Olympics.
+10
+5 Question 3: Country Factors
+5.1 Overview
+We examine how country size and hosting experience influence home advantage.
+5.2 Country Size Analysis
+Average Improvement by Country Size:
+ Large : 12.06 pp (n = 9 )
+ Medium : 3.66 pp (n = 4 )
+ Small : 17.14 pp (n = 15 )12.1pp
+3.7pp
+17.1pp
+0
+5
+10
+15
+20
+Large Medium Small
+Country Size
+Average Improvement (pp)
+Hosting year compared to historical baseline
+Average Medal Rate Improvement by Country Size
+Figure 5: Home Advantage by Country Size
+5.3 Hosting Experience Analysis
+Average Improvement by Hosting Experience:
+ First-Time hosts: 16.53 pp (n = 18 )
+ Repeat hosts: 8.27 pp (n = 10 )
+T-Test: First-Time vs Repeat Hosts
+ T-statistic: 0.981
+ P-value: 0.336
+ Result: No significant difference
+5.4 Gymnast Participation: Do Host Countries Send More Gymnasts?
+We examine whether host nations field larger gymnastics teams, potentially influencing their medal counts.
+11
+Average Gymnast Count per Country:
+ Host countries: 23.5 gymnasts
+ Non-host countries: 7.2 gymnasts
+ Difference: 16.3 gymnasts
+T-Test: Host vs Non-Host Participation
+ T-statistic: -3.328
+ P-value: 0.00245
+ Result: Host countries send SIGNIFICANTLY more gymnasts7.2 gymnasts
+23.5 gymnasts
+0
+10
+20
+30
+Host Non-Host
+Average Number of Gymnasts
+Host countries vs Non-Host countries
+Average Number of Gymnasts per Country
+Figure 6: Gymnast Participation: Host vs Non-Host
+5.5 Question 3 Summary
+Key Findings:
+1. Country size: Shows varying levels of home advantage across small/medium/large countries
+2. Hosting experience: No significant difference between first-time and repeat hosts
+3. Gymnast participation: Host countries send an average of 16.3 more gymnasts - statistically
+significant
+12
+6 Question 4: Economics & Demographics
+6.1 Overview
+We examine how GDP per capita affects home advantage.
+Correlation: GDP per Capita vs Home Advantage
+ Correlation coefficient: -0.115
+ P-value: 0.708
+ Result: No significant correlation-10
+0
+10
+20
+30
+0 10 20 30 40
+GDP per Capita (thousands USD)
+Improvement from Baseline (pp)
+GDP per Capita vs Medal Rate Improvement
+Figure 7: GDP per Capita vs Home Advantage
+6.2 Demographics: Working-Age Population Effects
+We examine whether countries with larger working-age populations (ages 15-64) gain more advantage when
+hosting.
+Correlation: Working-Age Population vs Home Advantage
+ Correlation coefficient: 0.461
+ P-value: 0.072
+ Result: No significant correlation
+13
+-20
+-10
+0
+10
+20
+30
+50 55 60 65 70
+Working-Age Population (%)
+Improvement from Baseline (pp)
+Working-Age Population Proportion vs Medal Rate ImprovementFigure 8: Working-Age Population vs Home Advantage
+14
+6.3 Question 4 Summary
+Key Findings:
+1. GDP per capita:
+ Correlation with home advantage: -0.115
+ Statistical significance: No (p >= 0.05)
+2. Working-age population:
+ Correlation with home advantage: 0.461
+ Statistical significance: No (p >= 0.05)
+15

@@ -1,0 +1,933 @@
+---
+title: "Does Hosting the Olympics Provide Home Advantage in Gymnastics?"
+subtitle: "Project"
+author: "Han Nguyen"
+date: "`r Sys.Date()`"
+output:
+  pdf_document:
+    toc: true
+    toc_depth: 2
+    number_sections: true
+    fig_width: 7
+    fig_height: 5
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE,
+                      fig.align = 'center')
+
+library(tidyverse)
+library(ggplot2)
+
+theme_set(theme_minimal(base_size = 11))
+```
+
+\newpage
+
+# Introduction
+
+## Background
+
+This project investigates whether hosting the Olympics provides a measurable home advantage in **gymnastics**. Unlike track and field events measured by time or distance, gymnastics performances are evaluated by panels of judges, creating opportunities for potential bias that may favor athletes from the host nation.
+
+## Why Gymnastics?
+
+Gymnastics is ideal for studying bias because outcomes depend on **human judgment** rather than purely objective performance metrics. By analyzing Olympic gymnastics data from 1896 to 2020, we can determine whether hosting correlates with statistically significant performance improvements.
+
+## Research Questions
+
+**Question 1: Does hosting the Olympics provide a measurable competitive advantage in gymnastics?**
+
+- Do host nations win significantly more gymnastics medals during their hosting year compared to historical baselines?
+- What is the average percentage increase in total medals and gold medals for host countries?
+
+**Question 2: Does the home advantage in gymnastics differ by gender?**
+
+- Do female gymnasts benefit more from hosting than male gymnasts?
+- Has the gender gap in home advantage changed over time?
+
+**Question 3: Does hosting experience and country size influence the magnitude of home advantage?**
+
+- Do first-time host nations gain a bigger boost than repeat hosts?
+- Do smaller countries (by area or population) experience larger percentage increases in medal counts?
+- Does the host nation field more participating gymnasts, potentially influencing outcomes?
+
+**Question 4: How do economic and demographic factors affect home advantage?**
+
+- Among host countries, do those with higher GDP per capita see different magnitudes of medal increases?
+- Do countries with younger median ages or larger working-age populations gain more advantage when hosting?
+
+\newpage
+
+# Data Overview
+
+## Datasets Used
+
+1. **Olympics Athletes Dataset (1896-2020)**: 237,674 Olympic performances, filtered to ~28,500 gymnastics records
+2. **Olympic Hosts Dataset**: Historical record of host cities and countries
+3. **Population Data**: Demographic data from Our World in Data
+4. **Country Area Data**: Geographic size information
+5. **GDP Data**: Economic data from the World Bank
+
+## Data Preparation
+
+- Standardized country names using NOC codes
+- Created medal outcome variables (binary indicators)
+- Calculated baseline performance for each country based on non-hosting years
+- Merged economic and demographic data matched to Olympic years
+
+```{r load-data}
+# Load analysis datasets
+q1_data <- read_csv("../analysis_data/q1_home_advantage.csv", show_col_types = FALSE)
+q2_data <- read_csv("../analysis_data/q2_gender_analysis.csv", show_col_types = FALSE)
+q3_data <- read_csv("../analysis_data/q3_country_factors.csv", show_col_types = FALSE)
+q4_data <- read_csv("../analysis_data/q4_economics_demographics.csv", show_col_types = FALSE)
+```
+
+```{r data-summary, results='asis'}
+total_performances <- nrow(q1_data)
+unique_countries <- q1_data %>% distinct(NOC) %>% nrow()
+unique_olympics <- q1_data %>% distinct(Year) %>% nrow()
+host_performances <- sum(q1_data$is_host == 1)
+non_host_performances <- sum(q1_data$is_host == 0)
+
+cat("**Dataset Summary:**\n\n")
+cat("- Total gymnastics performances:", format(total_performances, big.mark = ","), "\n")
+cat("- Number of countries:", unique_countries, "\n")
+cat("- Olympic Games analyzed:", unique_olympics, "\n")
+cat("- Host nation performances:", format(host_performances, big.mark = ","), "\n")
+cat("- Non-host performances:", format(non_host_performances, big.mark = ","), "\n")
+cat("- Time period: 1896-2020\n")
+```
+
+\newpage
+
+# Question 1: Does Hosting Provide Home Advantage?
+
+## Overview
+
+We address two key questions:
+
+1. Do host nations win significantly more gymnastics medals during their hosting year compared to historical baselines?
+2. What is the average percentage increase in total medals and gold medals for host countries?
+
+## Sub-question 1: Do Host Nations Win Significantly More Medals?
+
+### Descriptive Statistics
+
+```{r q1-descriptive, results='asis'}
+# Calculate medal rates
+host_rate <- mean(q1_data$medal_won[q1_data$is_host == 1]) * 100
+nonhost_rate <- mean(q1_data$medal_won[q1_data$is_host == 0]) * 100
+
+host_medals <- sum(q1_data$medal_won[q1_data$is_host == 1])
+nonhost_medals <- sum(q1_data$medal_won[q1_data$is_host == 0])
+
+cat("**Medal Winning Rates:**\n\n")
+cat("- **Host countries**: ", round(host_rate, 2), "% (", host_medals,
+    " medals from ", host_performances, " performances)\n")
+cat("- **Non-host countries**: ", round(nonhost_rate, 2), "% (", nonhost_medals,
+    " medals from ", format(non_host_performances, big.mark=","), " performances)\n")
+cat("- **Difference**: ", round(host_rate - nonhost_rate, 2), " percentage points\n\n")
+```
+
+```{r q1-plot1, fig.cap="Medal Rates: Host vs Non-Host Countries", fig.height=4}
+# Create simple bar plot
+plot_data <- data.frame(
+  Group = c("Host", "Non-Host"),
+  Rate = c(host_rate, nonhost_rate)
+)
+
+ggplot(plot_data, aes(x = Group, y = Rate, fill = Group)) +
+  geom_col(width = 0.6) +
+  geom_text(aes(label = paste0(round(Rate, 1), "%")), vjust = -0.5, size = 5) +
+  scale_fill_manual(values = c("Host" = "#e74c3c", "Non-Host" = "#95a5a6")) +
+  labs(title = "Medal Winning Rates by Hosting Status",
+       x = "",
+       y = "Medal Rate (%)") +
+  theme(legend.position = "none") +
+  ylim(0, max(plot_data$Rate) * 1.15)
+```
+
+### Statistical Test: Two-Sample Proportions Test
+
+We test whether the difference in medal rates is statistically significant using a two-proportion z-test.
+
+**Hypotheses:**
+
+- H0: Host and non-host countries have the same medal-winning rate
+- Ha: Host and non-host countries have different medal-winning rates
+
+```{r q1-prop-test}
+# Two-proportion z-test
+prop_test <- prop.test(
+  x = c(host_medals, nonhost_medals),
+  n = c(host_performances, non_host_performances)
+)
+```
+
+```{r q1-prop-results, results='asis'}
+cat("**Test Results:**\n\n")
+cat("- Test statistic (X-squared):", round(prop_test$statistic, 3), "\n")
+cat("- P-value:", format.pval(prop_test$p.value, digits = 3), "\n")
+cat("- 95% Confidence Interval for difference:",
+    round(prop_test$conf.int[1] * 100, 2), "% to",
+    round(prop_test$conf.int[2] * 100, 2), "%\n\n")
+
+if(prop_test$p.value < 0.05) {
+  cat("**Conclusion:** The difference is statistically significant (p < 0.05). Host nations have a significantly higher medal-winning rate.\n")
+} else {
+  cat("**Conclusion:** The difference is not statistically significant (p >= 0.05).\n")
+}
+```
+
+## Sub-question 2: Average Percentage Increase for Host Countries
+
+We compare each host country's performance during their hosting year to their historical baseline (average in non-hosting years) to calculate the average percentage increase.
+
+```{r q1-baseline}
+# Calculate hosting summary
+hosting_summary <- q1_data %>%
+  filter(is_host == 1) %>%
+  group_by(NOC, Year) %>%
+  summarise(
+    gymnasts = n(),
+    medals = sum(medal_won),
+    medal_rate = mean(medal_won),
+    baseline_rate = first(baseline_medal_rate),
+    .groups = "drop"
+  ) %>%
+  filter(!is.na(baseline_rate)) %>%
+  mutate(
+    improvement = medal_rate - baseline_rate
+  )
+```
+
+```{r q1-baseline-stats, results='asis'}
+avg_baseline <- mean(hosting_summary$baseline_rate) * 100
+avg_hosting <- mean(hosting_summary$medal_rate) * 100
+avg_improvement <- mean(hosting_summary$improvement) * 100
+
+cat("**Performance Comparison:**\n\n")
+cat("- Average baseline rate (non-hosting years):", round(avg_baseline, 2), "%\n")
+cat("- Average hosting year rate:", round(avg_hosting, 2), "%\n")
+cat("- Average improvement:", round(avg_improvement, 2), " percentage points\n\n")
+```
+
+```{r q1-ttest}
+# Paired t-test
+t_test <- t.test(hosting_summary$medal_rate,
+                 hosting_summary$baseline_rate,
+                 paired = TRUE)
+```
+
+```{r q1-ttest-results, results='asis'}
+cat("**Paired T-Test Results:**\n\n")
+cat("- T-statistic:", round(t_test$statistic, 3), "\n")
+cat("- Degrees of freedom:", t_test$parameter, "\n")
+cat("- P-value:", format.pval(t_test$p.value, digits = 3), "\n")
+cat("- 95% CI for mean difference:",
+    round(t_test$conf.int[1] * 100, 2), "% to",
+    round(t_test$conf.int[2] * 100, 2), "%\n\n")
+
+if(t_test$p.value < 0.05) {
+  cat("**Conclusion:** Host countries perform significantly better during hosting years compared to their own historical baseline (p < 0.05).\n")
+} else {
+  cat("**Conclusion:** No significant difference from historical baseline (p >= 0.05).\n")
+}
+```
+
+```{r q1-baseline-plot, fig.cap="Hosting Year vs Historical Baseline Performance", fig.height=6}
+# Plot top 12 countries
+top_performers <- hosting_summary %>%
+  arrange(desc(improvement)) %>%
+  head(12) %>%
+  mutate(country_year = paste0(NOC, " ", Year))
+
+plot_data <- top_performers %>%
+  select(country_year, baseline_rate, medal_rate) %>%
+  pivot_longer(cols = c(baseline_rate, medal_rate),
+               names_to = "Period",
+               values_to = "Rate") %>%
+  mutate(Period = factor(Period,
+                        levels = c("baseline_rate", "medal_rate"),
+                        labels = c("Historical Baseline", "Hosting Year")),
+         country_year = fct_reorder(country_year,
+                                   ifelse(Period == "Hosting Year", Rate, 0)))
+
+ggplot(plot_data, aes(x = country_year, y = Rate * 100, fill = Period)) +
+  geom_col(position = "dodge", width = 0.7) +
+  coord_flip() +
+  scale_fill_manual(values = c("Historical Baseline" = "#95a5a6",
+                               "Hosting Year" = "#e74c3c")) +
+  labs(title = "Medal Rates: Hosting Year vs Historical Baseline",
+       subtitle = "Top 12 Host Countries by Improvement",
+       x = "",
+       y = "Medal Rate (%)") +
+  theme(legend.position = "bottom")
+```
+
+## Question 1 Summary
+
+```{r q1-summary, results='asis'}
+cat("**Key Findings:**\n\n")
+cat("1. Host countries have a medal rate", round(host_rate - nonhost_rate, 2),
+    "percentage points higher than non-host countries\n")
+cat("2. Two-proportion test:",
+    ifelse(prop_test$p.value < 0.05, "Significant difference (p < 0.05)", "No significant difference"),
+    "\n")
+cat("3. Paired t-test:",
+    ifelse(t_test$p.value < 0.05, "Significant improvement from baseline (p < 0.05)", "No significant improvement"),
+    "\n\n")
+
+if(prop_test$p.value < 0.05 && t_test$p.value < 0.05) {
+  cat("**Answer:** YES, there is strong statistical evidence of home advantage in Olympic gymnastics.\n")
+} else if(prop_test$p.value < 0.05 || t_test$p.value < 0.05) {
+  cat("**Answer:** There is partial evidence of home advantage in Olympic gymnastics.\n")
+} else {
+  cat("**Answer:** No conclusive evidence of home advantage.\n")
+}
+```
+
+\newpage
+
+# Question 2: Gender Differences in Home Advantage
+
+## Overview
+
+We address two key questions about gender differences:
+
+1. Do female gymnasts benefit more from hosting than male gymnasts?
+2. Has the gender gap in home advantage changed over time?
+
+## Sub-question 1: Do Female Gymnasts Benefit More from Hosting?
+
+```{r q2-descriptive, results='asis'}
+# Calculate rates by gender and hosting status
+gender_rates <- q2_data %>%
+  group_by(Sex, is_host) %>%
+  summarise(
+    n = n(),
+    medals = sum(medal_won),
+    rate = mean(medal_won) * 100,
+    .groups = "drop"
+  )
+
+male_host <- gender_rates %>% filter(Sex == "M", is_host == 1) %>% pull(rate)
+male_nonhost <- gender_rates %>% filter(Sex == "M", is_host == 0) %>% pull(rate)
+female_host <- gender_rates %>% filter(Sex == "F", is_host == 1) %>% pull(rate)
+female_nonhost <- gender_rates %>% filter(Sex == "F", is_host == 0) %>% pull(rate)
+
+cat("**Medal Rates by Gender:**\n\n")
+cat("**Male Gymnasts:**\n")
+cat("- Host:", round(male_host, 2), "%\n")
+cat("- Non-host:", round(male_nonhost, 2), "%\n")
+cat("- Difference:", round(male_host - male_nonhost, 2), " pp\n\n")
+
+cat("**Female Gymnasts:**\n")
+cat("- Host:", round(female_host, 2), "%\n")
+cat("- Non-host:", round(female_nonhost, 2), "%\n")
+cat("- Difference:", round(female_host - female_nonhost, 2), " pp\n\n")
+```
+
+```{r q2-plot, fig.cap="Medal Rates by Gender and Hosting Status", fig.height=4}
+gender_rates_plot <- gender_rates %>%
+  mutate(
+    Gender = ifelse(Sex == "M", "Male", "Female"),
+    Status = ifelse(is_host == 1, "Host", "Non-Host")
+  )
+
+ggplot(gender_rates_plot, aes(x = Gender, y = rate, fill = Status)) +
+  geom_col(position = "dodge", width = 0.7) +
+  geom_text(aes(label = paste0(round(rate, 1), "%")),
+            position = position_dodge(width = 0.7),
+            vjust = -0.5, size = 4) +
+  scale_fill_manual(values = c("Host" = "#e74c3c", "Non-Host" = "#95a5a6")) +
+  labs(title = "Medal Rates by Gender and Hosting Status",
+       x = "",
+       y = "Medal Rate (%)") +
+  theme(legend.position = "bottom") +
+  ylim(0, max(gender_rates_plot$rate) * 1.15)
+```
+
+### Statistical Tests
+
+```{r q2-tests}
+# T-test for males
+male_data <- q2_data %>% filter(Sex == "M")
+male_test <- t.test(medal_won ~ is_host, data = male_data)
+
+# T-test for females
+female_data <- q2_data %>% filter(Sex == "F")
+female_test <- t.test(medal_won ~ is_host, data = female_data)
+```
+
+```{r q2-test-results, results='asis'}
+cat("**T-Test Results:**\n\n")
+cat("**Males:**\n")
+cat("- T-statistic:", round(male_test$statistic, 3), "\n")
+cat("- P-value:", format.pval(male_test$p.value, digits = 3), "\n")
+cat("- Result:", ifelse(male_test$p.value < 0.05, "Significant", "Not significant"), "\n\n")
+
+cat("**Females:**\n")
+cat("- T-statistic:", round(female_test$statistic, 3), "\n")
+cat("- P-value:", format.pval(female_test$p.value, digits = 3), "\n")
+cat("- Result:", ifelse(female_test$p.value < 0.05, "Significant", "Not significant"), "\n\n")
+```
+
+## Sub-question 2: Has the Gender Gap Changed Over Time?
+
+We examine whether the home advantage effect for males vs females has changed across different Olympic eras.
+
+```{r q2-temporal-prep}
+# Calculate home advantage by gender and era
+# Define eras: Early (1896-1948), Mid (1952-1988), Modern (1992-2020)
+temporal_data <- q2_data %>%
+  mutate(
+    era = case_when(
+      Year <= 1948 ~ "Early (1896-1948)",
+      Year <= 1988 ~ "Mid (1952-1988)",
+      Year >= 1992 ~ "Modern (1992-2020)"
+    )
+  ) %>%
+  filter(!is.na(era))
+
+# Calculate rates by era, gender, and hosting
+era_rates <- temporal_data %>%
+  group_by(era, Sex, is_host) %>%
+  summarise(
+    n = n(),
+    rate = mean(medal_won) * 100,
+    .groups = "drop"
+  ) %>%
+  pivot_wider(names_from = is_host, values_from = c(rate, n)) %>%
+  mutate(
+    advantage = rate_1 - rate_0,
+    Gender = ifelse(Sex == "M", "Male", "Female")
+  )
+```
+
+```{r q2-temporal-stats, results='asis'}
+cat("**Home Advantage by Gender Across Eras:**\n\n")
+
+for(this_era in unique(era_rates$era)) {
+  cat("**", this_era, "**\n", sep="")
+  era_subset <- era_rates %>% filter(era == this_era)
+
+  for(i in 1:nrow(era_subset)) {
+    cat("- ", era_subset$Gender[i], ": ",
+        round(era_subset$advantage[i], 2), " pp\n", sep="")
+  }
+  cat("\n")
+}
+```
+
+```{r q2-temporal-plot, fig.cap="Gender Home Advantage Trends Over Time", fig.height=5}
+ggplot(era_rates, aes(x = era, y = advantage, fill = Gender)) +
+  geom_col(position = "dodge", width = 0.7) +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "gray50") +
+  geom_text(aes(label = paste0(round(advantage, 1), "pp")),
+            position = position_dodge(width = 0.7),
+            vjust = -0.5, size = 3.5) +
+  scale_fill_manual(values = c("Male" = "#3498db", "Female" = "#e74c3c")) +
+  labs(title = "Home Advantage by Gender Across Olympic Eras",
+       x = "Era",
+       y = "Home Advantage (percentage points)") +
+  theme(legend.position = "bottom",
+        axis.text.x = element_text(angle = 0, hjust = 0.5))
+```
+
+## Question 2 Summary
+
+```{r q2-summary, results='asis'}
+male_advantage <- male_host - male_nonhost
+female_advantage <- female_host - female_nonhost
+
+cat("**Key Findings:**\n\n")
+cat("1. **Overall home advantage by gender:**\n")
+cat("   - Male home advantage:", round(male_advantage, 2), "percentage points\n")
+cat("   - Female home advantage:", round(female_advantage, 2), "percentage points\n")
+
+if(abs(male_advantage) > abs(female_advantage)) {
+  cat("   - Males show a larger overall home advantage effect\n\n")
+} else {
+  cat("   - Females show a larger overall home advantage effect\n\n")
+}
+
+cat("2. **Temporal trends - Era-by-era analysis:**\n\n")
+
+# Analyze each era
+for(this_era in unique(era_rates$era)) {
+  era_subset <- era_rates %>% filter(era == this_era) %>% arrange(Sex)
+
+  male_adv <- era_subset %>% filter(Sex == "M") %>% pull(advantage)
+  female_adv <- era_subset %>% filter(Sex == "F") %>% pull(advantage)
+
+  cat("   **", this_era, ":**\n", sep="")
+  cat("   - Male advantage:", round(male_adv, 2), "pp\n")
+  cat("   - Female advantage:", round(female_adv, 2), "pp\n")
+
+  if(length(male_adv) > 0 && length(female_adv) > 0) {
+    if(abs(female_adv) > abs(male_adv)) {
+      diff <- abs(female_adv) - abs(male_adv)
+      cat("   - Females show", round(diff, 2), "pp larger advantage in this era\n\n")
+    } else {
+      diff <- abs(male_adv) - abs(female_adv)
+      cat("   - Males show", round(diff, 2), "pp larger advantage in this era\n\n")
+    }
+  } else if(length(female_adv) == 0) {
+    cat("   - No female data for this era\n\n")
+  } else {
+    cat("\n")
+  }
+}
+
+cat("3. **Interpretation:** Home advantage effects vary significantly across time periods, with different patterns emerging in early vs modern Olympics.\n")
+```
+
+\newpage
+
+# Question 3: Country Factors
+
+## Overview
+
+We address three key questions about country characteristics:
+
+1. Do first-time host nations gain a bigger boost than repeat hosts?
+2. Do smaller countries (by area or population) experience larger percentage increases in medal counts?
+3. Does the host nation field more participating gymnasts, potentially influencing outcomes?
+
+```{r q3-data-prep}
+# Prepare hosting data with country factors
+q3_hosting <- q3_data %>%
+  filter(is_host == 1, !is.na(country_size_category)) %>%
+  group_by(NOC, Year, country_size_category, first_time_host) %>%
+  summarise(
+    medal_rate = mean(medal_won),
+    baseline = first(baseline_medal_rate),
+    .groups = "drop"
+  ) %>%
+  filter(!is.na(baseline)) %>%
+  mutate(
+    improvement = medal_rate - baseline,
+    host_type = ifelse(first_time_host == 1, "First-Time", "Repeat")
+  )
+```
+
+## Sub-question 1: Do Smaller Countries Experience Larger Increases?
+
+```{r q3-size-stats, results='asis'}
+size_summary <- q3_hosting %>%
+  group_by(country_size_category) %>%
+  summarise(
+    n = n(),
+    avg_improvement = mean(improvement) * 100,
+    .groups = "drop"
+  )
+
+cat("**Average Improvement by Country Size:**\n\n")
+for(i in 1:nrow(size_summary)) {
+  cat("-", size_summary$country_size_category[i], ":",
+      round(size_summary$avg_improvement[i], 2), "pp (n =",
+      size_summary$n[i], ")\n")
+}
+cat("\n")
+```
+
+```{r q3-size-plot, fig.cap="Home Advantage by Country Size", fig.height=4}
+# Bar chart showing average improvement by size
+ggplot(size_summary, aes(x = country_size_category, y = avg_improvement, fill = country_size_category)) +
+  geom_col(width = 0.6) +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "gray50") +
+  geom_text(aes(label = paste0(round(avg_improvement, 1), "pp")),
+            vjust = -0.5, size = 4) +
+  scale_fill_manual(values = c("Small" = "#3498db", "Medium" = "#9b59b6", "Large" = "#e74c3c")) +
+  labs(title = "Average Medal Rate Improvement by Country Size",
+       subtitle = "Hosting year compared to historical baseline",
+       x = "Country Size",
+       y = "Average Improvement (pp)") +
+  ylim(0, 20) +
+  theme_minimal() +
+  theme(legend.position = "none")
+```
+
+## Sub-question 2: Do First-Time Hosts Gain a Bigger Boost?
+
+```{r q3-experience-stats, results='asis'}
+exp_summary <- q3_hosting %>%
+  group_by(host_type) %>%
+  summarise(
+    n = n(),
+    avg_improvement = mean(improvement) * 100,
+    .groups = "drop"
+  )
+
+cat("**Average Improvement by Hosting Experience:**\n\n")
+for(i in 1:nrow(exp_summary)) {
+  cat("-", exp_summary$host_type[i], "hosts:",
+      round(exp_summary$avg_improvement[i], 2), "pp (n =",
+      exp_summary$n[i], ")\n")
+}
+cat("\n")
+```
+
+```{r q3-experience-test}
+# T-test comparing first-time vs repeat hosts
+exp_test <- t.test(improvement ~ host_type, data = q3_hosting)
+```
+
+```{r q3-experience-results, results='asis'}
+cat("**T-Test: First-Time vs Repeat Hosts**\n\n")
+cat("- T-statistic:", round(exp_test$statistic, 3), "\n")
+cat("- P-value:", format.pval(exp_test$p.value, digits = 3), "\n")
+cat("- Result:", ifelse(exp_test$p.value < 0.05,
+                        "Significant difference",
+                        "No significant difference"), "\n\n")
+```
+
+## Sub-question 3: Do Host Nations Field More Gymnasts?
+
+We examine whether host nations field larger gymnastics teams, which could potentially influence their medal counts through increased opportunities.
+
+```{r q3-participation-prep}
+# Calculate gymnast counts for host vs non-host
+participation_data <- q3_data %>%
+  group_by(NOC, Year, is_host) %>%
+  summarise(
+    gymnast_count = n_distinct(Name),
+    .groups = "drop"
+  )
+
+# Summary by hosting status
+participation_summary <- participation_data %>%
+  group_by(is_host) %>%
+  summarise(
+    n_country_years = n(),
+    avg_gymnasts = mean(gymnast_count),
+    median_gymnasts = median(gymnast_count),
+    .groups = "drop"
+  )
+```
+
+```{r q3-participation-stats, results='asis'}
+host_avg <- participation_summary %>% filter(is_host == 1) %>% pull(avg_gymnasts)
+nonhost_avg <- participation_summary %>% filter(is_host == 0) %>% pull(avg_gymnasts)
+
+cat("**Average Gymnast Count per Country:**\n\n")
+cat("- Host countries:", round(host_avg, 1), "gymnasts\n")
+cat("- Non-host countries:", round(nonhost_avg, 1), "gymnasts\n")
+cat("- Difference:", round(host_avg - nonhost_avg, 1), "gymnasts\n\n")
+```
+
+```{r q3-participation-test}
+# T-test comparing participation
+participation_test <- t.test(gymnast_count ~ is_host, data = participation_data)
+```
+
+```{r q3-participation-results, results='asis'}
+cat("**T-Test: Host vs Non-Host Participation**\n\n")
+cat("- T-statistic:", round(participation_test$statistic, 3), "\n")
+cat("- P-value:", format.pval(participation_test$p.value, digits = 3), "\n")
+cat("- Result:", ifelse(participation_test$p.value < 0.05,
+                        "Host countries send SIGNIFICANTLY more gymnasts",
+                        "No significant difference in team size"), "\n\n")
+```
+
+```{r q3-participation-plot, fig.cap="Gymnast Participation: Host vs Non-Host", fig.height=4}
+# Simple bar chart showing average participation
+plot_data <- participation_summary %>%
+  mutate(Status = ifelse(is_host == 1, "Host", "Non-Host"))
+
+ggplot(plot_data, aes(x = Status, y = avg_gymnasts, fill = Status)) +
+  geom_col(width = 0.6) +
+  geom_text(aes(label = paste0(round(avg_gymnasts, 1), " gymnasts")),
+            vjust = -0.5, size = 4) +
+  scale_fill_manual(values = c("Host" = "#e74c3c", "Non-Host" = "#95a5a6")) +
+  labs(title = "Average Number of Gymnasts per Country",
+       subtitle = "Host countries vs Non-Host countries",
+       x = "",
+       y = "Average Number of Gymnasts") +
+  ylim(0, 30) +
+  theme_minimal() +
+  theme(legend.position = "none")
+```
+
+## Question 3 Summary
+
+```{r q3-summary, results='asis'}
+cat("**Key Findings:**\n\n")
+cat("1. **Country size:** Shows varying levels of home advantage across small/medium/large countries\n")
+cat("2. **Hosting experience:**",
+    ifelse(exp_test$p.value < 0.05, "Significant difference", "No significant difference"),
+    "between first-time and repeat hosts\n")
+cat("3. **Gymnast participation:** Host countries send an average of",
+    round(host_avg - nonhost_avg, 1), "more gymnasts -",
+    ifelse(participation_test$p.value < 0.05, "statistically significant", "not statistically significant"),
+    "\n")
+```
+
+\newpage
+
+# Question 4: Economics & Demographics
+
+## Overview
+
+We address two key questions about economic and demographic factors:
+
+1. Among host countries, do those with higher GDP per capita see different magnitudes of medal increases?
+2. Do countries with larger working-age populations gain more advantage when hosting?
+
+## Sub-question 1: Does GDP Per Capita Affect Home Advantage?
+
+```{r q4-data-prep}
+# Prepare data with GDP information
+q4_hosting <- q4_data %>%
+  filter(is_host == 1, !is.na(country_gdp_per_capita), !is.na(baseline_medal_rate)) %>%
+  group_by(NOC, Year, country_gdp_per_capita) %>%
+  summarise(
+    medal_rate = mean(medal_won),
+    baseline = first(baseline_medal_rate),
+    .groups = "drop"
+  ) %>%
+  mutate(
+    improvement = medal_rate - baseline,
+    gdp_thousands = country_gdp_per_capita / 1000
+  )
+```
+
+```{r q4-correlation}
+# Correlation test
+cor_test <- cor.test(q4_hosting$country_gdp_per_capita,
+                     q4_hosting$improvement)
+```
+
+```{r q4-correlation-results, results='asis'}
+cat("**Correlation: GDP per Capita vs Home Advantage**\n\n")
+cat("- Correlation coefficient:", round(cor_test$estimate, 3), "\n")
+cat("- P-value:", format.pval(cor_test$p.value, digits = 3), "\n")
+cat("- Result:", ifelse(cor_test$p.value < 0.05,
+                        "Significant correlation",
+                        "No significant correlation"), "\n\n")
+```
+
+```{r q4-plot, fig.cap="GDP per Capita vs Home Advantage", fig.height=5}
+ggplot(q4_hosting, aes(x = gdp_thousands, y = improvement * 100)) +
+  geom_point(size = 3, alpha = 0.6, color = "#3498db") +
+  geom_smooth(method = "lm", se = TRUE, color = "#e74c3c") +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "gray50") +
+  labs(title = "GDP per Capita vs Medal Rate Improvement",
+       x = "GDP per Capita (thousands USD)",
+       y = "Improvement from Baseline (pp)") +
+  theme_minimal()
+```
+
+## Sub-question 2: Do Countries with Larger Working-Age Populations Benefit More?
+
+We examine whether countries with larger working-age populations (ages 15-64) gain more advantage when hosting.
+
+```{r q4-demographics-prep}
+# Prepare demographic data for host countries
+demographics_data <- q4_data %>%
+  filter(is_host == 1,
+         !is.na(country_working_age_prop),
+         !is.na(baseline_medal_rate)) %>%
+  group_by(NOC, Year, country_working_age_prop) %>%
+  summarise(
+    medal_rate = mean(medal_won),
+    baseline = first(baseline_medal_rate),
+    .groups = "drop"
+  ) %>%
+  mutate(
+    improvement = medal_rate - baseline,
+    working_age_pct = country_working_age_prop * 100
+  )
+```
+
+```{r q4-demographics-cor}
+# Correlation test
+demo_cor_test <- cor.test(demographics_data$country_working_age_prop,
+                          demographics_data$improvement)
+```
+
+```{r q4-demographics-results, results='asis'}
+cat("**Correlation: Working-Age Population vs Home Advantage**\n\n")
+cat("- Correlation coefficient:", round(demo_cor_test$estimate, 3), "\n")
+cat("- P-value:", format.pval(demo_cor_test$p.value, digits = 3), "\n")
+cat("- Result:", ifelse(demo_cor_test$p.value < 0.05,
+                        "Significant correlation",
+                        "No significant correlation"), "\n\n")
+```
+
+```{r q4-demographics-plot, fig.cap="Working-Age Population vs Home Advantage", fig.height=5}
+ggplot(demographics_data, aes(x = working_age_pct, y = improvement * 100)) +
+  geom_point(size = 3, alpha = 0.6, color = "#9b59b6") +
+  geom_smooth(method = "lm", se = TRUE, color = "#e74c3c") +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "gray50") +
+  labs(title = "Working-Age Population Proportion vs Medal Rate Improvement",
+       x = "Working-Age Population (%)",
+       y = "Improvement from Baseline (pp)") +
+  theme_minimal()
+```
+
+## Question 4 Summary
+
+```{r q4-summary, results='asis'}
+cat("**Key Findings:**\n\n")
+cat("1. **GDP per capita:**\n")
+cat("   - Correlation with home advantage:", round(cor_test$estimate, 3), "\n")
+cat("   - Statistical significance:",
+    ifelse(cor_test$p.value < 0.05, "Yes (p < 0.05)", "No (p >= 0.05)"), "\n")
+
+if(cor_test$p.value < 0.05) {
+  if(cor_test$estimate > 0) {
+    cat("   - Wealthier countries tend to have larger home advantages\n\n")
+  } else {
+    cat("   - Wealthier countries tend to have smaller home advantages\n\n")
+  }
+} else {
+  cat("\n")
+}
+
+cat("2. **Working-age population:**\n")
+cat("   - Correlation with home advantage:", round(demo_cor_test$estimate, 3), "\n")
+cat("   - Statistical significance:",
+    ifelse(demo_cor_test$p.value < 0.05, "Yes (p < 0.05)", "No (p >= 0.05)"), "\n")
+
+if(demo_cor_test$p.value < 0.05) {
+  if(demo_cor_test$estimate > 0) {
+    cat("   - Countries with higher working-age proportions show larger home advantages\n")
+  } else {
+    cat("   - Countries with higher working-age proportions show smaller home advantages\n")
+  }
+}
+```
+
+\newpage
+
+# Discussion & Conclusions
+
+## Summary of Findings
+
+Based on our analysis of 28,554 gymnastics performances across 124 years of Olympic history, we found clear evidence of home advantage effects that vary by gender, country characteristics, and time period.
+
+### Question 1: Overall Home Advantage
+
+Our statistical tests provide strong evidence for home advantage in Olympic gymnastics:
+
+- Host nations show significantly higher medal rates compared to non-host nations
+- Paired t-tests confirm host countries perform better during hosting years compared to their own historical baselines
+- Both proportion tests and baseline comparisons support the existence of measurable home advantage
+
+### Question 2: Gender Differences and Temporal Trends
+
+The gender dynamics of home advantage reveal a dramatic historical reversal:
+
+- **Overall**: Males show 9.22 percentage point advantage, females show 5.14 pp advantage
+- **Early Era (1896-1948)**: Female gymnasts dominated with a stunning 34.07 pp advantage, while males showed minimal effect (1.18 pp)
+- **Mid Era (1952-1988)**: Pattern reversed - males gained 11.3 pp advantage while females dropped to 3.86 pp
+- **Modern Era (1992-2020)**: Males maintain stronger advantage (8.88 pp) compared to females (2.76 pp)
+
+This dramatic shift suggests changing dynamics in women's vs men's gymnastics judging, competition structure, or participation patterns over Olympic history.
+
+### Question 3: Country Characteristics
+
+Country size and participation patterns show interesting relationships with home advantage:
+
+- **Small countries benefit most**: 17.14 pp average improvement (n=15 host instances)
+- **Large countries**: 12.06 pp average improvement (n=9)
+- **Medium countries show minimal benefit**: Only 3.66 pp improvement (n=4)
+- **First-time hosts**: Trend toward larger advantage (16.53 pp) vs repeat hosts (8.27 pp), though not statistically significant (p=0.336)
+- **Team size matters**: Host countries send significantly more gymnasts (23.5 vs 7.2 average, p=0.002), which may contribute to higher medal counts through increased opportunities
+
+### Question 4: Economic and Demographic Factors
+
+Economic and demographic factors showed weak or no significant relationships:
+
+- **GDP per capita**: Weak negative correlation (-0.115, p=0.708) - no evidence that wealth predicts home advantage
+- **Working-age population**: Moderate positive correlation (0.461, p=0.072) approaches but does not reach significance, suggesting possible trend worth investigating with more data
+
+## Key Insights
+
+1. **Home advantage is real and measurable** in subjectively-judged Olympic gymnastics
+
+2. **Gender patterns have completely reversed** over Olympic history - early female advantage has shifted to modern male advantage
+
+3. **Smaller countries benefit most** from hosting, possibly due to relative improvement from lower baselines or concentrated national support
+
+4. **Participation matters** - host countries field significantly larger teams, providing more medal opportunities
+
+5. **Economics doesn't determine advantage** - wealth alone doesn't predict home advantage magnitude
+
+## Implications
+
+### For Olympic Policy
+
+These findings raise questions about fairness in subjectively-judged sports. While some home advantage is inevitable (crowd support, familiarity with venues), the magnitude observed (up to 17 pp for small countries) suggests possible judging bias that may warrant:
+
+- Enhanced judging transparency and accountability measures
+- Rotation of judges to reduce national bias
+- Consideration of how hosting benefits vary by nation size and resources
+
+### For Understanding Sports Judging
+
+The temporal reversal in gender patterns suggests that judging dynamics, sport structure, or cultural factors have fundamentally changed women's vs men's gymnastics. This warrants further investigation into:
+
+- How judging criteria and panels have evolved differently for men's vs women's events
+- Whether increased professionalization affected genders differently
+- How participation patterns (number of competitors, depth of field) influence judging outcomes
+
+### For Future Olympics
+
+Small countries may benefit disproportionately from hosting Olympics, which could inform bidding processes and expectations. The significant team size difference suggests hosts may strategically increase participation to capitalize on home advantage.
+
+## Limitations
+
+1. **Historical data quality**: Early Olympic data (pre-1950s) has limited detail and smaller sample sizes, particularly for women's events
+2. **Causation vs correlation**: We document associations but cannot definitively prove judging bias causes home advantage (could be crowd support, training facility advantages, etc.)
+3. **Confounding variables**: Cannot fully control for country gymnastics program quality, investment, or athlete development over time
+4. **Sample size for some analyses**: Small number of host country instances (28 total) limits power for certain comparisons
+5. **Changes in sport structure**: Gymnastics events, scoring systems, and judging panels have evolved substantially over 124 years
+
+## Future Research Directions
+
+1. **Extend to other subjectively-judged sports**: Apply similar methodology to figure skating, diving, synchronized swimming to test generalizability
+
+2. **Investigate judging panel composition**: Analyze whether home nation judges (when present on panels) score differently than international judges
+
+3. **Examine temporal mechanisms**: Investigate what drove the dramatic gender reversal in home advantage patterns
+
+4. **Control for program quality**: Incorporate measures of national gymnastics program strength and athlete development
+
+5. **Medal type analysis**: Distinguish between gold, silver, bronze to test whether home advantage affects podium positions differently
+
+6. **Event-specific analysis**: Compare home advantage across different gymnastics disciplines (artistic, rhythmic, trampoline)
+
+## Conclusion
+
+This analysis provides robust evidence that hosting the Olympics confers measurable competitive advantage in gymnastics, a sport reliant on subjective judging. The magnitude and patterns of this advantage vary systematically by gender, country size, and historical era. While we cannot definitively prove judging bias, the consistent patterns across 124 years suggest home advantage is a real phenomenon worthy of consideration in discussions of Olympic fairness and judging integrity.
+
+Most strikingly, the complete reversal of gender patterns - from dominant female advantage in early Olympics to strong male advantage in modern games - reveals that home advantage dynamics are not static but evolve with the sport itself. This highlights the importance of continued monitoring and research into judging fairness in international athletic competition.
+
+\newpage
+
+# References
+
+[1] N. Sharma, "Olympics 124 years dataset till 2020," Kaggle, 2020. [Online]. Available: https://www.kaggle.com/datasets/nitishsharma01/olympics-124-years-datasettill-2020
+
+[2] P. Fomichev, "Olympic Games hosts," Kaggle, 2022. [Online]. Available: https://www.kaggle.com/datasets/piterfm/olympic-games-hosts
+
+[3] Our World in Data, "Population by age group," 2023. [Online]. Available: https://ourworldindata.org/grapher/population-by-age-group
+
+[4] Worldometers, "Largest countries in the world by area," 2024. [Online]. Available: https://www.worldometers.info/geography/largest-countries-in-the-world/
+
+[5] The World Bank, "GDP (current US$)," World Bank Open Data, 2024. [Online]. Available: https://data.worldbank.org/indicator/NY.GDP.MKTP.CD
+
+\newpage
+
+# Appendix
+
+## R Session Information
+
+```{r session-info, echo=TRUE}
+sessionInfo()
+```
