@@ -1,7 +1,7 @@
 ---
-title: "Homework 1"
+title: "Homework 7"
 author: "Han Nguyen - TXN200004"
-date: "09/02/2024"
+date: "11/13/2025"
 output: pdf_document
 ---
 
@@ -9,146 +9,127 @@ output: pdf_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-# Problem 1
+# Question 1
 
-```{r, problem1}
+```{r, question1_data}
+# Data: Cola can fill amounts (ounces)
+fill <- c(15.997, 16.005, 15.981, 15.954, 15.986, 16.021, 15.985, 16.001, 16.018, 16.056)
+```
+
+**Step 1: State the null and alternative hypotheses**
+
+- $H_0$: $\mu = 16.00$ (The mean fill of cola cans is 16.00 ounces)
+- $H_a$: $\mu < 16.00$ (The mean fill of cola cans is less than 16.00 ounces)
+
+This is a one-sided (left-tailed) test.
+
+**Step 2: Choose the significance level**
+
+$\alpha = 0.05$
+
+**Step 3: Determine the appropriate test statistic**
+
+Since we have a small sample (n = 10) and we don't know the population standard deviation, we use a one-sample t-test with the test statistic:
+
+$$t = \frac{\bar{x} - \mu_0}{s / \sqrt{n}}$$
+
+where $\bar{x}$ is the sample mean, $\mu_0 = 16.00$ is the hypothesized mean, $s$ is the sample standard deviation, and $n = 10$ is the sample size.
+
+**Step 4: Formulate the decision rule**
+
+With $\alpha = 0.05$ and degrees of freedom $df = n - 1 = 9$, we will reject $H_0$ if:
+
+- $t < -t_{\alpha, df}$ (critical value approach), or
+- p-value $< \alpha$ (p-value approach)
+
+```{r, question1_critical_value}
+# Critical value for one-sided test
+alpha <- 0.05
+df <- length(fill) - 1
+t_critical <- qt(alpha, df)
+```
+
+The critical value is $t_{0.05, 9} =$ `r round(t_critical, 4)`.
+
+**Step 5: Collect data and calculate the test statistic**
+
+```{r, question1_calculations}
+# Sample statistics
+n <- length(fill)
+x_bar <- mean(fill)
+s <- sd(fill)
+mu_0 <- 16.00
+
+# Calculate test statistic
+t_stat <- (x_bar - mu_0) / (s / sqrt(n))
+
+# Calculate p-value (one-sided, left-tailed)
+p_value <- pt(t_stat, df)
+```
+
+Sample mean: $\bar{x} =$ `r round(x_bar, 4)` ounces
+
+Sample standard deviation: $s =$ `r round(s, 4)` ounces
+
+Test statistic: $t =$ `r round(t_stat, 4)`
+
+**Step 6: Make a decision**
+
+```{r, question1_decision}
+# Decision based on critical value
+reject_H0_critical <- t_stat < t_critical
+
+# Decision based on p-value
+reject_H0_pvalue <- p_value < alpha
+```
+
+P-value = `r round(p_value, 4)`
+
+Since $t =$ `r round(t_stat, 4)` is `r ifelse(reject_H0_critical, "less than", "greater than")` the critical value of `r round(t_critical, 4)`, and the p-value (`r round(p_value, 4)`) is `r ifelse(reject_H0_pvalue, "less than", "greater than")` $\alpha = 0.05$, we `r ifelse(reject_H0_pvalue, "reject", "fail to reject")` $H_0$.
+
+**Step 7: Draw a conclusion**
+
+Based on the sample of 10 cola cans, we `r ifelse(reject_H0_pvalue, "reject", "fail to reject")` the null hypothesis at the 0.05 significance level. There `r ifelse(reject_H0_pvalue, "is", "is not")` sufficient statistical evidence to conclude that the mean fill of cola cans is less than 16.00 ounces. `r ifelse(reject_H0_pvalue, "Mark's concern appears to be justified - the cans may contain less than the advertised 16 ounces.", "Mark's data does not support the claim that the cans contain less than 16 ounces.")`
+
+
+# Question 2
+
+```{r, question2}
 # If I wrote code that would be used in all following letters, it would go here
 ```
 
-## a)
+# Question 3
 
-```{r, problem_1a}
-# This is where my code for this question goes
-a <- 4 + 3
-```
-
-This is me placing the alleged answer to this question in text: a = ```r a```
-
-## b)
-
-```{r, problem_1b}
-# This is where my code for this question goes
-```
-
-## c)
-
-```{r, problem_1c}
-# This is where my code for this question goes
-mu_1 <- 5.564231
-```
-
-This is me using a mathematical symbol to state the alleged mean $\mu_1$ = ```r mu_1```
-
-## d)
-
-```{r, problem_1d}
-# This is where my code for this question goes
-```
-
-## e)
-
-```{r, problem_1e}
-# This is where my code for this question goes
-```
-
-## f)
-
-```{r, problem_1f}
-# This is where my code for this question goes
-```
-
-# Problem 2
-
-```{r, problem2}
+```{r, question3}
 # If I wrote code that would be used in all following letters, it would go here
 ```
 
-## a)
+# Question 4
 
-```{r, problem_2a}
-# This is where my code for this question goes
-```
-
-## b)
-
-```{r, problem_2b}
-# This is where my code for this question goes
-```
-
-## c)
-
-```{r, problem_2c}
-# This is where my code for this question goes
-```
-
-## d)
-
-```{r, problem_2d}
-# This is where my code for this question goes
-```
-
-# Problem 3
-
-```{r, problem3}
+```{r, question4}
 # If I wrote code that would be used in all following letters, it would go here
 ```
 
-## a)
+# Question 5
 
-```{r, problem_3a}
+```{r, question_5}
 # This is where my code for this question goes
 ```
 
-## b)
+# Question 6
 
-```{r, problem_3b}
+```{r, question_6}
 # This is where my code for this question goes
 ```
 
-## c)
+# Question 7
 
-```{r, problem_3c}
+```{r, question_7}
 # This is where my code for this question goes
 ```
 
-## d)
+# Question 8
 
-```{r, problem_3d}
+```{r, question_8}
 # This is where my code for this question goes
 ```
-
-# Problem 4
-```{r, problem4}
-# If I wrote code that would be used in all following letters, it would go here
-```
-
-## a)
-
-```{r, problem_4a}
-# This is where my code for this question goes
-```
-
-## b)
-
-```{r, problem_4b}
-# This is where my code for this question goes
-```
-
-## c)
-
-```{r, problem_4c}
-# This is where my code for this question goes
-```
-
-# Problem 5
-
-```{r, problem_5}
-# This is where my code for this question goes
-```
-
-# Problem 6
-
-```{r, problem_6}
-# This is where my code for this question goes
-```
-
