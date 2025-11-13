@@ -1,4 +1,304 @@
+43 Question 1: Does Hosting Provide Home Advantage?
+3.1 Overview
+We address two key questions:
+1. Do host nations win significantly more gymnastics medals during their hosting year compared to
+historical baselines?
+2. What is the average percentage increase in total medals and gold medals for host countries?
+3.2 Sub-question 1: Do Host Nations Win Significantly More Medals?
+3.2.1 Descriptive Statistics
+Medal Winning Rates:
+• Host countries: 16.04 % ( 361 medals from 2250 performances)
+• Non-host countries: 8.03 % ( 2112 medals from 26,304 performances)
+• Difference: 8.02 percentage points
+Medal Winning Rates by Hosting Status
+16%
+15
+Medal Rate (%)
+10
+8%
+5
+0
+Host Non−Host
+Figure 1: Medal Rates: Host vs Non-Host Countries
+3.2.2 Statistical Test: Chi-Square Test and Two-Sample Proportions Test
+We test whether the difference in medal rates is statistically significant. Since we’re comparing categorical
+outcomes (medal won: yes/no) across two groups (host vs non-host), we can use either a chi-square test or
+a two-proportion z-test (which are mathematically equivalent for 2×2 tables).
+5
+Hypotheses:
+• H0: Host and non-host countries have the same medal-winning rate
+• Ha: Host and non-host countries have different medal-winning rates
+Contingency Table:
+No Medal Medal Won
+Non-Host 24192 2112
+Host 1889 361
+Chi-Square Test Results:
+• Chi-square statistic: 167.316
+• Degrees of freedom: 1
+• P-value: <2e-16
+Two-Proportion Z-Test Results:
+• Test statistic (X-squared): 167.316
+• P-value: <2e-16
+• 95% Confidence Interval for difference: 6.44 % to 9.59 %
+Note: Both tests are equivalent for 2×2 tables. The chi-square statistic equals the squared z-statistic.
+Conclusion: The difference is statistically significant (p < 0.05). Host nations have a significantly higher
+medal-winning rate.
+3.3 Sub-question 2: Average Percentage Increase for Host Countries
+We compare each host country’s performance during their hosting year to their historical baseline (average
+in non-hosting years) to calculate the average percentage increase.
+Performance Comparison:
+• Average baseline rate (non-hosting years): 7.27 %
+• Average hosting year rate: 20.47 %
+• Average improvement: 13.2 percentage points
+Paired T-Test Results:
+• T-statistic: 2.892
+• Degrees of freedom: 28
+• P-value: 0.00732
+• 95% CI for mean difference: 3.85 % to 22.55 %
+Conclusion: Host countries perform significantly better during hosting years compared to their own his-
+torical baseline (p < 0.05).
+6
+Medal Rates: Hosting Year vs Historical Baseline
+Top 12 Host Countries by Improvement
+SWE 1912
+BEL 1920
+USA 1932
+GRE 1896
+CHN 2008
+GER 1936
+USA 1984
+JPN 1964
+FRA 1924
+NED 1928
+GBR 2012
+BRA 2016
+0 25 50 75 100
+Medal Rate (%)
+Period Historical Baseline Hosting Year
+Figure 2: Hosting Year vs Historical Baseline Performance
+7
+3.4 Question 1 Summary
+Key Findings:
+1. Host countries have a medal rate 8.02 percentage points higher than non-host countries
+2. Two-proportion test: Significant difference (p < 0.05)
+3. Paired t-test: Significant improvement from baseline (p < 0.05)
+Answer: YES, there is strong statistical evidence of home advantage in Olympic gymnastics.
+8
 4 Question 2: Gender Differences in Home Advantage
+4.1 Overview
+We address two key questions about gender differences:
+1. Do female gymnasts benefit more from hosting than male gymnasts?
+2. Has the gender gap in home advantage changed over time?
+4.2 Sub-question 1: Do Female Gymnasts Benefit More from Hosting?
+Medal Rates by Gender:
+Male Gymnasts: - Host: 17.17 % - Non-host: 7.95 % - Difference: 9.22 pp
+Female Gymnasts: - Host: 13.3 % - Non-host: 8.16 % - Difference: 5.14 pp
+Medal Rates by Gender and Hosting Status
+20
+17.2%
+15
+13.3%
+Medal Rate (%)
+10
+8.2%
+8%
+5
+0
+Female Male
+Status Host Non−Host
+Figure 3: Medal Rates by Gender and Hosting Status
+4.2.1 Statistical Tests: Chi-Square Tests
+Since we’re comparing categorical outcomes (medal won: yes/no) across groups (host vs non-host) for each
+gender, chi-square tests are more appropriate than t-tests.
+Male Gymnasts Contingency Table:
+9
+No Medal Medal Won
+Non-Host 15249 1317
+Host 1322 274
+Female Gymnasts Contingency Table:
+No Medal Medal Won
+Non-Host 8943 795
+Host 567 87
+Chi-Square Test Results:
+Males: - Chi-square statistic: 153.609 - Degrees of freedom: 1 - P-value: <2e-16 - 95% CI for difference:
+7.29 % to 11.15 % - Result: Significant
+Females: - Chi-square statistic: 20.18 - Degrees of freedom: 1 - P-value: 7.05e-06 - 95% CI for difference:
+2.4 % to 7.88 % - Result: Significant
+4.3 Sub-question 2: Has the Gender Gap Changed Over Time?
+We examine whether the home advantage effect for males vs females has changed across different Olympic
+eras.
+Home Advantage by Gender Across Eras:
+Early (1896-1948) - Female: 34.07 pp - Male: 1.18 pp
+Mid (1952-1988) - Female: 3.86 pp - Male: 11.3 pp
+Modern (1992-2020) - Female: 2.76 pp - Male: 8.88 pp
+4.4 Question 2 Summary
+Key Findings:
+1. Overall home advantage by gender:
+• Male home advantage: 9.22 percentage points
+• Female home advantage: 5.14 percentage points
+• Males show a larger overall home advantage effect
+2. Temporal trends - Era-by-era analysis:
+Early (1896-1948):
+• Male advantage: 1.18 pp
+• Female advantage: 34.07 pp
+• Females show 32.89 pp larger advantage in this era
+Mid (1952-1988):
+• Male advantage: 11.3 pp
+• Female advantage: 3.86 pp
+• Males show 7.44 pp larger advantage in this era
+10
+Home Advantage by Gender Across Olympic Eras
+34.1pp
+30
+Home Advantage (percentage points)
+20
+11.3pp
+10
+8.9pp
+3.9pp
+2.8pp
+1.2pp
+0
+Early (1896−1948) Mid (1952−1988) Modern (1992−2020)
+Era
+Gender Female Male
+Figure 4: Gender Home Advantage Trends Over Time
+11
+Modern (1992-2020):
+• Male advantage: 8.88 pp
+• Female advantage: 2.76 pp
+• Males show 6.13 pp larger advantage in this era
+3. Interpretation: Home advantage effects vary significantly across time periods, with different patterns
+emerging in early vs modern Olympics.
+12
+5 Question 3: Country Factors
+5.1 Overview
+We address three key questions about country characteristics:
+1. Do first-time host nations gain a bigger boost than repeat hosts?
+2. Do smaller countries (by area or population) experience larger percentage increases in medal counts?
+3. Does the host nation field more participating gymnasts, potentially influencing outcomes?
+5.2 Sub-question 1: Do Smaller Countries Experience Larger Increases?
+Average Improvement by Country Size:
+• Large : 12.06 pp (n = 9 )
+• Medium : 3.66 pp (n = 4 )
+• Small : 17.14 pp (n = 15 )
+Average Medal Rate Improvement by Country Size
+Hosting year compared to historical baseline
+20
+17.1pp
+Average Improvement (pp)
+15
+12.1pp
+10
+5
+3.7pp
+0
+Large Medium Small
+Country Size
+Figure 5: Home Advantage by Country Size
+5.2.1 Statistical Test: Chi-Square Test for Country Size
+To determine if country size significantly affects the likelihood of improvement, we perform a chi-square test.
+Contingency Table: Country Size vs Improvement:
+13
+Improved Not Improved
+Large 6 3
+Medium 1 3
+Small 8 7
+Chi-Square Test Results:
+• Chi-square statistic: 1.934
+• Degrees of freedom: 2
+• P-value: 0.38
+• Result: Not significant - country size does not significantly affect improvement
+Note: The p-value suggests no statistically significant relationship, but this may be due to small sample
+sizes in some categories (n = 9, 4, 15 ).
+5.3 Sub-question 2: Do First-Time Hosts Gain a Bigger Boost?
+Average Improvement by Hosting Experience:
+• First-Time hosts: 16.53 pp (n = 18 )
+• Repeat hosts: 8.27 pp (n = 10 )
+T-Test: First-Time vs Repeat Hosts
+• T-statistic: 0.981
+• P-value: 0.336
+• Result: No significant difference
+5.4 Sub-question 3: Do Host Nations Field More Gymnasts?
+We examine whether host nations field larger gymnastics teams, which could potentially influence their
+medal counts through increased opportunities.
+Average Gymnast Count per Country:
+• Host countries: 23.5 gymnasts
+• Non-host countries: 7.2 gymnasts
+• Difference: 16.3 gymnasts
+T-Test: Host vs Non-Host Participation
+• T-statistic: -3.328
+• P-value: 0.00245
+• Result: Host countries send SIGNIFICANTLY more gymnasts
+14
+Average Number of Gymnasts per Country
+Host countries vs Non−Host countries
+30
+Average Number of Gymnasts
+23.5 gymnasts
+20
+10
+7.2 gymnasts
+0
+Host Non−Host
+Figure 6: Gymnast Participation: Host vs Non-Host
+5.5 Question 3 Summary
+Key Findings:
+1. Country size: Shows varying levels of home advantage across small/medium/large countries
+2. Hosting experience: No significant difference between first-time and repeat hosts
+3. Gymnast participation: Host countries send an average of 16.3 more gymnasts - statistically signif-
+icant
+15
+6 Question 4: Economics & Demographics
+6.1 Overview
+We address two key questions about economic and demographic factors:
+1. Among host countries, do those with higher GDP per capita see different magnitudes of medal in-
+creases?
+2. Do countries with larger working-age populations gain more advantage when hosting?
+6.2 Sub-question 1: Does GDP Per Capita Affect Home Advantage?
+Correlation: GDP per Capita vs Home Advantage
+• Correlation coefficient: -0.115
+• P-value: 0.708
+• Result: No significant correlation
+GDP per Capita vs Medal Rate Improvement
+30
+Improvement from Baseline (pp)
+20
+10
+0
+−10
+0 10 20 30 40
+GDP per Capita (thousands USD)
+Figure 7: GDP per Capita vs Home Advantage
+16
+6.3 Sub-question 2: Do Countries with Larger Working-Age Populations Ben-
+efit More?
+We examine whether countries with larger working-age populations (ages 15-64) gain more advantage when
+hosting.
+Correlation: Working-Age Population vs Home Advantage
+• Correlation coefficient: 0.461
+• P-value: 0.072
+• Result: No significant correlation
+Working−Age Population Proportion vs Medal Rate Improvement
+30
+20
+Improvement from Baseline (pp)
+10
+0
+−10
+−20
+50 55 60 65 70
+Working−Age Population (%)
+Figure 8: Working-Age Population vs Home Advantage
+6.4 Question 4 Summary
+Key Findings:
+1. GDP per capita:
+• Correlation with home advantage: -0.115
+17
+• Statistical significance: No (p >= 0.05)
+2. Working-age population:
+• Correlation with home advantage: 0.461
+• Statistical significance: No (p >= 0.05) Question 2: Gender Differences in Home Advantage
 4.1 Overview
 We examine whether male and female gymnasts benefit differently from hosting.
 Medal Rates by Gender:
