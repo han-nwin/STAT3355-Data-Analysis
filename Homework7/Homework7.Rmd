@@ -94,42 +94,664 @@ Based on the sample of 10 cola cans, we `r ifelse(reject_H0_pvalue, "reject", "f
 
 # Question 2
 
-```{r, question2}
-# If I wrote code that would be used in all following letters, it would go here
+```{r, question2_data}
+# Given data
+n_2 <- 60
+x_bar_2 <- 8.412
+s_2 <- 1.512
+mu_0_2 <- 8.2
+```
+
+**Step 1: State the null and alternative hypotheses**
+
+- $H_0$: $\mu = 8.2$ (The mean app engagement time is 8.2 minutes)
+- $H_a$: $\mu > 8.2$ (The mean app engagement time is more than 8.2 minutes)
+
+This is a one-sided (right-tailed) test.
+
+**Step 2: Choose the significance level**
+
+$\alpha = 0.05$
+
+**Step 3: Determine the appropriate test statistic**
+
+Since we have a large sample (n = 60) and we don't know the population standard deviation, we use a one-sample t-test with the test statistic:
+
+$$t = \frac{\bar{x} - \mu_0}{s / \sqrt{n}}$$
+
+where $\bar{x} = 8.412$ is the sample mean, $\mu_0 = 8.2$ is the hypothesized mean, $s = 1.512$ is the sample standard deviation, and $n = 60$ is the sample size.
+
+**Step 4: Formulate the decision rule**
+
+With $\alpha = 0.05$ and degrees of freedom $df = n - 1 = 59$, we will reject $H_0$ if:
+
+- $t > t_{\alpha, df}$ (critical value approach), or
+- p-value $< \alpha$ (p-value approach)
+
+```{r, question2_critical_value}
+# Critical value for one-sided test (right-tailed)
+alpha_2 <- 0.05
+df_2 <- n_2 - 1
+t_critical_2 <- qt(1 - alpha_2, df_2)
+```
+
+The critical value is $t_{0.05, 59} =$ `r round(t_critical_2, 4)`.
+
+**Step 5: Collect data and calculate the test statistic**
+
+```{r, question2_calculations}
+# Calculate test statistic
+t_stat_2 <- (x_bar_2 - mu_0_2) / (s_2 / sqrt(n_2))
+
+# Calculate p-value (one-sided, right-tailed)
+p_value_2 <- 1 - pt(t_stat_2, df_2)
+```
+
+Sample mean: $\bar{x} =$ `r x_bar_2` minutes
+
+Sample standard deviation: $s =$ `r s_2` minutes
+
+Sample size: $n =$ `r n_2`
+
+Test statistic: $t =$ `r round(t_stat_2, 4)`
+
+**Step 6: Make a decision**
+
+```{r, question2_decision}
+# Decision based on critical value
+reject_H0_critical_2 <- t_stat_2 > t_critical_2
+
+# Decision based on p-value
+reject_H0_pvalue_2 <- p_value_2 < alpha_2
+```
+
+P-value = `r round(p_value_2, 4)`
+
+Since $t =$ `r round(t_stat_2, 4)` is `r ifelse(reject_H0_critical_2, "greater than", "less than")` the critical value of `r round(t_critical_2, 4)`, and the p-value (`r round(p_value_2, 4)`) is `r ifelse(reject_H0_pvalue_2, "less than", "greater than")` $\alpha = 0.05$, we `r ifelse(reject_H0_pvalue_2, "reject", "fail to reject")` $H_0$.
+
+**Step 7: Draw a conclusion**
+
+Based on the sample of 60 tablet users, we `r ifelse(reject_H0_pvalue_2, "reject", "fail to reject")` the null hypothesis at the 0.05 significance level. There `r ifelse(reject_H0_pvalue_2, "is", "is not")` sufficient statistical evidence to conclude that the mean app engagement time is more than 8.2 minutes. `r ifelse(reject_H0_pvalue_2, "John's claim appears to be supported - the actual engagement time is likely higher than Mary's claim of 8.2 minutes.", "John's data does not provide sufficient evidence to prove Mary wrong about the 8.2 minute engagement time.")`
+
+```{r, question2_verification}
+# We can't use t.test() directly since we don't have raw data,
+# but we can verify our calculations manually
+cat("Manual calculation verification:\n")
+cat("Test statistic t =", round(t_stat_2, 4), "\n")
+cat("P-value =", round(p_value_2, 4), "\n")
+cat("Decision:", ifelse(reject_H0_pvalue_2, "Reject H0", "Fail to reject H0"), "\n")
 ```
 
 # Question 3
 
-```{r, question3}
-# If I wrote code that would be used in all following letters, it would go here
+```{r, question3_data}
+# Given data
+n_3 <- 200
+x_3 <- 130
+p_0_3 <- 0.70
+```
+
+**Step 1: State the null and alternative hypotheses**
+
+- $H_0$: $p = 0.70$ (The proportion of stressed college students is 70%)
+- $H_a$: $p \neq 0.70$ (The proportion of stressed college students is different from 70%)
+
+This is a two-sided test.
+
+**Step 2: Choose the significance level**
+
+$\alpha = 0.05$
+
+**Step 3: Determine the appropriate test statistic**
+
+For a proportion test with large sample size, we use the z-test statistic:
+
+$$z = \frac{\hat{p} - p_0}{\sqrt{\frac{p_0(1-p_0)}{n}}}$$
+
+where $\hat{p} = \frac{x}{n}$ is the sample proportion, $p_0 = 0.70$ is the hypothesized proportion, and $n = 200$ is the sample size.
+
+**Step 4: Formulate the decision rule**
+
+With $\alpha = 0.05$ for a two-sided test, we will reject $H_0$ if:
+
+- $|z| > z_{\alpha/2}$ (critical value approach), or
+- p-value $< \alpha$ (p-value approach)
+
+```{r, question3_critical_value}
+# Critical value for two-sided test
+alpha_3 <- 0.05
+z_critical_3 <- qnorm(1 - alpha_3/2)
+```
+
+The critical values are $\pm z_{0.025} = \pm$ `r round(z_critical_3, 4)`.
+
+**Step 5: Collect data and calculate the test statistic**
+
+```{r, question3_calculations}
+# Sample proportion
+p_hat_3 <- x_3 / n_3
+
+# Standard error
+se_3 <- sqrt(p_0_3 * (1 - p_0_3) / n_3)
+
+# Test statistic
+z_stat_3 <- (p_hat_3 - p_0_3) / se_3
+
+# P-value (two-sided)
+p_value_3 <- 2 * (1 - pnorm(abs(z_stat_3)))
+```
+
+Sample proportion: $\hat{p} = \frac{130}{200} =$ `r p_hat_3`
+
+Test statistic: $z =$ `r round(z_stat_3, 4)`
+
+**Step 6: Make a decision**
+
+```{r, question3_decision}
+# Decision based on critical value
+reject_H0_critical_3 <- abs(z_stat_3) > z_critical_3
+
+# Decision based on p-value
+reject_H0_pvalue_3 <- p_value_3 < alpha_3
+```
+
+P-value = `r round(p_value_3, 4)`
+
+Since $|z| =$ `r round(abs(z_stat_3), 4)` is `r ifelse(reject_H0_critical_3, "greater than", "less than")` the critical value of `r round(z_critical_3, 4)`, and the p-value (`r round(p_value_3, 4)`) is `r ifelse(reject_H0_pvalue_3, "less than", "greater than")` $\alpha = 0.05$, we `r ifelse(reject_H0_pvalue_3, "reject", "fail to reject")` $H_0$.
+
+**Step 7: Draw a conclusion**
+
+Based on the sample of 200 students, we `r ifelse(reject_H0_pvalue_3, "reject", "fail to reject")` the null hypothesis at the 0.05 significance level. There `r ifelse(reject_H0_pvalue_3, "is", "is not")` sufficient statistical evidence to conclude that the proportion of stressed college students at this campus is different from 70%. `r ifelse(reject_H0_pvalue_3, paste0("The sample proportion is ", round(p_hat_3, 4), " (", round(p_hat_3*100, 2), "%)."), paste0("The sample proportion of ", round(p_hat_3, 4), " (", round(p_hat_3*100, 2), "%) is consistent with the claimed 70%."))`
+
+```{r, question3_verification}
+# Verification using prop.test function in R
+prop_test_result_3 <- prop.test(x_3, n_3, p_0_3, alternative = "two.sided", correct = FALSE)
+print(prop_test_result_3)
 ```
 
 # Question 4
 
-```{r, question4}
-# If I wrote code that would be used in all following letters, it would go here
+```{r, question4_data}
+# Given data
+n_total_4 <- 500
+prop_18_50 <- 0.70
+prop_over_50 <- 0.30
+
+n1_4 <- n_total_4 * prop_18_50  # 18-50 age group
+n2_4 <- n_total_4 * prop_over_50  # Over 50 age group
+
+x_bar1_4 <- 2.00  # Mean for 18-50 group (Gb)
+x_bar2_4 <- 1.85  # Mean for over 50 group (Gb)
+
+s1_4 <- 0.812  # SD for 18-50 group
+s2_4 <- 0.837  # SD for over 50 group
 ```
+
+**Step 1: State the null and alternative hypotheses**
+
+Let $\mu_1$ = mean data usage for people aged 18-50 years
+
+Let $\mu_2$ = mean data usage for people over 50 years
+
+- $H_0$: $\mu_1 = \mu_2$ or equivalently $\mu_1 - \mu_2 = 0$ (Both age groups use the same amount of data)
+- $H_a$: $\mu_1 > \mu_2$ or equivalently $\mu_1 - \mu_2 > 0$ (People aged 18-50 use more data than those over 50)
+
+This is a one-sided (right-tailed) test.
+
+**Step 2: Choose the significance level**
+
+$\alpha = 0.05$
+
+**Step 3: Determine the appropriate test statistic**
+
+For comparing two independent means with large samples, we use the two-sample t-test statistic:
+
+$$t = \frac{(\bar{x}_1 - \bar{x}_2) - 0}{\sqrt{\frac{s_1^2}{n_1} + \frac{s_2^2}{n_2}}}$$
+
+where $\bar{x}_1 = 2.00$, $\bar{x}_2 = 1.85$, $s_1 = 0.812$, $s_2 = 0.837$, $n_1 = 350$, $n_2 = 150$.
+
+**Step 4: Formulate the decision rule**
+
+```{r, question4_df}
+# Calculate degrees of freedom using Welch's approximation
+se1_4 <- s1_4^2 / n1_4
+se2_4 <- s2_4^2 / n2_4
+df_4 <- (se1_4 + se2_4)^2 / (se1_4^2/(n1_4-1) + se2_4^2/(n2_4-1))
+
+alpha_4 <- 0.05
+t_critical_4 <- qt(1 - alpha_4, df_4)
+```
+
+With $\alpha = 0.05$ and degrees of freedom $df \approx$ `r round(df_4, 2)`, we will reject $H_0$ if:
+
+- $t > t_{\alpha, df}$ (critical value approach), or
+- p-value $< \alpha$ (p-value approach)
+
+The critical value is $t_{0.05, `r round(df_4, 2)`} =$ `r round(t_critical_4, 4)`.
+
+**Step 5: Collect data and calculate the test statistic**
+
+```{r, question4_calculations}
+# Calculate pooled standard error
+se_pooled_4 <- sqrt(s1_4^2/n1_4 + s2_4^2/n2_4)
+
+# Test statistic
+t_stat_4 <- (x_bar1_4 - x_bar2_4) / se_pooled_4
+
+# P-value (one-sided, right-tailed)
+p_value_4 <- 1 - pt(t_stat_4, df_4)
+```
+
+Sample mean for 18-50 group: $\bar{x}_1 =$ `r x_bar1_4` Gb
+
+Sample mean for over 50 group: $\bar{x}_2 =$ `r x_bar2_4` Gb
+
+Difference in means: $\bar{x}_1 - \bar{x}_2 =$ `r x_bar1_4 - x_bar2_4` Gb
+
+Test statistic: $t =$ `r round(t_stat_4, 4)`
+
+**Step 6: Make a decision**
+
+```{r, question4_decision}
+# Decision based on critical value
+reject_H0_critical_4 <- t_stat_4 > t_critical_4
+
+# Decision based on p-value
+reject_H0_pvalue_4 <- p_value_4 < alpha_4
+```
+
+P-value = `r round(p_value_4, 4)`
+
+Since $t =$ `r round(t_stat_4, 4)` is `r ifelse(reject_H0_critical_4, "greater than", "less than")` the critical value of `r round(t_critical_4, 4)`, and the p-value (`r round(p_value_4, 4)`) is `r ifelse(reject_H0_pvalue_4, "less than", "greater than")` $\alpha = 0.05$, we `r ifelse(reject_H0_pvalue_4, "reject", "fail to reject")` $H_0$.
+
+**Step 7: Draw a conclusion**
+
+Based on the sample of 500 customers, we `r ifelse(reject_H0_pvalue_4, "reject", "fail to reject")` the null hypothesis at the 0.05 significance level. There `r ifelse(reject_H0_pvalue_4, "is", "is not")` sufficient statistical evidence to conclude that people older than 50 years use less cell phone data than people aged 18-50 years. `r ifelse(reject_H0_pvalue_4, paste0("The data supports that younger customers (18-50) use significantly more data (", x_bar1_4, " Gb) than older customers (", x_bar2_4, " Gb)."), "The difference in data usage between age groups is not statistically significant.")`
 
 # Question 5
 
-```{r, question_5}
-# This is where my code for this question goes
+```{r, question5_data}
+# Given data
+n_male_5 <- 30
+n_female_5 <- 40
+x_male_5 <- 22  # Males who play video games
+x_female_5 <- 24  # Females who play video games
 ```
+
+**Step 1: State the null and alternative hypotheses**
+
+Let $p_1$ = proportion of males who play video games
+
+Let $p_2$ = proportion of females who play video games
+
+- $H_0$: $p_1 = p_2$ or equivalently $p_1 - p_2 = 0$ (Equal proportions of males and females play video games)
+- $H_a$: $p_1 > p_2$ or equivalently $p_1 - p_2 > 0$ (More males play video games than females)
+
+This is a one-sided (right-tailed) test.
+
+**Step 2: Choose the significance level**
+
+$\alpha = 0.05$
+
+**Step 3: Determine the appropriate test statistic**
+
+For comparing two proportions, we use the two-proportion z-test statistic:
+
+$$z = \frac{(\hat{p}_1 - \hat{p}_2)}{\sqrt{\hat{p}(1-\hat{p})(\frac{1}{n_1} + \frac{1}{n_2})}}$$
+
+where $\hat{p}_1 = \frac{x_1}{n_1}$, $\hat{p}_2 = \frac{x_2}{n_2}$, and $\hat{p} = \frac{x_1 + x_2}{n_1 + n_2}$ is the pooled proportion.
+
+**Step 4: Formulate the decision rule**
+
+```{r, question5_critical_value}
+alpha_5 <- 0.05
+z_critical_5 <- qnorm(1 - alpha_5)
+```
+
+With $\alpha = 0.05$ for a one-sided test, we will reject $H_0$ if:
+
+- $z > z_{\alpha}$ (critical value approach), or
+- p-value $< \alpha$ (p-value approach)
+
+The critical value is $z_{0.05} =$ `r round(z_critical_5, 4)`.
+
+**Step 5: Collect data and calculate the test statistic**
+
+```{r, question5_calculations}
+# Sample proportions
+p_hat1_5 <- x_male_5 / n_male_5
+p_hat2_5 <- x_female_5 / n_female_5
+
+# Pooled proportion
+p_hat_pooled_5 <- (x_male_5 + x_female_5) / (n_male_5 + n_female_5)
+
+# Standard error
+se_5 <- sqrt(p_hat_pooled_5 * (1 - p_hat_pooled_5) * (1/n_male_5 + 1/n_female_5))
+
+# Test statistic
+z_stat_5 <- (p_hat1_5 - p_hat2_5) / se_5
+
+# P-value (one-sided, right-tailed)
+p_value_5 <- 1 - pnorm(z_stat_5)
+```
+
+Male proportion: $\hat{p}_1 = \frac{22}{30} =$ `r round(p_hat1_5, 4)` (`r round(p_hat1_5*100, 2)`%)
+
+Female proportion: $\hat{p}_2 = \frac{24}{40} =$ `r round(p_hat2_5, 4)` (`r round(p_hat2_5*100, 2)`%)
+
+Pooled proportion: $\hat{p} =$ `r round(p_hat_pooled_5, 4)`
+
+Test statistic: $z =$ `r round(z_stat_5, 4)`
+
+**Step 6: Make a decision**
+
+```{r, question5_decision}
+# Decision based on critical value
+reject_H0_critical_5 <- z_stat_5 > z_critical_5
+
+# Decision based on p-value
+reject_H0_pvalue_5 <- p_value_5 < alpha_5
+```
+
+P-value = `r round(p_value_5, 4)`
+
+Since $z =$ `r round(z_stat_5, 4)` is `r ifelse(reject_H0_critical_5, "greater than", "less than")` the critical value of `r round(z_critical_5, 4)`, and the p-value (`r round(p_value_5, 4)`) is `r ifelse(reject_H0_pvalue_5, "less than", "greater than")` $\alpha = 0.05$, we `r ifelse(reject_H0_pvalue_5, "reject", "fail to reject")` $H_0$.
+
+**Step 7: Draw a conclusion**
+
+Based on the sample of 70 students (30 males, 40 females), we `r ifelse(reject_H0_pvalue_5, "reject", "fail to reject")` the null hypothesis at the 0.05 significance level. There `r ifelse(reject_H0_pvalue_5, "is", "is not")` sufficient statistical evidence to conclude that more males play video games than females among STAT 3355 students. `r ifelse(reject_H0_pvalue_5, paste0("The data supports that a higher proportion of males (", round(p_hat1_5*100, 2), "%) play video games compared to females (", round(p_hat2_5*100, 2), "%)."), paste0("While the male proportion (", round(p_hat1_5*100, 2), "%) is higher than the female proportion (", round(p_hat2_5*100, 2), "%), this difference is not statistically significant."))`
 
 # Question 6
 
-```{r, question_6}
-# This is where my code for this question goes
+```{r, question6_data}
+# Given data
+n_6 <- 75
+x_6 <- 30  # Number without insurance
+p_0_6 <- 0.281  # Nationwide proportion
+```
+
+**Step 1: State the null and alternative hypotheses**
+
+- $H_0$: $p = 0.281$ (The proportion of uninsured recent college graduates is 28.1%)
+- $H_a$: $p \neq 0.281$ (The proportion of uninsured recent college graduates differs from 28.1%)
+
+This is a two-sided test.
+
+**Step 2: Choose the significance level**
+
+$\alpha = 0.05$
+
+**Step 3: Determine the appropriate test statistic**
+
+For a proportion test with large sample size, we use the z-test statistic:
+
+$$z = \frac{\hat{p} - p_0}{\sqrt{\frac{p_0(1-p_0)}{n}}}$$
+
+where $\hat{p} = \frac{x}{n}$ is the sample proportion, $p_0 = 0.281$ is the hypothesized proportion, and $n = 75$ is the sample size.
+
+**Step 4: Formulate the decision rule**
+
+```{r, question6_critical_value}
+alpha_6 <- 0.05
+z_critical_6 <- qnorm(1 - alpha_6/2)
+```
+
+With $\alpha = 0.05$ for a two-sided test, we will reject $H_0$ if:
+
+- $|z| > z_{\alpha/2}$ (critical value approach), or
+- p-value $< \alpha$ (p-value approach)
+
+The critical values are $\pm z_{0.025} = \pm$ `r round(z_critical_6, 4)`.
+
+**Step 5: Collect data and calculate the test statistic**
+
+```{r, question6_calculations}
+# Sample proportion
+p_hat_6 <- x_6 / n_6
+
+# Standard error
+se_6 <- sqrt(p_0_6 * (1 - p_0_6) / n_6)
+
+# Test statistic
+z_stat_6 <- (p_hat_6 - p_0_6) / se_6
+
+# P-value (two-sided)
+p_value_6 <- 2 * (1 - pnorm(abs(z_stat_6)))
+```
+
+Sample proportion: $\hat{p} = \frac{30}{75} =$ `r round(p_hat_6, 4)` (`r round(p_hat_6*100, 2)`%)
+
+Test statistic: $z =$ `r round(z_stat_6, 4)`
+
+**Step 6: Make a decision**
+
+```{r, question6_decision}
+# Decision based on critical value
+reject_H0_critical_6 <- abs(z_stat_6) > z_critical_6
+
+# Decision based on p-value
+reject_H0_pvalue_6 <- p_value_6 < alpha_6
+```
+
+P-value = `r round(p_value_6, 4)`
+
+Since $|z| =$ `r round(abs(z_stat_6), 4)` is `r ifelse(reject_H0_critical_6, "greater than", "less than")` the critical value of `r round(z_critical_6, 4)`, and the p-value (`r round(p_value_6, 4)`) is `r ifelse(reject_H0_pvalue_6, "less than", "greater than")` $\alpha = 0.05$, we `r ifelse(reject_H0_pvalue_6, "reject", "fail to reject")` $H_0$.
+
+**Step 7: Draw a conclusion**
+
+Based on the sample of 75 recent college graduates, we `r ifelse(reject_H0_pvalue_6, "reject", "fail to reject")` the null hypothesis at the 0.05 significance level. There `r ifelse(reject_H0_pvalue_6, "is", "is not")` sufficient statistical evidence to conclude that the proportion of uninsured recent college graduates differs from the nationwide proportion of 28.1%. `r ifelse(reject_H0_pvalue_6, paste0("The sample proportion (", round(p_hat_6*100, 2), "%) is significantly different from the national rate."), paste0("The sample proportion (", round(p_hat_6*100, 2), "%) is consistent with the national rate of 28.1%."))`
+
+```{r, question6_verification}
+# Verification using prop.test function in R
+prop_test_result_6 <- prop.test(x_6, n_6, p_0_6, alternative = "two.sided", correct = FALSE)
+print(prop_test_result_6)
 ```
 
 # Question 7
 
-```{r, question_7}
-# This is where my code for this question goes
+```{r, question7_data}
+# Given data
+n_apple_7 <- 150
+x_apple_7 <- 14  # Apple returns
+
+n_samsung_7 <- 125
+x_samsung_7 <- 15  # Samsung returns
+```
+
+**Step 1: State the null and alternative hypotheses**
+
+Let $p_1$ = proportion of Apple iPhones returned
+
+Let $p_2$ = proportion of Samsung Galaxy phones returned
+
+- $H_0$: $p_1 = p_2$ or equivalently $p_1 - p_2 = 0$ (Both brands have the same return rate)
+- $H_a$: $p_1 < p_2$ or equivalently $p_1 - p_2 < 0$ (Apple has a smaller return rate than Samsung)
+
+This is a one-sided (left-tailed) test.
+
+**Step 2: Choose the significance level**
+
+$\alpha = 0.05$
+
+**Step 3: Determine the appropriate test statistic**
+
+For comparing two proportions, we use the two-proportion z-test statistic:
+
+$$z = \frac{(\hat{p}_1 - \hat{p}_2)}{\sqrt{\hat{p}(1-\hat{p})(\frac{1}{n_1} + \frac{1}{n_2})}}$$
+
+where $\hat{p}_1 = \frac{x_1}{n_1}$, $\hat{p}_2 = \frac{x_2}{n_2}$, and $\hat{p} = \frac{x_1 + x_2}{n_1 + n_2}$ is the pooled proportion.
+
+**Step 4: Formulate the decision rule**
+
+```{r, question7_critical_value}
+alpha_7 <- 0.05
+z_critical_7 <- qnorm(alpha_7)
+```
+
+With $\alpha = 0.05$ for a one-sided (left-tailed) test, we will reject $H_0$ if:
+
+- $z < -z_{\alpha}$ (critical value approach), or
+- p-value $< \alpha$ (p-value approach)
+
+The critical value is $-z_{0.05} =$ `r round(z_critical_7, 4)`.
+
+**Step 5: Collect data and calculate the test statistic**
+
+```{r, question7_calculations}
+# Sample proportions
+p_hat1_7 <- x_apple_7 / n_apple_7
+p_hat2_7 <- x_samsung_7 / n_samsung_7
+
+# Pooled proportion
+p_hat_pooled_7 <- (x_apple_7 + x_samsung_7) / (n_apple_7 + n_samsung_7)
+
+# Standard error
+se_7 <- sqrt(p_hat_pooled_7 * (1 - p_hat_pooled_7) * (1/n_apple_7 + 1/n_samsung_7))
+
+# Test statistic
+z_stat_7 <- (p_hat1_7 - p_hat2_7) / se_7
+
+# P-value (one-sided, left-tailed)
+p_value_7 <- pnorm(z_stat_7)
+```
+
+Apple return rate: $\hat{p}_1 = \frac{14}{150} =$ `r round(p_hat1_7, 4)` (`r round(p_hat1_7*100, 2)`%)
+
+Samsung return rate: $\hat{p}_2 = \frac{15}{125} =$ `r round(p_hat2_7, 4)` (`r round(p_hat2_7*100, 2)`%)
+
+Pooled proportion: $\hat{p} =$ `r round(p_hat_pooled_7, 4)`
+
+Test statistic: $z =$ `r round(z_stat_7, 4)`
+
+**Step 6: Make a decision**
+
+```{r, question7_decision}
+# Decision based on critical value
+reject_H0_critical_7 <- z_stat_7 < z_critical_7
+
+# Decision based on p-value
+reject_H0_pvalue_7 <- p_value_7 < alpha_7
+```
+
+P-value = `r round(p_value_7, 4)`
+
+Since $z =$ `r round(z_stat_7, 4)` is `r ifelse(reject_H0_critical_7, "less than", "greater than")` the critical value of `r round(z_critical_7, 4)`, and the p-value (`r round(p_value_7, 4)`) is `r ifelse(reject_H0_pvalue_7, "less than", "greater than")` $\alpha = 0.05$, we `r ifelse(reject_H0_pvalue_7, "reject", "fail to reject")` $H_0$.
+
+**Step 7: Draw a conclusion**
+
+Based on the sample of 275 phones (150 Apple, 125 Samsung), we `r ifelse(reject_H0_pvalue_7, "reject", "fail to reject")` the null hypothesis at the 0.05 significance level. There `r ifelse(reject_H0_pvalue_7, "is", "is not")` sufficient statistical evidence to conclude that Apple has a smaller return rate than Samsung. `r ifelse(reject_H0_pvalue_7, paste0("The data supports that Apple's return rate (", round(p_hat1_7*100, 2), "%) is significantly lower than Samsung's (", round(p_hat2_7*100, 2), "%)."), paste0("While Apple's return rate (", round(p_hat1_7*100, 2), "%) is numerically lower than Samsung's (", round(p_hat2_7*100, 2), "%), this difference is not statistically significant."))`
+
+```{r, question7_verification}
+# Verification using prop.test function in R
+prop_test_result_7 <- prop.test(c(x_apple_7, x_samsung_7), c(n_apple_7, n_samsung_7),
+                                 alternative = "less", correct = FALSE)
+print(prop_test_result_7)
 ```
 
 # Question 8
 
-```{r, question_8}
-# This is where my code for this question goes
+```{r, question8_data}
+# Load the UsingR package and babies dataset
+library(UsingR)
+data(babies)
+
+# Extract mother's age and father's age
+# Remove missing values (NA)
+mothers_age <- babies$age
+fathers_age <- babies$dage
+
+# Create complete cases (pairs without missing values)
+complete_cases <- complete.cases(mothers_age, fathers_age)
+mothers_age_clean <- mothers_age[complete_cases]
+fathers_age_clean <- fathers_age[complete_cases]
+```
+
+**Step 1: State the null and alternative hypotheses**
+
+Let $\mu_d$ = mean difference in ages (father's age - mother's age)
+
+- $H_0$: $\mu_d = 0$ (The mean ages of mothers and fathers are equal)
+- $H_a$: $\mu_d \neq 0$ (The mean ages of mothers and fathers are different)
+
+This is a two-sided paired t-test.
+
+**Step 2: Choose the significance level**
+
+$\alpha = 0.05$
+
+**Step 3: Determine the appropriate test statistic**
+
+Since we have paired data (mother and father ages for each baby), we use a paired t-test with the test statistic:
+
+$$t = \frac{\bar{d}}{s_d / \sqrt{n}}$$
+
+where $\bar{d}$ is the mean of the differences, $s_d$ is the standard deviation of the differences, and $n$ is the number of pairs.
+
+**Step 4: Formulate the decision rule**
+
+```{r, question8_critical_value}
+alpha_8 <- 0.05
+n_8 <- length(mothers_age_clean)
+df_8 <- n_8 - 1
+t_critical_8 <- qt(1 - alpha_8/2, df_8)
+```
+
+With $\alpha = 0.05$ and degrees of freedom $df = n - 1 =$ `r df_8`, we will reject $H_0$ if:
+
+- $|t| > t_{\alpha/2, df}$ (critical value approach), or
+- p-value $< \alpha$ (p-value approach)
+
+The critical values are $\pm t_{0.025, `r df_8`} = \pm$ `r round(t_critical_8, 4)`.
+
+**Step 5: Collect data and calculate the test statistic**
+
+```{r, question8_calculations}
+# Calculate differences (father - mother)
+differences <- fathers_age_clean - mothers_age_clean
+
+# Calculate mean and standard deviation of differences
+d_bar <- mean(differences)
+s_d <- sd(differences)
+
+# Test statistic
+t_stat_8 <- d_bar / (s_d / sqrt(n_8))
+
+# P-value (two-sided)
+p_value_8 <- 2 * (1 - pt(abs(t_stat_8), df_8))
+```
+
+Sample size: $n =$ `r n_8` pairs
+
+Mean mother's age: $\bar{x}_{mother} =$ `r round(mean(mothers_age_clean), 4)` years
+
+Mean father's age: $\bar{x}_{father} =$ `r round(mean(fathers_age_clean), 4)` years
+
+Mean difference (father - mother): $\bar{d} =$ `r round(d_bar, 4)` years
+
+Standard deviation of differences: $s_d =$ `r round(s_d, 4)` years
+
+Test statistic: $t =$ `r round(t_stat_8, 4)`
+
+**Step 6: Make a decision**
+
+```{r, question8_decision}
+# Decision based on critical value
+reject_H0_critical_8 <- abs(t_stat_8) > t_critical_8
+
+# Decision based on p-value
+reject_H0_pvalue_8 <- p_value_8 < alpha_8
+```
+
+P-value = `r format(p_value_8, scientific = TRUE, digits = 4)`
+
+Since $|t| =$ `r round(abs(t_stat_8), 4)` is `r ifelse(reject_H0_critical_8, "greater than", "less than")` the critical value of `r round(t_critical_8, 4)`, and the p-value (`r format(p_value_8, scientific = TRUE, digits = 4)`) is `r ifelse(reject_H0_pvalue_8, "less than", "greater than")` $\alpha = 0.05$, we `r ifelse(reject_H0_pvalue_8, "reject", "fail to reject")` $H_0$.
+
+**Step 7: Draw a conclusion**
+
+Based on the sample of `r n_8` mother-father pairs from the babies dataset, we `r ifelse(reject_H0_pvalue_8, "reject", "fail to reject")` the null hypothesis at the 0.05 significance level. There `r ifelse(reject_H0_pvalue_8, "is", "is not")` sufficient statistical evidence to conclude that the mean ages of mothers and fathers are different in the sampled population. `r ifelse(reject_H0_pvalue_8, paste0("On average, fathers are ", round(d_bar, 2), " years older than mothers, and this difference is statistically significant."), paste0("The average age difference of ", round(d_bar, 2), " years is not statistically significant."))`
+
+```{r, question8_verification}
+# Verification using t.test function in R (paired test)
+t_test_result_8 <- t.test(fathers_age_clean, mothers_age_clean, paired = TRUE, alternative = "two.sided")
+print(t_test_result_8)
 ```
