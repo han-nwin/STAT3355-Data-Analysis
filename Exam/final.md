@@ -20,7 +20,7 @@ If you cannot get your RMarkdown pdf to compile, you are allowed to submit your 
 1. Specify model for the data
 2. State Null and Alternative Hypothesis
 3. Specify Test Statistic
-4. State à level
+4. State alpha level
 5. Create test statistic
 6. Compute p-value
 7. Interpret Results
@@ -147,6 +147,26 @@ Fitting a simple linear regression model on a data set reporting the divorce rat
 * **divorce**: number of divorces per 1,000 women aged 15+
 * **femlab**: percent female participation in labor force aged 15+
 
+```
+Call:
+lm(formula = divorce ~ femlab, data = data)
+
+Residuals:
+     Min       1Q   Median       3Q      Max
+-3.7264  -1.6385   0.1595   1.2211   8.0442
+
+Coefficients:
+               Estimate Std. Error t value Pr(>|t|)
+(Intercept)   -3.65527   0.92798   -3.939  0.000182 ***
+femlab         0.43867   0.02302   19.056   < 2e-16 ***
+
+Signif. codes:
+0 `***' 0.001 `**' 0.01 `*' 0.05 `.' 0.1 ` ' 1
+
+Residual standard error: 2.361 on 75 degrees of freedom
+Multiple R-squared:  0.8288,   Adjusted R-squared:  0.8265
+F-statistic: 363.1 on 1 and 75 DF,  p-value: < 2.2e-16
+```
 ---
 
 ## Question 3.1 (5 points)
